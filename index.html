@@ -447,6 +447,36 @@ const BUNDLES = [
 
 const PROMOS = {STW10:0.10,STW20:0.20,WELCOME:0.15,FIRSTORDER:0.12};
 
+const GOVERNORATES = [
+  { name:'القاهرة',      fee:40,  cities:['مدينة نصر','المعادي','مصر الجديدة','عين شمس','الزيتون','شبرا','التجمع الخامس','حلوان','المقطم','وسط البلد'] },
+  { name:'الجيزة',       fee:40,  cities:['الدقي','المهندسين','6 أكتوبر','الشيخ زايد','فيصل','بولاق الدكرور','إمبابة','الهرم','الوراق'] },
+  { name:'القليوبية',    fee:45,  cities:['شبرا الخيمة','بنها','قليوب','كفر شكر','طوخ','القناطر الخيرية'] },
+  { name:'الإسكندرية',   fee:50,  cities:['المنتزه','سيدي بشر','العجمي','برج العرب','الدخيلة','العامرية','المعمورة','كليوباترا'] },
+  { name:'الغربية',      fee:55,  cities:['طنطا','المحلة الكبرى','كفر الزيات','زفتى','السنطة','بسيون'] },
+  { name:'الدقهلية',     fee:55,  cities:['المنصورة','دكرنس','ميت غمر','السنبلاوين','أجا','طلخا','شربين'] },
+  { name:'الشرقية',      fee:55,  cities:['الزقازيق','العاشر من رمضان','بلبيس','منيا القمح','ههيا','أبو حماد'] },
+  { name:'المنوفية',     fee:55,  cities:['شبين الكوم','مينوف','أشمون','السادات','قويسنا','بركة السبع'] },
+  { name:'البحيرة',      fee:55,  cities:['دمنهور','كفر الدوار','رشيد','إيتاي البارود','أبو حمص','وادي النطرون'] },
+  { name:'كفر الشيخ',    fee:55,  cities:['كفر الشيخ','دسوق','فوه','بلطيم','سيدي سالم','الحامول'] },
+  { name:'دمياط',        fee:55,  cities:['دمياط','رأس البر','الزرقا','فارسكور','كفر سعد'] },
+  { name:'الإسماعيلية',  fee:55,  cities:['الإسماعيلية','القنطرة','فايد','أبو صوير'] },
+  { name:'الفيوم',       fee:55,  cities:['الفيوم','طامية','سنورس','إطسا','يوسف الصديق'] },
+  { name:'بني سويف',     fee:60,  cities:['بني سويف','الفشن','ناصر','إهناسيا','ببا','سمسطا'] },
+  { name:'المنيا',       fee:60,  cities:['المنيا','ملوي','سمالوط','مغاغة','أبو قرقاص'] },
+  { name:'بورسعيد',      fee:60,  cities:['بورسعيد','بور فؤاد'] },
+  { name:'السويس',       fee:60,  cities:['السويس','عتاقة','السخنة'] },
+  { name:'سوهاج',        fee:65,  cities:['سوهاج','أخميم','جرجا','طما','طهطا','البلينا'] },
+  { name:'أسيوط',        fee:65,  cities:['أسيوط','ديروط','منفلوط','القوصية','أبنوب'] },
+  { name:'قنا',          fee:70,  cities:['قنا','نجع حمادي','أبو تشت','قفط','دشنا'] },
+  { name:'الأقصر',       fee:70,  cities:['الأقصر','إسنا','أرمنت','القرنة'] },
+  { name:'أسوان',        fee:75,  cities:['أسوان','كوم أمبو','إدفو','نصر النوبة','دراو'] },
+  { name:'البحر الأحمر', fee:75,  cities:['الغردقة','سفاجا','القصير','مرسى علم','رأس غارب'] },
+  { name:'شمال سيناء',   fee:75,  cities:['العريش','الشيخ زويد','رفح','بئر العبد'] },
+  { name:'جنوب سيناء',   fee:80,  cities:['شرم الشيخ','دهب','طابا','نويبع','أبو رديس'] },
+  { name:'مطروح',        fee:80,  cities:['مرسى مطروح','العلمين','سيوه','الضبعة'] },
+  { name:'الوادي الجديد',fee:85,  cities:['الخارجة','الداخلة','الفرافرة','باريس'] },
+];
+
 const BADGE_STYLE = {
   'NEW':`background:${A};color:#000`,
   'LIMITED':'background:#fff;color:#000',
@@ -465,7 +495,8 @@ const S = {
   cart:[], wish:[],
   dark:true, lang:'en',
   rv:[],
-  step:1, form:{name:'',phone:'',address:'',city:''},
+  step:1, form:{name:'',phone:'',address:''},
+  gov:null, govCity:'', shipping:0,
   pay:null, promo:'', discount:0, transfer:'', file:null,
   orderNum:null, orderData:null,
   catFilter:'ALL', sortFilter:'FEATURED', shopSearch:'',
@@ -859,10 +890,31 @@ function renderCheckout() {
     </div>
     ${S.step===1?`
       <div style="font-family:var(--fd);font-size:48px;margin-bottom:24px">${tx('shipping').toUpperCase()}</div>
-      ${['name','phone','address','city'].map((k,i)=>`<div style="margin-bottom:14px">
-        <label class="field-label">${tx(['fullName','phone','address','city'][i])}</label>
-        <input class="field" value="${S.form[k]}" oninput="setField('${k}',this.value)" placeholder="${['Ahmed Mohamed','010XXXXXXXX',S.lang==='ar'?'123 شارع، مبنى 5':'123 Street, Building 5',S.lang==='ar'?'القاهرة':'Cairo'][i]}">
-      </div>`).join('')}
+      <div style="margin-bottom:14px"><label class="field-label">${tx('fullName')}</label><input class="field" value="${S.form.name}" oninput="setField('name',this.value)" placeholder="${S.lang==='ar'?'أحمد محمد':'Ahmed Mohamed'}"></div>
+      <div style="margin-bottom:14px"><label class="field-label">${tx('phone')}</label><input class="field" value="${S.form.phone}" oninput="setField('phone',this.value)" placeholder="010XXXXXXXX"></div>
+      <div style="margin-bottom:14px"><label class="field-label">${tx('address')}</label><input class="field" value="${S.form.address}" oninput="setField('address',this.value)" placeholder="${S.lang==='ar'?'رقم الشارع، المبنى، الشقة':'Street, Building, Apt'}"></div>
+
+      <div style="margin-bottom:14px">
+        <label class="field-label">المحافظة</label>
+        <select class="field" onchange="selectGov(this.value)" style="cursor:pointer">
+          <option value="">اختار المحافظة</option>
+          ${GOVERNORATES.map(g=>`<option value="${g.name}"${S.gov&&S.gov.name===g.name?' selected':''}>${g.name} — شحن ${g.fee} EGP</option>`).join('')}
+        </select>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <label class="field-label">المدينة / المنطقة</label>
+        <select id="city-select" class="field" onchange="selectGovCity(this.value)" style="cursor:pointer" ${!S.gov?'disabled':''}>
+          <option value="">${S.gov?'اختار المدينة':'اختار المحافظة أولاً'}</option>
+          ${S.gov?S.gov.cities.map(c=>`<option value="${c}"${S.govCity===c?' selected':''}>${c}</option>`).join(''):''}
+        </select>
+      </div>
+
+      ${S.gov?`<div style="background:var(--bg3);border:1px solid var(--border);padding:14px 18px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:10px;letter-spacing:3px;color:var(--text3);font-family:var(--fm)">مصاريف الشحن — ${S.gov.name}</span>
+        <span id="shipping-fee" style="font-family:var(--fd);font-size:22px;color:${A}">${S.gov.fee} EGP</span>
+      </div>`:''}
+
       <button class="btn btn-full" style="margin-top:8px" onclick="nextStep()">${tx('nextPayment')}</button>
     `:`
       <div style="font-family:var(--fd);font-size:48px;margin-bottom:24px">${tx('payment').toUpperCase()}</div>
@@ -899,7 +951,11 @@ function renderCheckout() {
         <div class="summary-tag">${tx('orderSummary')}</div>
         ${S.cart.map(item=>`<div class="summary-row"><span>${item.name.toUpperCase()} ×${item.qty} (${item.size})</span><span>${item.price*item.qty} EGP</span></div>`).join('')}
         ${S.discount>0?`<div class="summary-row" style="color:#4caf50"><span>${tx('discount')} (${S.discount*100}%)</span><span>−${rawTotal-total} EGP</span></div>`:''}
-        <div class="summary-divider"><span style="font-size:9px;letter-spacing:4px;color:var(--text3);font-family:var(--fm)">${tx('total')}</span><span style="font-family:var(--fd);font-size:26px">${total} <span style="font-size:10px;color:var(--text3);font-family:var(--fm)">EGP</span></span></div>
+        ${S.gov?`<div class="summary-row"><span>شحن — ${S.gov.name}</span><span style="color:${A}">${S.shipping} EGP</span></div>`:''}
+        <div class="summary-divider">
+          <span style="font-size:9px;letter-spacing:4px;color:var(--text3);font-family:var(--fm)">${tx('total')}</span>
+          <span style="font-family:var(--fd);font-size:26px">${grandTotal} <span style="font-size:10px;color:var(--text3);font-family:var(--fm)">EGP</span></span>
+        </div>
       </div>
       <button class="btn btn-full" onclick="confirmOrder()" style="${!S.pay?'background:var(--bg3);color:var(--text3);cursor:not-allowed':''}">${tx('confirmPayment')}</button>
     `}
@@ -918,7 +974,8 @@ function renderConfirmation() {
       ${od.items.map(item=>`<div class="summary-row"><span>${item.name.toUpperCase()} ×${item.qty} (${item.size})</span><span>${item.price*item.qty} EGP</span></div>`).join('')}
       <div class="summary-divider"><span style="font-size:9px;letter-spacing:4px;color:var(--text3);font-family:var(--fm)">${tx('total')}</span><span style="font-family:var(--fd);font-size:24px">${od.total} EGP</span></div>
     </div>
-    <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">${od.address}, ${od.city}</div>
+    <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">${od.address}، ${od.city}، ${od.gov}</div>
+    <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">مصاريف الشحن: <span style="color:${A}">${od.shipping} EGP</span></div>
     <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:28px">${od.pay==='cash'?tx('cashOnDelivery'):od.pay==='instapay'?'INSTAPAY':'VODAFONE CASH'}</div>
     <button class="btn" onclick="navigate('home')">${S.lang==='ar'?'متابعة التسوق':'CONTINUE SHOPPING'}</button>
   </div>`;
@@ -1099,6 +1156,18 @@ function setQty(n){S.qty=Math.max(1,n);render();}
 function selectImg(i){S.imgIdx=i;render();}
 function toggleAccordion(i){S.accordion=S.accordion===i?null:i;render();}
 function setField(k,v){S.form[k]=v;}
+function selectGov(name) {
+  const g = GOVERNORATES.find(x=>x.name===name);
+  S.gov=g||null; S.govCity=''; S.shipping=g?g.fee:0;
+  const citySelect = document.getElementById('city-select');
+  if(citySelect && g) {
+    citySelect.innerHTML = `<option value="">اختار المدينة</option>${g.cities.map(c=>`<option value="${c}">${c}</option>`).join('')}`;
+    citySelect.disabled = false;
+  }
+  const shippingEl = document.getElementById('shipping-fee');
+  if(shippingEl && g) shippingEl.textContent = g.fee + ' EGP';
+}
+function selectGovCity(city){ S.govCity=city; }
 function setFile(input){S.file=input.files[0]?.name||null;const lbl=document.querySelector('.upload-zone');if(lbl){lbl.className='upload-zone'+(S.file?' has-file':'');lbl.querySelector('span:nth-child(2)').textContent=S.file||tx('clickUpload');}}
 function setCat(c){S.catFilter=c;render();}
 function setSort(v){S.sortFilter=v;render();}
@@ -1150,7 +1219,9 @@ function applyPromo() {
 
 function nextStep() {
   const f=S.form;
-  if(!f.name||!f.phone||!f.address||!f.city){addToast(S.lang==='ar'?'اكمل البيانات الأول':'Please fill all fields','error');return;}
+  if(!f.name||!f.phone||!f.address){addToast(S.lang==='ar'?'اكمل البيانات الأول':'Please fill all fields','error');return;}
+  if(!S.gov){addToast(S.lang==='ar'?'اختار المحافظة':'Choose a governorate','error');return;}
+  if(!S.govCity){addToast(S.lang==='ar'?'اختار المدينة':'Choose a city','error');return;}
   S.step=2;render();
 }
 
@@ -1158,16 +1229,20 @@ async function confirmOrder() {
   if(!S.pay){addToast(S.lang==='ar'?'اختار طريقة الدفع':'Choose a payment method','error');return;}
   const rawTotal=S.cart.reduce((s,i)=>s+i.price*i.qty,0);
   const total=Math.round(rawTotal*(1-S.discount));
+  const grandTotal = total + S.shipping;
   S.orderNum=genOrder();
-  S.orderData={...S.form,pay:S.pay,total,items:[...S.cart]};
+  S.orderData={...S.form,gov:S.gov?S.gov.name:'',city:S.govCity,shipping:S.shipping,pay:S.pay,total:grandTotal,items:[...S.cart]};
 
   // إرسال الأوردر لـ Google Sheets
   addToast(S.lang==='ar'?'جاري تسجيل الأوردر...':'Saving order...','info');
   await sendToSheet({
     orderNum: S.orderNum,
     ...S.form,
+    gov: S.gov?S.gov.name:'',
+    city: S.govCity,
+    shipping: S.shipping+' EGP',
     items: S.cart.map(i=>({name:i.name,size:i.size,qty:i.qty,price:i.price})),
-    total,
+    total: grandTotal,
     pay: S.pay,
     timestamp: new Date().toISOString()
   });
