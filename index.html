@@ -549,20 +549,12 @@ function pvSvg(cat) {
   return s[cat]||s['T-SHIRTS'];
 }
 
-const IMGS = {
-  1: ['p1-1.jpg','p1-2.jpg','p1-3.jpg'],
-  2: ['p2-1.jpg','p2-2.jpg','p2-3.jpg'],
-  3: ['p3-1.jpg','p3-2.jpg','p3-3.jpg'],
-  4: ['p4-1.jpg','p4-2.jpg','p4-3.jpg'],
-  5: ['p5-1.jpg','p5-2.jpg','p5-3.jpg'],
-  6: ['p6-1.jpg','p6-2.jpg','p6-3.jpg'],
-};
-
 function pv(p, h=320) {
-  const src = IMGS[p.id] ? IMGS[p.id][S.imgIdx] || IMGS[p.id][0] : null;
-  if(!src) return `<div style="height:${h}px;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});display:flex;align-items:center;justify-content:center"><div style="font-family:var(--fd);color:${p.wm};font-size:60px">${p.name.toUpperCase()}</div></div>`;
-  return `<div style="height:${h}px;overflow:hidden;background:#111;">
-    <img src="${IMGS[p.id][S.imgIdx]||IMGS[p.id][0]}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s">
+  return `<div class="pv" style="height:${h}px;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});">
+    <div class="pv-wm" style="font-size:${h>200?90:58}px;color:${p.wm};">${p.name.toUpperCase()}</div>
+    <div class="pv-svg">${pvSvg(p.category)}</div>
+    <div class="pv-fade" style="background:linear-gradient(to top,${p.bgTo},transparent);"></div>
+    <div class="pv-hover"></div>
   </div>`;
 }
 
