@@ -53,7 +53,7 @@ button{cursor:pointer;font-family:var(--fd);}
 /* HERO */
 .hero{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;text-align:center;padding:0 24px;}
 .hero-bg-text{position:absolute;font-family:var(--fd);letter-spacing:16px;color:rgba(255,59,0,.05);user-select:none;pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;font-size:clamp(100px,22vw,240px);}
-.hero-content{position:relative;z-index:2;animation:fadeUp .9s ease both;}
+.hero-content{position:relative;z-index:2;animation:fadeUp .6s ease forwards;}
 .hero-tag{font-size:11px;letter-spacing:8px;color:var(--A);margin-bottom:14px;font-family:var(--fm);}
 .hero-title{font-size:clamp(80px,18vw,170px);line-height:.88;letter-spacing:10px;color:var(--text);margin-bottom:28px;}
 .hero-sub{font-size:14px;letter-spacing:2px;color:var(--text3);margin-bottom:8px;font-family:Georgia,serif;font-style:italic;}
@@ -214,7 +214,7 @@ button{cursor:pointer;font-family:var(--fd);}
 .promo-msg{font-size:10px;font-family:var(--fm);letter-spacing:2px;margin-top:5px;}
 
 /* CONFIRMATION */
-.confirm-circle{width:76px;height:76px;border-radius:50%;background:var(--A);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 28px;animation:pop .5s ease both;}
+.confirm-circle{width:76px;height:76px;border-radius:50%;background:var(--A);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 28px;animation:pop .5s ease forwards;}
 
 /* BUNDLES */
 .bundle-card{background:var(--bg3);border:1px solid var(--border);padding:24px;transition:border-color .2s;}
@@ -451,8 +451,8 @@ const PROMOS = {STW10:0.10,STW20:0.20,WELCOME:0.15,FIRSTORDER:0.12};
 //  ⚙️ إعدادات المتجر — عدّل من هنا بسهولة
 // ══════════════════════════════════════════
 
-// تاريخ انتهاء العرض (السنة-الشهر-اليوم الساعة:الدقيقة:الثانية)
-const SALE_END = '2025-07-01 23:59:59';
+// تاريخ انتهاء العرض (ISO format مهم للموبايل)
+const SALE_END = '2025-07-01T23:59:59';
 
 // رسوم الكاش عند الاستلام
 const COD_FEE = 25;
@@ -583,15 +583,25 @@ const IMGS = {
   6:['p6-1.jpg','p6-2.jpg','p6-3.jpg'],
 };
 
-function pv(p, h=320) {
-  const imgs = IMGS[p.id];
-  const src = imgs ? imgs[Math.min(S.imgIdx, imgs.length-1)] : null;
-  if(!src) return `<div style="height:${h}px;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
-    <div style="position:absolute;font-family:var(--fd);color:${p.wm};font-size:${h>200?90:58}px;letter-spacing:6px;white-space:nowrap">${p.name.toUpperCase()}</div>
+function pvFallback(p, h) {
+  return `<div style="height:${h}px;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+    <div style="position:absolute;font-family:var(--fd);color:${p.wm};font-size:${h>200?90:58}px;letter-spacing:6px;white-space:nowrap;top:50%;left:50%;transform:translate(-50%,-50%)">${p.name.toUpperCase()}</div>
     <div style="position:relative;z-index:1">${pvSvg(p.category)}</div>
   </div>`;
-  return `<div style="height:${h}px;overflow:hidden;background:#111;position:relative">
-    <img src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s" onerror="this.parentElement.innerHTML='<div style=height:${h}px;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});display:flex;align-items:center;justify-content:center><div style=font-family:var(--fd);color:${p.wm};font-size:60px>${p.name.toUpperCase()}</div></div>'">
+}
+
+function pv(p, h=320) {
+  const imgs = IMGS[p.id];
+  const idx = S.page==='product' ? Math.min(S.imgIdx, imgs.length-1) : 0;
+  const src = imgs ? imgs[idx] : null;
+  if(!src) return pvFallback(p, h);
+  return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative">
+    <img src="${src}" style="width:100%;height:100%;object-fit:cover;display:block"
+      onerror="this.style.display='none'">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+      <div style="position:absolute;font-family:'Bebas Neue',sans-serif;color:${p.wm};font-size:${h>200?80:50}px;letter-spacing:6px;white-space:nowrap">${p.name.toUpperCase()}</div>
+      <div style="position:relative;z-index:1">${pvSvg(p.category)}</div>
+    </div>
   </div>`;
 }
 
@@ -1148,7 +1158,15 @@ function startCountdown() {
 function render() {
   const main = document.getElementById('main');
   const pages = {home:renderHome,shop:renderShop,product:renderProduct,cart:renderCart,checkout:renderCheckout,confirmation:renderConfirmation,wishlist:renderWishlist,track:renderTrack,about:renderAbout,return:renderReturn};
-  main.innerHTML = (pages[S.page]||renderHome)();
+  try {
+    main.innerHTML = (pages[S.page]||renderHome)();
+  } catch(e) {
+    console.error('Render error:', e);
+    main.innerHTML = `<div style="padding:80px 24px;text-align:center;color:var(--text)">
+      <div style="font-family:var(--fd);font-size:48px;margin-bottom:16px">STW</div>
+      <button onclick="S.page='home';render()" style="background:var(--A);color:#fff;border:none;padding:14px 32px;font-family:var(--fd);font-size:16px;letter-spacing:4px;cursor:pointer">← رجع للرئيسية</button>
+    </div>`;
+  }
   updateNav();
   if(S.page==='product' && getProduct(S.prodId)?.badge==='LIMITED') startCountdown();
   window.scrollTo({top:0,behavior:'smooth'});
@@ -1391,11 +1409,4 @@ function renderReturn() {
   const sections = [
     { title:'مدة الاسترجاع', icon:'📅', content:'يمكن استرجاع المنتجات خلال 14 يوم من تاريخ الاستلام، شريطة أن تكون في حالتها الأصلية غير مستخدمة.' },
     { title:'شروط الاسترجاع', icon:'✅', content:'المنتج لم يُستخدم ولم يُغسل\nالتاغات والباكيدج موجودين\nإيصال الشراء متاح\nالمنتجات الـ LIMITED مش قابلة للاسترجاع' },
-    { title:'إزاي تسترجع', icon:'📲', content:'تواصل معنا على الواتساب\nاذكر رقم الأوردر والسبب\nهنبعتلك تعليمات الإرسال\nبعد استلام المنتج هنرد عليك خلال 3 أيام عمل' },
-    { title:'الاستبدال', icon:'🔄', content:'الاستبدال متاح في نفس المدة 14 يوم\nلو المقاس غلط هنغيره مجاناً\nالاستبدال بمنتج تاني بيتحسب الفرق في السعر' },
-    { title:'الشحن', icon:'🚚', content:'رسوم الشحن عند الاسترجاع على العميل إلا في حالة وجود عيب مصنعي في المنتج، في الحالة دي STW بتتحمل رسوم الشحن كاملة.' },
-    { title:'المبالغ المستردة', icon:'💰', content:'الاسترداد بيتم على نفس طريقة الدفع خلال 5-7 أيام عمل بعد استلام المنتج والتأكد من حالته.' },
-  ];
-  return `<div style="max-width:800px;margin:0 auto;padding:48px 24px">
-    <div style="font-size:9px;letter-spacing:6px;color:var(--text3);font-family:var(--fm);margin-bottom:4px">سياسة</div>
-    <div style="font-family:var(-
+    { title:'إزاي تسترجع', icon:'📲', content:'تواصل معنا على الواتساب\n
