@@ -447,6 +447,61 @@ const BUNDLES = [
 
 const PROMOS = {STW10:0.10,STW20:0.20,WELCOME:0.15,FIRSTORDER:0.12};
 
+// ══════════════════════════════════════════
+//  ⚙️ إعدادات المتجر — عدّل من هنا بسهولة
+// ══════════════════════════════════════════
+
+// تاريخ انتهاء العرض (السنة-الشهر-اليوم الساعة:الدقيقة:الثانية)
+const SALE_END = '2025-07-01 23:59:59';
+
+// رسوم الكاش عند الاستلام
+const COD_FEE = 25;
+
+// رقم الواتساب بتاعك (كود الدولة بدون +)
+const WA_NUMBER = '201012345678';
+
+// سولد اوت لكل منتج — true = نفد / false = متاح
+const SOLD_OUT = {
+  1: false,  // Shadow Hoodie
+  2: false,  // Voidwash Denim
+  3: false,  // STW Logo Cap
+  4: false,  // Cropped Zip Hood
+  5: false,  // Tactical Cargo
+  6: false,  // Oversized Tee
+};
+
+// ══════════════════════════════════════════
+
+const GOVERNORATES = [
+  { name:'القاهرة',      fee:40,  cities:['مدينة نصر','المعادي','مصر الجديدة','عين شمس','الزيتون','شبرا','التجمع الخامس','حلوان','المقطم','وسط البلد'] },
+  { name:'الجيزة',       fee:40,  cities:['الدقي','المهندسين','6 أكتوبر','الشيخ زايد','فيصل','بولاق الدكرور','إمبابة','الهرم','الوراق'] },
+  { name:'القليوبية',    fee:45,  cities:['شبرا الخيمة','بنها','قليوب','كفر شكر','طوخ','القناطر الخيرية'] },
+  { name:'الإسكندرية',   fee:50,  cities:['المنتزه','سيدي بشر','العجمي','برج العرب','الدخيلة','العامرية','المعمورة','كليوباترا'] },
+  { name:'الغربية',      fee:55,  cities:['طنطا','المحلة الكبرى','كفر الزيات','زفتى','السنطة','بسيون'] },
+  { name:'الدقهلية',     fee:55,  cities:['المنصورة','دكرنس','ميت غمر','السنبلاوين','أجا','طلخا','شربين'] },
+  { name:'الشرقية',      fee:55,  cities:['الزقازيق','العاشر من رمضان','بلبيس','منيا القمح','ههيا','أبو حماد'] },
+  { name:'المنوفية',     fee:55,  cities:['شبين الكوم','مينوف','أشمون','السادات','قويسنا','بركة السبع'] },
+  { name:'البحيرة',      fee:55,  cities:['دمنهور','كفر الدوار','رشيد','إيتاي البارود','أبو حمص','وادي النطرون'] },
+  { name:'كفر الشيخ',    fee:55,  cities:['كفر الشيخ','دسوق','فوه','بلطيم','سيدي سالم','الحامول'] },
+  { name:'دمياط',        fee:55,  cities:['دمياط','رأس البر','الزرقا','فارسكور','كفر سعد'] },
+  { name:'الإسماعيلية',  fee:55,  cities:['الإسماعيلية','القنطرة','فايد','أبو صوير'] },
+  { name:'الفيوم',       fee:55,  cities:['الفيوم','طامية','سنورس','إطسا','يوسف الصديق'] },
+  { name:'بني سويف',     fee:60,  cities:['بني سويف','الفشن','ناصر','إهناسيا','ببا','سمسطا'] },
+  { name:'المنيا',       fee:60,  cities:['المنيا','ملوي','سمالوط','مغاغة','أبو قرقاص'] },
+  { name:'بورسعيد',      fee:60,  cities:['بورسعيد','بور فؤاد'] },
+  { name:'السويس',       fee:60,  cities:['السويس','عتاقة','السخنة'] },
+  { name:'سوهاج',        fee:65,  cities:['سوهاج','أخميم','جرجا','طما','طهطا','البلينا'] },
+  { name:'أسيوط',        fee:65,  cities:['أسيوط','ديروط','منفلوط','القوصية','أبنوب'] },
+  { name:'قنا',          fee:70,  cities:['قنا','نجع حمادي','أبو تشت','قفط','دشنا'] },
+  { name:'الأقصر',       fee:70,  cities:['الأقصر','إسنا','أرمنت','القرنة'] },
+  { name:'أسوان',        fee:75,  cities:['أسوان','كوم أمبو','إدفو','نصر النوبة','دراو'] },
+  { name:'البحر الأحمر', fee:75,  cities:['الغردقة','سفاجا','القصير','مرسى علم','رأس غارب'] },
+  { name:'شمال سيناء',   fee:75,  cities:['العريش','الشيخ زويد','رفح','بئر العبد'] },
+  { name:'جنوب سيناء',   fee:80,  cities:['شرم الشيخ','دهب','طابا','نويبع','أبو رديس'] },
+  { name:'مطروح',        fee:80,  cities:['مرسى مطروح','العلمين','سيوه','الضبعة'] },
+  { name:'الوادي الجديد',fee:85,  cities:['الخارجة','الداخلة','الفرافرة','باريس'] },
+];
+
 const BADGE_STYLE = {
   'NEW':`background:${A};color:#000`,
   'LIMITED':'background:#fff;color:#000',
@@ -465,20 +520,21 @@ const S = {
   cart:[], wish:[],
   dark:true, lang:'en',
   rv:[],
-  step:1, form:{name:'',phone:'',address:'',city:''},
+  step:1, form:{name:'',phone:'',address:''},
+  gov:null, govCity:'', shipping:0, codFee:0,
   pay:null, promo:'', discount:0, transfer:'', file:null,
   orderNum:null, orderData:null,
   catFilter:'ALL', sortFilter:'FEATURED', shopSearch:'',
   trackInput:'', trackResult:null,
 };
 
-const END_TIME = Date.now() + 71*3600*1000 + 23*60*1000 + 44*1000;
+const END_TIME = new Date(SALE_END).getTime();
 let countdownInterval = null;
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 const tx = k => TX[S.lang][k] || TX.en[k] || k;
 const getProduct = id => PRODUCTS.find(p=>p.id===id);
-const totalStock = p => Object.values(p.stock).reduce((a,b)=>a+b,0);
+const totalStock = p => SOLD_OUT[p.id] ? 0 : Object.values(p.stock).reduce((a,b)=>a+b,0);
 const genOrder = () => 'STW-' + Math.random().toString(36).substr(2,6).toUpperCase();
 const pName = p => S.lang==='ar' ? p.nameAr : p.name;
 const pDesc = p => S.lang==='ar' ? p.descAr : p.desc;
@@ -518,12 +574,24 @@ function pvSvg(cat) {
   return s[cat]||s['T-SHIRTS'];
 }
 
+const IMGS = {
+  1:['p1-1.jpg','p1-2.jpg','p1-3.jpg'],
+  2:['p2-1.jpg','p2-2.jpg','p2-3.jpg'],
+  3:['p3-1.jpg','p3-2.jpg','p3-3.jpg'],
+  4:['p4-1.jpg','p4-2.jpg','p4-3.jpg'],
+  5:['p5-1.jpg','p5-2.jpg','p5-3.jpg'],
+  6:['p6-1.jpg','p6-2.jpg','p6-3.jpg'],
+};
+
 function pv(p, h=320) {
-  return `<div class="pv" style="height:${h}px;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});">
-    <div class="pv-wm" style="font-size:${h>200?90:58}px;color:${p.wm};">${p.name.toUpperCase()}</div>
-    <div class="pv-svg">${pvSvg(p.category)}</div>
-    <div class="pv-fade" style="background:linear-gradient(to top,${p.bgTo},transparent);"></div>
-    <div class="pv-hover"></div>
+  const imgs = IMGS[p.id];
+  const src = imgs ? imgs[Math.min(S.imgIdx, imgs.length-1)] : null;
+  if(!src) return `<div style="height:${h}px;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+    <div style="position:absolute;font-family:var(--fd);color:${p.wm};font-size:${h>200?90:58}px;letter-spacing:6px;white-space:nowrap">${p.name.toUpperCase()}</div>
+    <div style="position:relative;z-index:1">${pvSvg(p.category)}</div>
+  </div>`;
+  return `<div style="height:${h}px;overflow:hidden;background:#111;position:relative">
+    <img src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s" onerror="this.parentElement.innerHTML='<div style=height:${h}px;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});display:flex;align-items:center;justify-content:center><div style=font-family:var(--fd);color:${p.wm};font-size:60px>${p.name.toUpperCase()}</div></div>'">
   </div>`;
 }
 
@@ -762,6 +830,7 @@ function renderProduct() {
         <button class="btn" style="flex:1;height:52px" onclick="doAddToCart()">${tx('addToCart')}</button>
       </div>
       <button class="wish-btn${wished?' active':''}" onclick="toggleWish(${p.id})">${wished?tx('saved'):tx('saveWish')}</button>
+      <button onclick="shareProduct(${p.id})" style="width:100%;background:transparent;color:var(--text3);border:1px solid var(--border);height:44px;font-size:11px;letter-spacing:4px;font-family:var(--fd);cursor:pointer;transition:all .2s;margin-bottom:20px" onmouseover="this.style.borderColor='var(--text)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">↗ مشاركة المنتج</button>
       <div>
         ${accs.map((a,i)=>`<div class="acc-item">
           <button class="acc-btn" onclick="toggleAccordion(${i})">${a.t}<span class="acc-icon${S.accordion===i?' open':''}">+</span></button>
@@ -851,10 +920,31 @@ function renderCheckout() {
     </div>
     ${S.step===1?`
       <div style="font-family:var(--fd);font-size:48px;margin-bottom:24px">${tx('shipping').toUpperCase()}</div>
-      ${['name','phone','address','city'].map((k,i)=>`<div style="margin-bottom:14px">
-        <label class="field-label">${tx(['fullName','phone','address','city'][i])}</label>
-        <input class="field" value="${S.form[k]}" oninput="setField('${k}',this.value)" placeholder="${['Ahmed Mohamed','010XXXXXXXX',S.lang==='ar'?'123 شارع، مبنى 5':'123 Street, Building 5',S.lang==='ar'?'القاهرة':'Cairo'][i]}">
-      </div>`).join('')}
+      <div style="margin-bottom:14px"><label class="field-label">${tx('fullName')}</label><input class="field" value="${S.form.name}" oninput="setField('name',this.value)" placeholder="${S.lang==='ar'?'أحمد محمد':'Ahmed Mohamed'}"></div>
+      <div style="margin-bottom:14px"><label class="field-label">${tx('phone')}</label><input class="field" value="${S.form.phone}" oninput="setField('phone',this.value)" placeholder="010XXXXXXXX"></div>
+      <div style="margin-bottom:14px"><label class="field-label">${tx('address')}</label><input class="field" value="${S.form.address}" oninput="setField('address',this.value)" placeholder="${S.lang==='ar'?'رقم الشارع، المبنى، الشقة':'Street, Building, Apt'}"></div>
+
+      <div style="margin-bottom:14px">
+        <label class="field-label">المحافظة</label>
+        <select class="field" onchange="selectGov(this.value)" style="cursor:pointer">
+          <option value="">اختار المحافظة</option>
+          ${GOVERNORATES.map(g=>`<option value="${g.name}"${S.gov&&S.gov.name===g.name?' selected':''}>${g.name} — شحن ${g.fee} EGP</option>`).join('')}
+        </select>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <label class="field-label">المدينة / المنطقة</label>
+        <select id="city-select" class="field" onchange="selectGovCity(this.value)" style="cursor:pointer" ${!S.gov?'disabled':''}>
+          <option value="">${S.gov?'اختار المدينة':'اختار المحافظة أولاً'}</option>
+          ${S.gov?S.gov.cities.map(c=>`<option value="${c}"${S.govCity===c?' selected':''}>${c}</option>`).join(''):''}
+        </select>
+      </div>
+
+      ${S.gov?`<div style="background:var(--bg3);border:1px solid var(--border);padding:14px 18px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:10px;letter-spacing:3px;color:var(--text3);font-family:var(--fm)">مصاريف الشحن — ${S.gov.name}</span>
+        <span id="shipping-fee" style="font-family:var(--fd);font-size:22px;color:${A}">${S.gov.fee} EGP</span>
+      </div>`:''}
+
       <button class="btn btn-full" style="margin-top:8px" onclick="nextStep()">${tx('nextPayment')}</button>
     `:`
       <div style="font-family:var(--fd);font-size:48px;margin-bottom:24px">${tx('payment').toUpperCase()}</div>
@@ -891,7 +981,12 @@ function renderCheckout() {
         <div class="summary-tag">${tx('orderSummary')}</div>
         ${S.cart.map(item=>`<div class="summary-row"><span>${item.name.toUpperCase()} ×${item.qty} (${item.size})</span><span>${item.price*item.qty} EGP</span></div>`).join('')}
         ${S.discount>0?`<div class="summary-row" style="color:#4caf50"><span>${tx('discount')} (${S.discount*100}%)</span><span>−${rawTotal-total} EGP</span></div>`:''}
-        <div class="summary-divider"><span style="font-size:9px;letter-spacing:4px;color:var(--text3);font-family:var(--fm)">${tx('total')}</span><span style="font-family:var(--fd);font-size:26px">${total} <span style="font-size:10px;color:var(--text3);font-family:var(--fm)">EGP</span></span></div>
+        ${S.gov?`<div class="summary-row"><span>شحن — ${S.gov.name}</span><span style="color:${A}">${S.shipping} EGP</span></div>`:''}
+        ${S.codFee>0?`<div class="summary-row"><span>رسوم الكاش عند الاستلام</span><span style="color:${A}">${S.codFee} EGP</span></div>`:''}
+        <div class="summary-divider">
+          <span style="font-size:9px;letter-spacing:4px;color:var(--text3);font-family:var(--fm)">${tx('total')}</span>
+          <span style="font-family:var(--fd);font-size:26px">${grandTotal} <span style="font-size:10px;color:var(--text3);font-family:var(--fm)">EGP</span></span>
+        </div>
       </div>
       <button class="btn btn-full" onclick="confirmOrder()" style="${!S.pay?'background:var(--bg3);color:var(--text3);cursor:not-allowed':''}">${tx('confirmPayment')}</button>
     `}
@@ -910,7 +1005,8 @@ function renderConfirmation() {
       ${od.items.map(item=>`<div class="summary-row"><span>${item.name.toUpperCase()} ×${item.qty} (${item.size})</span><span>${item.price*item.qty} EGP</span></div>`).join('')}
       <div class="summary-divider"><span style="font-size:9px;letter-spacing:4px;color:var(--text3);font-family:var(--fm)">${tx('total')}</span><span style="font-family:var(--fd);font-size:24px">${od.total} EGP</span></div>
     </div>
-    <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">${od.address}, ${od.city}</div>
+    <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">${od.address}، ${od.city}، ${od.gov}</div>
+    <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">مصاريف الشحن: <span style="color:${A}">${od.shipping} EGP</span></div>
     <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:28px">${od.pay==='cash'?tx('cashOnDelivery'):od.pay==='instapay'?'INSTAPAY':'VODAFONE CASH'}</div>
     <button class="btn" onclick="navigate('home')">${S.lang==='ar'?'متابعة التسوق':'CONTINUE SHOPPING'}</button>
   </div>`;
@@ -1051,7 +1147,7 @@ function startCountdown() {
 // ── MAIN RENDER ───────────────────────────────────────────────────────────────
 function render() {
   const main = document.getElementById('main');
-  const pages = {home:renderHome,shop:renderShop,product:renderProduct,cart:renderCart,checkout:renderCheckout,confirmation:renderConfirmation,wishlist:renderWishlist,track:renderTrack,about:renderAbout};
+  const pages = {home:renderHome,shop:renderShop,product:renderProduct,cart:renderCart,checkout:renderCheckout,confirmation:renderConfirmation,wishlist:renderWishlist,track:renderTrack,about:renderAbout,return:renderReturn};
   main.innerHTML = (pages[S.page]||renderHome)();
   updateNav();
   if(S.page==='product' && getProduct(S.prodId)?.badge==='LIMITED') startCountdown();
@@ -1059,7 +1155,7 @@ function render() {
 }
 
 function updateNav() {
-  const links = [[tx('shop'),'shop'],[tx('drops'),'shop'],[tx('about'),'about']];
+  const links = [[tx('shop'),'shop'],[tx('drops'),'shop'],[tx('about'),'about'],['الاسترجاع','return']];
   document.getElementById('nav-links').innerHTML = links.map(([l,p])=>`<span class="nav-link${S.page===p?' active':''}" onclick="navigate('${p}')">${l}</span>`).join('');
   document.getElementById('lang-btn').textContent = S.lang==='en'?'ع':'EN';
   document.getElementById('theme-btn').textContent = S.dark?'☀':'🌙';
@@ -1091,12 +1187,24 @@ function setQty(n){S.qty=Math.max(1,n);render();}
 function selectImg(i){S.imgIdx=i;render();}
 function toggleAccordion(i){S.accordion=S.accordion===i?null:i;render();}
 function setField(k,v){S.form[k]=v;}
+function selectGov(name) {
+  const g = GOVERNORATES.find(x=>x.name===name);
+  S.gov=g||null; S.govCity=''; S.shipping=g?g.fee:0;
+  const citySelect = document.getElementById('city-select');
+  if(citySelect && g) {
+    citySelect.innerHTML = `<option value="">اختار المدينة</option>${g.cities.map(c=>`<option value="${c}">${c}</option>`).join('')}`;
+    citySelect.disabled = false;
+  }
+  const shippingEl = document.getElementById('shipping-fee');
+  if(shippingEl && g) shippingEl.textContent = g.fee + ' EGP';
+}
+function selectGovCity(city){ S.govCity=city; }
 function setFile(input){S.file=input.files[0]?.name||null;const lbl=document.querySelector('.upload-zone');if(lbl){lbl.className='upload-zone'+(S.file?' has-file':'');lbl.querySelector('span:nth-child(2)').textContent=S.file||tx('clickUpload');}}
 function setCat(c){S.catFilter=c;render();}
 function setSort(v){S.sortFilter=v;render();}
 function setShopSearch(v){S.shopSearch=v;render();}
 function setStep(n){S.step=n;render();}
-function selectPay(m){S.pay=m;render();}
+function selectPay(m){S.pay=m; S.codFee=m==='cash'?COD_FEE:0; render();}
 
 function doAddToCart() {
   const p = getProduct(S.prodId);
@@ -1111,11 +1219,12 @@ function addToCartItem(item) {
   const ex = S.cart.findIndex(i=>i.id===item.id&&i.size===item.size);
   if(ex>=0) S.cart[ex].qty+=item.qty;
   else S.cart.push({...item});
+  saveCart();
   updateNav();
 }
 
-function removeFromCart(idx){S.cart.splice(idx,1);render();}
-function updateQty(idx,qty){if(qty<=0)S.cart.splice(idx,1);else S.cart[idx].qty=qty;render();}
+function removeFromCart(idx){S.cart.splice(idx,1);saveCart();render();}
+function updateQty(idx,qty){if(qty<=0)S.cart.splice(idx,1);else S.cart[idx].qty=qty;saveCart();render();}
 
 function toggleWish(id) {
   const has=S.wish.includes(id);
@@ -1142,7 +1251,9 @@ function applyPromo() {
 
 function nextStep() {
   const f=S.form;
-  if(!f.name||!f.phone||!f.address||!f.city){addToast(S.lang==='ar'?'اكمل البيانات الأول':'Please fill all fields','error');return;}
+  if(!f.name||!f.phone||!f.address){addToast(S.lang==='ar'?'اكمل البيانات الأول':'Please fill all fields','error');return;}
+  if(!S.gov){addToast(S.lang==='ar'?'اختار المحافظة':'Choose a governorate','error');return;}
+  if(!S.govCity){addToast(S.lang==='ar'?'اختار المدينة':'Choose a city','error');return;}
   S.step=2;render();
 }
 
@@ -1150,21 +1261,32 @@ async function confirmOrder() {
   if(!S.pay){addToast(S.lang==='ar'?'اختار طريقة الدفع':'Choose a payment method','error');return;}
   const rawTotal=S.cart.reduce((s,i)=>s+i.price*i.qty,0);
   const total=Math.round(rawTotal*(1-S.discount));
+  const grandTotal = total + S.shipping + S.codFee;
   S.orderNum=genOrder();
-  S.orderData={...S.form,pay:S.pay,total,items:[...S.cart]};
+  S.orderData={orderNum:S.orderNum,...S.form,gov:S.gov?S.gov.name:'',city:S.govCity,shipping:S.shipping,codFee:S.codFee,discount:S.discount,pay:S.pay,total:grandTotal,items:[...S.cart],date:new Date().toLocaleString('ar-EG')};
 
-  // إرسال الأوردر لـ Google Sheets
+  // حفظ في Local Storage
+  saveOrder(S.orderData);
+
+  // إرسال لـ Google Sheets
   addToast(S.lang==='ar'?'جاري تسجيل الأوردر...':'Saving order...','info');
   await sendToSheet({
     orderNum: S.orderNum,
     ...S.form,
+    gov: S.gov?S.gov.name:'',
+    city: S.govCity,
+    shipping: S.shipping+' EGP',
+    codFee: S.codFee>0?S.codFee+' EGP':'0',
     items: S.cart.map(i=>({name:i.name,size:i.size,qty:i.qty,price:i.price})),
-    total,
+    total: grandTotal,
     pay: S.pay,
     timestamp: new Date().toISOString()
   });
 
-  S.cart=[];S.page='confirmation';
+  // واتساب أوتوماتيك
+  sendWhatsApp(S.orderData);
+
+  S.cart=[]; saveCart(); S.page='confirmation';
   render();
 }
 
@@ -1204,26 +1326,76 @@ function toggleLang() {
   render();
 }
 
-// ── GOOGLE SHEETS INTEGRATION ─────────────────────────────────────────────────
-// ⬇️ حط هنا الـ URL بتاع الـ Apps Script بعد ما تنشره
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbx760ovc2bvR7CGeJLse9C_jNivyEUqduJ0SdecRb9l0q9QaIprx0gokR0HP_RDcfEa6A/exec";
-
-async function sendToSheet(orderData) {
-  if (!SHEET_URL || SHEET_URL === "https://script.google.com/macros/s/AKfycbx760ovc2bvR7CGeJLse9C_jNivyEUqduJ0SdecRb9l0q9QaIprx0gokR0HP_RDcfEa6A/exec") return;
+// ── LOCAL STORAGE ─────────────────────────────────────────────────────────────
+function saveCart() {
+  try { localStorage.setItem('stw_cart', JSON.stringify(S.cart)); } catch(e){}
+}
+function loadCart() {
+  try { const c=localStorage.getItem('stw_cart'); if(c) S.cart=JSON.parse(c); } catch(e){}
+}
+function saveOrder(orderData) {
   try {
-    await fetch(SHEET_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(orderData)
-    });
-  } catch (err) {
-    console.warn("Google Sheets error:", err);
+    const orders = JSON.parse(localStorage.getItem('stw_orders')||'[]');
+    orders.unshift(orderData);
+    localStorage.setItem('stw_orders', JSON.stringify(orders.slice(0,50)));
+  } catch(e){}
+}
+
+// ── WHATSAPP ──────────────────────────────────────────────────────────────────
+function sendWhatsApp(orderData) {
+  const items = orderData.items.map(i=>`• ${i.name} (${i.size}) × ${i.qty} = ${i.price*i.qty} EGP`).join('\n');
+  const payLabel = orderData.pay==='cash'?'كاش عند الاستلام':orderData.pay==='instapay'?'Instapay':'Vodafone Cash';
+  const msg = `🛍️ أوردر جديد — ${orderData.orderNum}
+
+👤 ${orderData.name}
+📞 ${orderData.phone}
+📍 ${orderData.address}، ${orderData.city}، ${orderData.gov}
+
+المنتجات:
+${items}
+
+🚚 شحن: ${orderData.shipping} EGP${orderData.codFee>0?`\n💵 رسوم كاش: ${orderData.codFee} EGP`:''}${orderData.discount>0?`\n🎁 خصم: ${orderData.discount*100}%`:''}
+💰 الإجمالي: ${orderData.total} EGP
+💳 الدفع: ${payLabel}`;
+
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ── PRODUCT SHARE ─────────────────────────────────────────────────────────────
+function shareProduct(id) {
+  const p = getProduct(id);
+  const url = window.location.href.split('?')[0] + '?product=' + id;
+  const text = `${pName(p)} — ${p.price} EGP\n${pDesc(p)}\n${url}`;
+  if(navigator.share) {
+    navigator.share({ title: pName(p), text: pDesc(p), url });
+  } else {
+    const opts = [
+      { label: 'واتساب', action: ()=>window.open(`https://wa.me/?text=${encodeURIComponent(text)}`) },
+      { label: 'كوبي اللينك', action: ()=>{ navigator.clipboard.writeText(url); addToast('تم كوبي اللينك ✓','success'); } },
+    ];
+    const menu = document.createElement('div');
+    menu.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:5000;display:flex;align-items:center;justify-content:center`;
+    menu.innerHTML = `<div style="background:var(--card);border:1px solid var(--border);padding:24px;min-width:240px">
+      <div style="font-family:var(--fd);font-size:20px;letter-spacing:3px;margin-bottom:16px;color:var(--text)">مشاركة المنتج</div>
+      ${opts.map((o,i)=>`<div onclick="document.body.removeChild(document.getElementById('share-menu'));${i===0?`window.open('https://wa.me/?text='+encodeURIComponent('${text.replace(/'/g,"\\'")}'))`:`navigator.clipboard.writeText('${url}');addToast('تم كوبي اللينك ✓','success')`}" style="padding:12px 16px;border:1px solid var(--border);margin-bottom:8px;cursor:pointer;font-family:var(--fm);font-size:12px;letter-spacing:2px;color:var(--text);transition:background .2s" onmouseover="this.style.borderColor='${A}'" onmouseout="this.style.borderColor='var(--border)'">${o.label}</div>`).join('')}
+      <div onclick="document.body.removeChild(document.getElementById('share-menu'))" style="padding:10px;text-align:center;cursor:pointer;font-size:11px;color:var(--text3);font-family:var(--fm)">إلغاء</div>
+    </div>`;
+    menu.id='share-menu';
+    document.body.appendChild(menu);
+    menu.onclick = e => { if(e.target===menu) document.body.removeChild(menu); };
   }
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
-render();
-</script>
-</body>
-</html>
+// ── RETURN POLICY PAGE ────────────────────────────────────────────────────────
+function renderReturn() {
+  const sections = [
+    { title:'مدة الاسترجاع', icon:'📅', content:'يمكن استرجاع المنتجات خلال 14 يوم من تاريخ الاستلام، شريطة أن تكون في حالتها الأصلية غير مستخدمة.' },
+    { title:'شروط الاسترجاع', icon:'✅', content:'المنتج لم يُستخدم ولم يُغسل\nالتاغات والباكيدج موجودين\nإيصال الشراء متاح\nالمنتجات الـ LIMITED مش قابلة للاسترجاع' },
+    { title:'إزاي تسترجع', icon:'📲', content:'تواصل معنا على الواتساب\nاذكر رقم الأوردر والسبب\nهنبعتلك تعليمات الإرسال\nبعد استلام المنتج هنرد عليك خلال 3 أيام عمل' },
+    { title:'الاستبدال', icon:'🔄', content:'الاستبدال متاح في نفس المدة 14 يوم\nلو المقاس غلط هنغيره مجاناً\nالاستبدال بمنتج تاني بيتحسب الفرق في السعر' },
+    { title:'الشحن', icon:'🚚', content:'رسوم الشحن عند الاسترجاع على العميل إلا في حالة وجود عيب مصنعي في المنتج، في الحالة دي STW بتتحمل رسوم الشحن كاملة.' },
+    { title:'المبالغ المستردة', icon:'💰', content:'الاسترداد بيتم على نفس طريقة الدفع خلال 5-7 أيام عمل بعد استلام المنتج والتأكد من حالته.' },
+  ];
+  return `<div style="max-width:800px;margin:0 auto;padding:48px 24px">
+    <div style="font-size:9px;letter-spacing:6px;color:var(--text3);font-family:var(--fm);margin-bottom:4px">سياسة</div>
+    <div style="font-family:var(-
