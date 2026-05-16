@@ -2231,6 +2231,11 @@
       }
     }
 
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.45; transform: scale(0.82); }
+    }
+
     /* COLOR PICKER */
     .color-swatch {
       width: 28px;
@@ -2726,6 +2731,8 @@
       mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 82%, transparent 100%);
       -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 82%, transparent 100%);
       animation: figureFloat 6s ease-in-out infinite;
+      transition: transform 0.15s ease-out;
+      will-change: transform;
     }
 
     @keyframes figureFloat {
@@ -2902,9 +2909,9 @@
 
   <div id="ann-bar">
     <div class="ann-track">
-      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTTOM ERA &nbsp;·&nbsp; USE CODE AXS10 FOR 10%
+      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTOM ERA &nbsp;·&nbsp; USE CODE AXS10 FOR 10%
         OFF &nbsp;·&nbsp; CASH ON DELIVERY AVAILABLE &nbsp;·&nbsp; </span>
-      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTTOM ERA &nbsp;·&nbsp; USE CODE AXS10 FOR 10%
+      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTOM ERA &nbsp;·&nbsp; USE CODE AXS10 FOR 10%
         OFF &nbsp;·&nbsp; CASH ON DELIVERY AVAILABLE &nbsp;·&nbsp; </span>
     </div>
   </div>
@@ -3432,8 +3439,6 @@
     // ── PRODUCT INFO SAVE & HIDE ──────────────────────────────────────────────────
     // Hidden products/bundles — loaded from Supabase settings, fallback to localStorage
     const adminHiddenProducts = new Set(JSON.parse(localStorage.getItem('axs_hidden_products') || '[]'));
-    const adminHiddenBundlesSupabase = new Set(); // will be merged after settings load
-
     async function saveHiddenProducts() {
       const val = JSON.stringify([...adminHiddenProducts]);
       localStorage.setItem('axs_hidden_products', val);
@@ -4138,12 +4143,12 @@
     ];
 
     const PRODUCTS = [
-      { id: 1, name: 'AXS phantom tee', nameAr: 'فانتوم تيشيرت', category: 'T-SHIRTS', price: 500, oldPrice: 690, badge: 'DROP 001', rating: 4.7, reviewCount: 31, sizes: ['M', 'L', 'XL', 'XXL'], stock: { S: 3, M: 8, L: 5, XL: 2, XXL: 1 }, desc: '100% heavy cotton - oversized fit - screen print.', descAr: 'قطن ثقيل 100%. قياس oversized. طباعة سكرين.', details: ['100% heavy cotton', 'Oversized fit', 'Screen print', 'Dropped shoulder', 'Garment washed'], detailsAr: ['قطن ثقيل 100%', 'قياس oversized', 'طباعة سكرين', 'كتف منخفض', 'مغسول'], bgFrom: '#040410', bgTo: '#000003', wm: '#07071a', related: [4, 6, 2] },
-      { id: 2, name: 'Voidwash Denim', nameAr: 'جينز Voidwash', category: 'PANTS', price: 820, oldPrice: 1000, badge: 'NEW', rating: 4.5, reviewCount: 18, sizes: ['M', 'L', 'XL'], stock: { S: 2, M: 4, L: 7, XL: 3 }, desc: 'Baggy silhouette acid-washed to near-black. Raw hem. Wide leg.', descAr: 'سيلويت baggy مغسول حمضياً. حاشية خام. رجل واسعة.', details: ['100% cotton denim', 'Acid-wash finish', 'Wide-leg silhouette', 'Raw hem', 'Front+back pockets'], detailsAr: ['100% قطن دنيم', 'تشطيب acid-wash', 'سيلويت wide-leg', 'حاشية خام', 'جيوب أمامية وخلفية'], bgFrom: '#060810', bgTo: '#020306', wm: '#0a0c1c', related: [5, 1, 3] },
+      { id: 1, name: 'AXS phantom tee', nameAr: 'فانتوم تيشيرت', category: 'T-SHIRTS', price: 500, oldPrice: 690, badge: 'DROP 001', rating: 4.7, reviewCount: 31, sizes: ['M', 'L', 'XL', 'XXL'], stock: { M: 8, L: 5, XL: 2, XXL: 1 }, desc: '100% heavy cotton - oversized fit - screen print.', descAr: 'قطن ثقيل 100%. قياس oversized. طباعة سكرين.', details: ['100% heavy cotton', 'Oversized fit', 'Screen print', 'Dropped shoulder', 'Garment washed'], detailsAr: ['قطن ثقيل 100%', 'قياس oversized', 'طباعة سكرين', 'كتف منخفض', 'مغسول'], bgFrom: '#040410', bgTo: '#000003', wm: '#07071a', related: [4, 6, 2] },
+      { id: 2, name: 'Voidwash Denim', nameAr: 'جينز Voidwash', category: 'PANTS', price: 820, oldPrice: 1000, badge: 'NEW', rating: 4.5, reviewCount: 18, sizes: ['M', 'L', 'XL'], stock: { M: 4, L: 7, XL: 3 }, desc: 'Baggy silhouette acid-washed to near-black. Raw hem. Wide leg.', descAr: 'سيلويت baggy مغسول حمضياً. حاشية خام. رجل واسعة.', details: ['100% cotton denim', 'Acid-wash finish', 'Wide-leg silhouette', 'Raw hem', 'Front+back pockets'], detailsAr: ['100% قطن دنيم', 'تشطيب acid-wash', 'سيلويت wide-leg', 'حاشية خام', 'جيوب أمامية وخلفية'], bgFrom: '#060810', bgTo: '#020306', wm: '#0a0c1c', related: [5, 1, 3] },
       { id: 3, name: 'AXS Logo Cap', nameAr: 'كاب AXS', category: 'ACCESSORIES', price: 200, oldPrice: 300, badge: null, rating: 4.2, reviewCount: 44, sizes: ['ONE SIZE'], stock: { 'ONE SIZE': 15 }, desc: '6-panel structured cap. Tonal embroidered AXS logo. Adjustable strap.', descAr: 'كاب 6 ألواح مُهيكل. شعار AXS مطرز.', details: ['100% cotton twill', 'Structured 6-panel', 'Tonal embroidered logo', 'Adjustable snapback', 'One size fits most'], detailsAr: ['100% قطن تويل', '6 ألواح مُهيكلة', 'شعار مطرز', 'snapback قابل للتعديل', 'مقاس موحد'], bgFrom: '#0a0a0a', bgTo: '#030303', wm: '#141414', related: [1, 4, 6] },
-      { id: 4, name: 'Cropped Zip Hood', nameAr: 'هودي كروبد', category: 'HOODIES', price: 870, oldPrice: null, badge: 'LIMITED', rating: 4.8, reviewCount: 24, sizes: ['M', 'L', 'XL', 'XXL'], stock: { S: 1, M: 2, L: 1, XL: 3, XXL: 1 }, desc: 'Cropped fit. Full zip. White contrast stitching on black. Limited run.', descAr: 'قياس كروبد. زيب كامل. خياطة بيضاء تباينية.', details: ['360gsm cotton', 'Cropped silhouette', 'YKK full zip', 'White contrast stitching', 'Fitted ribbed hem'], detailsAr: ['قطن 360gsm', 'سيلويت كروبد', 'زيب YKK كامل', 'خياطة بيضاء تباينية', 'حاشية مضلعة'], bgFrom: '#101010', bgTo: '#040404', wm: '#1a1a1a', related: [1, 2, 6] },
-      { id: 5, name: 'wide leg pants', nameAr: 'وايد ليج سويت بانتس ', category: 'PANTS', price: 400, oldPrice: 550, badge: 'NEW', rating: 4.6, reviewCount: 12, sizes: ['M', 'L', 'XL', 'XXL'], stock: { S: 6, M: 9, L: 4, XL: 5 }, desc: '100% Egyption cotton. oversized fit. Heavy cotton.', descAr: '100% قطن مصري. مقاس كبير. قطن ثقيل.', details: ['Heavy cotton twill', 'Relaxed tapered fit', '6 pockets total', 'Adjustable ankle cord', 'YKK zippers'], detailsAr: ['تويل قطن ثقيل', 'قياس tapered مريح', '6 جيوب', 'حبل كاحل قابل للتعديل', 'سحابات YKK'], bgFrom: '#080a05', bgTo: '#030402', wm: '#0f1208', related: [2, 1, 6] },
-      { id: 6, name: 'Oversized Tee', nameAr: 'تيشيرت أوفرسايز', category: 'T-SHIRTS', price: 450, oldPrice: 550, badge: null, rating: 4.7, reviewCount: 67, sizes: ['M', 'L', 'XL', 'XXL'], stock: { S: 12, M: 20, L: 15, XL: 8, XXL: 4 }, desc: '240gsm cotton. Boxy cut. Garment-dyed black. Back graphic print.', descAr: 'قطن 240gsm. قطع boxy. مصبوغ أسود.', details: ['240gsm cotton', 'Boxy oversized cut', 'Garment-dyed', 'Back graphic print', 'Dropped shoulder'], detailsAr: ['قطن 240gsm', 'قطع boxy oversized', 'مصبوغ بعد التصنيع', 'طباعة خلفية', 'كتف منخفض'], bgFrom: '#080808', bgTo: '#020202', wm: '#111', related: [1, 3, 4] },
+      { id: 4, name: 'Cropped Zip Hood', nameAr: 'هودي كروبد', category: 'HOODIES', price: 870, oldPrice: null, badge: 'LIMITED', rating: 4.8, reviewCount: 24, sizes: ['M', 'L', 'XL', 'XXL'], stock: { M: 2, L: 1, XL: 3, XXL: 1 }, desc: 'Cropped fit. Full zip. White contrast stitching on black. Limited run.', descAr: 'قياس كروبد. زيب كامل. خياطة بيضاء تباينية.', details: ['360gsm cotton', 'Cropped silhouette', 'YKK full zip', 'White contrast stitching', 'Fitted ribbed hem'], detailsAr: ['قطن 360gsm', 'سيلويت كروبد', 'زيب YKK كامل', 'خياطة بيضاء تباينية', 'حاشية مضلعة'], bgFrom: '#101010', bgTo: '#040404', wm: '#1a1a1a', related: [1, 2, 6] },
+      { id: 5, name: 'wide leg pants', nameAr: 'وايد ليج سويت بانتس ', category: 'PANTS', price: 400, oldPrice: 550, badge: 'NEW', rating: 4.6, reviewCount: 12, sizes: ['M', 'L', 'XL', 'XXL'], stock: { M: 9, L: 4, XL: 5, XXL: 3 }, desc: '100% Egyption cotton. oversized fit. Heavy cotton.', descAr: '100% قطن مصري. مقاس كبير. قطن ثقيل.', details: ['Heavy cotton twill', 'Relaxed tapered fit', '6 pockets total', 'Adjustable ankle cord', 'YKK zippers'], detailsAr: ['تويل قطن ثقيل', 'قياس tapered مريح', '6 جيوب', 'حبل كاحل قابل للتعديل', 'سحابات YKK'], bgFrom: '#080a05', bgTo: '#030402', wm: '#0f1208', related: [2, 1, 6] },
+      { id: 6, name: 'Oversized Tee', nameAr: 'تيشيرت أوفرسايز', category: 'T-SHIRTS', price: 450, oldPrice: 550, badge: null, rating: 4.7, reviewCount: 67, sizes: ['M', 'L', 'XL', 'XXL'], stock: { M: 20, L: 15, XL: 8, XXL: 4 }, desc: '240gsm cotton. Boxy cut. Garment-dyed black. Back graphic print.', descAr: 'قطن 240gsm. قطع boxy. مصبوغ أسود.', details: ['240gsm cotton', 'Boxy oversized cut', 'Garment-dyed', 'Back graphic print', 'Dropped shoulder'], detailsAr: ['قطن 240gsm', 'قطع boxy oversized', 'مصبوغ بعد التصنيع', 'طباعة خلفية', 'كتف منخفض'], bgFrom: '#080808', bgTo: '#020202', wm: '#111', related: [1, 3, 4] },
     ];
 
     const BUNDLES_DEFAULT = [
@@ -5472,6 +5477,69 @@ ${itemsStr}
       const msg = `🛍️ أوردر جديد — ${od.order_num}\n\n👤 ${od.customer_name}\n📞 ${od.phone}\n📍 ${od.address}، ${od.city}، ${od.governorate}\n\nالمنتجات:\n${itemsStr}\n\n🚚 شحن: ${od.shipping} EGP${od.cod_fee > 0 ? `\n💵 رسوم كاش: ${od.cod_fee} EGP` : ''}${od.discount > 0 ? `\n🎁 خصم: ${od.discount * 100}%` : ''}\n💰 الإجمالي: ${od.total} EGP\n💳 الدفع: ${payLabel}${payProof}`;
       window.open(`https://wa.me/+201066025845?text=${encodeURIComponent(msg)}`, '_blank');
     }
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // GYROSCOPE HERO PARALLAX
+    // ═══════════════════════════════════════════════════════════════════════════════
+    (function initGyro() {
+      if (!window.DeviceOrientationEvent) return;
+
+      let gyroActive = false;
+      let baseGamma = null; // left/right tilt
+      let baseBeta = null;  // forward/back tilt
+      const MAX_SHIFT = 28; // max px shift
+      const DEAD_ZONE = 1;  // ignore tiny movements
+
+      function applyGyro(gamma, beta) {
+        const img = document.querySelector('.hero-figure-img');
+        if (!img) return;
+
+        // Set baseline on first reading
+        if (baseGamma === null) { baseGamma = gamma; baseBeta = beta; return; }
+
+        let dx = (gamma - baseGamma);
+        let dy = (beta - baseBeta);
+
+        // Dead zone
+        if (Math.abs(dx) < DEAD_ZONE) dx = 0;
+        if (Math.abs(dy) < DEAD_ZONE) dy = 0;
+
+        // Clamp
+        dx = Math.max(-MAX_SHIFT, Math.min(MAX_SHIFT, dx * 1.2));
+        dy = Math.max(-MAX_SHIFT, Math.min(MAX_SHIFT, dy * 0.8));
+
+        // Apply on top of existing float animation via CSS var
+        img.style.transform = `translate(${dx}px, ${dy}px)`;
+      }
+
+      function onOrientation(e) {
+        if (!gyroActive) return;
+        applyGyro(e.gamma || 0, e.beta || 0);
+      }
+
+      // iOS 13+ requires permission
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // Will request on first user interaction
+        document.addEventListener('click', function askPermission() {
+          DeviceOrientationEvent.requestPermission().then(state => {
+            if (state === 'granted') {
+              gyroActive = true;
+              window.addEventListener('deviceorientation', onOrientation, true);
+            }
+          }).catch(() => {});
+          document.removeEventListener('click', askPermission);
+        }, { once: true });
+      } else {
+        // Android & other — no permission needed
+        gyroActive = true;
+        window.addEventListener('deviceorientation', onOrientation, true);
+      }
+
+      // Reset baseline when page becomes visible again
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) { baseGamma = null; baseBeta = null; }
+      });
+    })();
 
     // ═══════════════════════════════════════════════════════════════════════════════
     // ADMIN NOTIFICATIONS — Supabase Realtime polling (tab must be open)
