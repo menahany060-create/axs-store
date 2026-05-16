@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>AXS — The Spotlight Edit</title>
+  <title>AXS — PHANTOM ERA</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400&display=swap"
     rel="stylesheet">
   <style>
@@ -268,14 +268,14 @@
       font-size: clamp(80px, 18vw, 170px);
       line-height: .88;
       letter-spacing: 10px;
-      color: var(--text);
+      color: var(--A);
       margin-bottom: 28px;
     }
 
     .hero-sub {
       font-size: 14px;
       letter-spacing: 2px;
-      color: var(--text3);
+      color: var(--A);
       margin-bottom: 8px;
       font-family: Georgia, serif;
       font-style: italic;
@@ -284,7 +284,7 @@
     .hero-sub2 {
       font-size: 14px;
       letter-spacing: 2px;
-      color: var(--text3);
+      color: var(--A);
       opacity: .6;
       margin-bottom: 44px;
       font-family: Georgia, serif;
@@ -1630,12 +1630,20 @@
     .social-hub {
       position: fixed;
       bottom: 24px;
-      left: 24px;
+      right: 24px;
       z-index: 900;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
+      /* Shrink to fit only the visible button + label when closed */
+      width: fit-content;
+      pointer-events: none;
+    }
+
+    .social-hub-btn,
+    .social-hub-label {
+      pointer-events: all;
     }
 
     .social-hub-label {
@@ -1699,7 +1707,12 @@
       cursor: pointer;
       text-decoration: none;
       white-space: nowrap;
-      transform: translateY(20px) scale(.85);
+      /* Positioned absolutely above the button — no layout space taken */
+      position: absolute;
+      right: 0;
+      bottom: 64px;
+      /* above the hub-btn */
+      transform: translateY(10px) scale(.85);
       opacity: 0;
       pointer-events: none;
       transition: transform .35s cubic-bezier(.34, 1.56, .64, 1), opacity .25s ease, background .2s, border-color .2s;
@@ -1729,18 +1742,22 @@
 
     .social-hub.open .social-pill:nth-child(1) {
       transition-delay: .05s;
+      bottom: 64px;
     }
 
     .social-hub.open .social-pill:nth-child(2) {
       transition-delay: .10s;
+      bottom: 116px;
     }
 
     .social-hub.open .social-pill:nth-child(3) {
       transition-delay: .15s;
+      bottom: 168px;
     }
 
     .social-hub.open .social-pill:nth-child(4) {
       transition-delay: .20s;
+      bottom: 220px;
     }
 
     .sp-wa {
@@ -2214,6 +2231,200 @@
       }
     }
 
+    /* COLOR PICKER */
+    .color-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all .2s;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .color-swatch.active {
+      border-color: var(--text);
+      transform: scale(1.15);
+    }
+
+    .color-swatch:hover {
+      transform: scale(1.1);
+    }
+
+    .color-swatch.sold-color {
+      opacity: .3;
+      cursor: not-allowed;
+    }
+
+    .color-swatch.sold-color::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(0, 0, 0, .5) 3px, rgba(0, 0, 0, .5) 4px);
+    }
+
+    .color-name-tag {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--text3);
+      font-family: var(--fm);
+      margin-top: 6px;
+    }
+
+    .color-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    /* SOLD OUT OVERLAY */
+    .sold-out-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, .7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+    }
+
+    .sold-out-badge-big {
+      font-family: var(--fd);
+      font-size: 22px;
+      letter-spacing: 4px;
+      color: #fff;
+      border: 2px solid #fff;
+      padding: 8px 20px;
+      transform: rotate(-8deg);
+    }
+
+    /* ADMIN TABS */
+    .admin-tab {
+      padding: 10px 20px;
+      font-size: 9px;
+      letter-spacing: 3px;
+      font-family: 'DM Mono', monospace;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: #555;
+      border-bottom: 2px solid transparent;
+      transition: all .2s;
+    }
+
+    .admin-tab.active {
+      color: #fff;
+      border-color: var(--A);
+    }
+
+    .admin-tabs {
+      display: flex;
+      border-bottom: 1px solid #1a1a1a;
+      margin-bottom: 20px;
+    }
+
+    /* ADMIN BUNDLE MANAGEMENT */
+    .bundle-manage-card {
+      background: #0a0a0a;
+      border: 1px solid #1a1a1a;
+      padding: 20px;
+      margin-bottom: 2px;
+    }
+
+    .bundle-manage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* ADMIN PRODUCT MANAGEMENT */
+    .prod-manage-card {
+      background: #0a0a0a;
+      border: 1px solid #1a1a1a;
+      padding: 20px;
+      margin-bottom: 2px;
+    }
+
+    .prod-manage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .color-manage-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: #050505;
+      border: 1px solid #111;
+      margin-bottom: 4px;
+    }
+
+    .color-swatch-admin {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 2px solid #333;
+    }
+
+    .admin-input {
+      background: #050505;
+      border: 1px solid #1a1a1a;
+      color: #fff;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .admin-input:focus {
+      border-color: var(--A);
+      outline: none;
+    }
+
+    .sold-out-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .toggle-switch {
+      width: 44px;
+      height: 24px;
+      background: #1a1a1a;
+      border-radius: 12px;
+      position: relative;
+      transition: background .2s;
+      flex-shrink: 0;
+    }
+
+    .toggle-switch.on {
+      background: var(--A);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #fff;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: left .2s;
+    }
+
+    .toggle-switch.on::after {
+      left: 23px;
+    }
+
     @keyframes marquee {
       0% {
         transform: translateX(0)
@@ -2303,6 +2514,386 @@
       .admin-stats {
         grid-template-columns: 1fr 1fr;
       }
+
+      /* ── ADMIN MOBILE ── */
+      .admin-header {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .admin-header>div:first-child span {
+        font-size: 18px !important;
+        letter-spacing: 4px !important;
+      }
+
+      .admin-header>div:last-child {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        width: 100%;
+      }
+
+      .export-btn {
+        font-size: 8px;
+        padding: 6px 10px;
+        letter-spacing: 1px;
+        flex: 1;
+        text-align: center;
+      }
+
+      .admin-body {
+        padding: 12px;
+      }
+
+      .admin-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .admin-tab {
+        padding: 8px 14px;
+        font-size: 8px;
+      }
+
+      .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2px;
+      }
+
+      .admin-stat {
+        padding: 14px 16px;
+      }
+
+      .admin-stat>div:last-child {
+        font-size: 28px !important;
+      }
+
+      .admin-filter-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .admin-search {
+        width: 100%;
+      }
+
+      .admin-select {
+        width: 100%;
+      }
+
+      .admin-table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .admin-table {
+        min-width: 700px;
+      }
+
+      /* Product manage cards on mobile */
+      .prod-manage-card {
+        padding: 14px;
+      }
+
+      .prod-manage-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .prod-manage-header>div:last-child {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      /* Color manage rows on mobile */
+      .color-manage-row {
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .color-manage-row .admin-input {
+        flex: 1 1 calc(50% - 6px);
+        min-width: 80px;
+      }
+
+      /* Bundle manage on mobile */
+      .bundle-manage-card {
+        padding: 14px;
+      }
+
+      .bundle-manage-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      /* Order detail modal on mobile */
+      .order-detail-box {
+        margin: 0;
+        width: 100%;
+        max-height: 95vh;
+      }
+
+      .order-detail-modal {
+        padding: 12px;
+        align-items: flex-end;
+      }
+
+      /* Social hub — smaller button on mobile, stays bottom-right */
+      .social-hub {
+        bottom: 16px;
+        right: 16px;
+      }
+
+      .social-hub-btn {
+        width: 46px;
+        height: 46px;
+      }
+
+      .social-hub-label {
+        display: none;
+      }
+
+      .social-pill {
+        font-size: 8px;
+        padding: 6px 12px 6px 8px;
+        bottom: 56px;
+      }
+
+      .social-hub.open .social-pill:nth-child(1) {
+        bottom: 56px;
+      }
+
+      .social-hub.open .social-pill:nth-child(2) {
+        bottom: 104px;
+      }
+
+      .social-hub.open .social-pill:nth-child(3) {
+        bottom: 152px;
+      }
+
+      .social-hub.open .social-pill:nth-child(4) {
+        bottom: 200px;
+      }
+
+      /* Toasts move to bottom-left so they don't overlap the hub */
+      #toasts {
+        bottom: 16px;
+        right: auto;
+        left: 16px;
+        max-width: calc(100vw - 80px);
+      }
+
+      .toast {
+        min-width: 0;
+        font-size: 10px;
+      }
+    }
+
+    /* ══ AURA HERO ══ */
+    .hero-aura {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    /* FIGURE */
+    .hero-figure-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .hero-figure-img {
+      height: 75vh;
+      max-height: 680px;
+      width: auto;
+      object-fit: contain;
+      filter: contrast(1.1) brightness(1.05);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 82%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 82%, transparent 100%);
+      animation: figureFloat 6s ease-in-out infinite;
+    }
+
+    @keyframes figureFloat {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-14px);
+      }
+    }
+
+    /* AURA GLOW */
+    .aura-glow {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 3;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .aura-glow-1 {
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(ellipse, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.05) 40%, transparent 70%);
+      animation: auraPulse 3s ease-in-out infinite;
+    }
+
+    .aura-glow-2 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(255, 59, 0, 0.07) 0%, rgba(255, 59, 0, 0.03) 50%, transparent 70%);
+      animation: auraPulse 3s ease-in-out infinite 0.5s;
+    }
+
+    .aura-glow-3 {
+      width: 900px;
+      height: 900px;
+      background: radial-gradient(ellipse, rgba(255, 255, 255, 0.03) 0%, transparent 65%);
+      animation: auraPulse 4s ease-in-out infinite 1s;
+    }
+
+    @keyframes auraPulse {
+
+      0%,
+      100% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.08);
+      }
+    }
+
+    /* ORBIT */
+    .orbit-ring {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      animation: orbitSpin 28s linear infinite;
+    }
+
+    @keyframes orbitSpin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .orbit-item {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      /* place each card at its angle along the radius */
+      transform: rotate(var(--angle)) translateX(min(38vw, 340px)) rotate(calc(-1 * var(--angle)));
+      pointer-events: all;
+    }
+
+    .orbit-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(72px, 12vw, 110px);
+      cursor: pointer;
+      transition: transform .25s, box-shadow .25s;
+      /* counter-rotate so cards stay upright while ring spins */
+      animation: orbitCounterSpin 28s linear infinite;
+    }
+
+    @keyframes orbitCounterSpin {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      to {
+        transform: translate(-50%, -50%) rotate(-360deg);
+      }
+    }
+
+    .orbit-card:hover {
+      transform: translate(-50%, -50%) scale(1.12) rotate(0deg) !important;
+      animation-play-state: paused;
+      z-index: 10;
+    }
+
+    .orbit-card>div:first-child {
+      border: 1px solid rgba(255, 255, 255, .15);
+      overflow: hidden;
+      box-shadow: 0 0 18px rgba(255, 59, 0, .25), 0 4px 20px rgba(0, 0, 0, .7);
+      transition: box-shadow .25s;
+    }
+
+    .orbit-card:hover>div:first-child {
+      box-shadow: 0 0 32px rgba(255, 59, 0, .55), 0 8px 32px rgba(0, 0, 0, .8);
+    }
+
+    .orbit-label {
+      font-family: var(--fd);
+      font-size: clamp(6px, 1.2vw, 9px);
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, .5);
+      text-align: center;
+      margin-top: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @media (max-width: 768px) {
+      .orbit-item {
+        transform: rotate(var(--angle)) translateX(min(38vw, 150px)) rotate(calc(-1 * var(--angle)));
+      }
+
+      .orbit-card {
+        width: 62px;
+      }
+
+      .aura-glow-1 {
+        width: 220px;
+        height: 220px;
+      }
+
+      .aura-glow-2 {
+        width: 360px;
+        height: 360px;
+      }
+
+      .aura-glow-3 {
+        width: 500px;
+        height: 500px;
+      }
+
+      .hero-figure-img {
+        height: 65vh;
+      }
     }
   </style>
 </head>
@@ -2311,9 +2902,9 @@
 
   <div id="ann-bar">
     <div class="ann-track">
-      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 014 — THE SPOTLIGHT EDIT &nbsp;·&nbsp; USE CODE AXS10 FOR 10%
+      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTTOM ERA &nbsp;·&nbsp; USE CODE AXS10 FOR 10%
         OFF &nbsp;·&nbsp; CASH ON DELIVERY AVAILABLE &nbsp;·&nbsp; </span>
-      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 014 — THE SPOTLIGHT EDIT &nbsp;·&nbsp; USE CODE AXS10 FOR 10%
+      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTTOM ERA &nbsp;·&nbsp; USE CODE AXS10 FOR 10%
         OFF &nbsp;·&nbsp; CASH ON DELIVERY AVAILABLE &nbsp;·&nbsp; </span>
     </div>
   </div>
@@ -2361,21 +2952,84 @@
   </div>
 
   <div id="size-modal" class="modal-overlay" onclick="closeSizeModal()">
-    <div class="modal-box" onclick="event.stopPropagation()">
-      <div class="modal-header"><span id="sg-title"
-          style="font-family:var(--fd);font-size:28px;letter-spacing:4px;">SIZE GUIDE</span><button class="modal-close"
-          onclick="closeSizeModal()">✕</button></div>
+    <div class="modal-box" onclick="event.stopPropagation()" style="max-width:560px">
+      <div class="modal-header">
+        <span style="font-family:var(--fd);font-size:24px;letter-spacing:4px;" id="sg-title">FIND YOUR SIZE</span>
+        <button class="modal-close" onclick="closeSizeModal()">✕</button>
+      </div>
       <div style="padding:24px;">
-        <p id="sg-sub"
-          style="font-size:10px;letter-spacing:3px;color:var(--text3);margin-bottom:20px;font-family:var(--fm);">ALL
-          MEASUREMENTS IN CENTIMETERS</p>
-        <table class="size-table">
-          <thead>
-            <tr id="sg-thead"></tr>
-          </thead>
-          <tbody id="sg-tbody"></tbody>
-        </table>
-        <p id="sg-note" style="margin-top:16px;font-size:10px;color:var(--text3);font-family:var(--fm);"></p>
+        <!-- TABS -->
+        <div style="display:flex;gap:0;margin-bottom:20px;border:1px solid var(--border)">
+          <button id="sg-tab-calc" onclick="sgTab('calc')"
+            style="flex:1;padding:10px;background:var(--A);color:#000;border:none;cursor:pointer;font-family:var(--fd);font-size:12px;letter-spacing:3px;">FIND
+            MY SIZE</button>
+          <button id="sg-tab-table" onclick="sgTab('table')"
+            style="flex:1;padding:10px;background:transparent;color:var(--text3);border:none;cursor:pointer;font-family:var(--fd);font-size:12px;letter-spacing:3px;">SIZE
+            TABLE</button>
+        </div>
+
+        <!-- CALCULATOR TAB -->
+        <div id="sg-panel-calc">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+            <div>
+              <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">
+                الطول (cm)</div>
+              <input id="sg-height" type="number" min="140" max="220" placeholder="مثال: 175" class="field"
+                style="width:100%;margin:0" oninput="calcMySize()">
+            </div>
+            <div>
+              <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">
+                الوزن (kg)</div>
+              <input id="sg-weight" type="number" min="40" max="200" placeholder="مثال: 75" class="field"
+                style="width:100%;margin:0" oninput="calcMySize()">
+            </div>
+          </div>
+          <div style="margin-bottom:20px">
+            <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:8px">نوع
+              التلبيسة</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <button id="fit-regular" onclick="selectFit('regular')"
+                style="flex:1;min-width:80px;padding:10px 6px;border:1px solid var(--border);background:transparent;color:var(--text3);font-family:var(--fd);font-size:11px;letter-spacing:2px;cursor:pointer;transition:all .2s">مظبوط</button>
+              <button id="fit-oversized" onclick="selectFit('oversized')"
+                style="flex:1;min-width:80px;padding:10px 6px;border:1px solid var(--border);background:transparent;color:var(--text3);font-family:var(--fd);font-size:11px;letter-spacing:2px;cursor:pointer;transition:all .2s">أوفر
+                سايز</button>
+              <button id="fit-baggy" onclick="selectFit('baggy')"
+                style="flex:1;min-width:80px;padding:10px 6px;border:1px solid var(--border);background:transparent;color:var(--text3);font-family:var(--fd);font-size:11px;letter-spacing:2px;cursor:pointer;transition:all .2s">فضفاض
+                جداً</button>
+            </div>
+          </div>
+          <div id="sg-result" style="display:none">
+            <div
+              style="background:rgba(255,59,0,.08);border:1px solid rgba(255,59,0,.25);padding:20px;text-align:center;margin-bottom:14px">
+              <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">
+                المقاس المناسب ليك</div>
+              <div id="sg-result-size"
+                style="font-family:var(--fd);font-size:52px;color:var(--A);letter-spacing:4px;line-height:1"></div>
+              <div id="sg-result-note"
+                style="font-size:11px;color:var(--text2);font-family:Georgia,serif;margin-top:8px;line-height:1.5">
+              </div>
+            </div>
+            <button id="sg-apply-btn" onclick="applySizeFromGuide()"
+              style="width:100%;background:var(--A);color:#000;border:none;padding:14px;font-family:var(--fd);font-size:14px;letter-spacing:4px;cursor:pointer;display:none">APPLY
+              SIZE →</button>
+          </div>
+          <div id="sg-empty"
+            style="text-align:center;padding:20px 0;color:var(--text3);font-size:10px;font-family:var(--fm);letter-spacing:2px">
+            ← ادخل طولك ووزنك واختار التلبيسة</div>
+        </div>
+
+        <!-- SIZE TABLE TAB -->
+        <div id="sg-panel-table" style="display:none">
+          <p style="font-size:10px;letter-spacing:3px;color:var(--text3);margin-bottom:16px;font-family:var(--fm);">ALL
+            MEASUREMENTS IN CENTIMETERS</p>
+          <table class="size-table">
+            <thead>
+              <tr id="sg-thead"></tr>
+            </thead>
+            <tbody id="sg-tbody"></tbody>
+          </table>
+          <p id="sg-note" style="margin-top:16px;font-size:10px;color:var(--text3);font-family:var(--fm);"></p>
+        </div>
       </div>
     </div>
   </div>
@@ -2403,19 +3057,19 @@
 
   <!-- Social Hub FAB -->
   <div class="social-hub" id="social-hub">
-    <a class="social-pill" href="https://www.tiktok.com/@axs.official" target="_blank" rel="noopener"><span
+    <a class="social-pill" href="https://www.tiktok.com/@axs_eg" target="_blank" rel="noopener"><span
         class="sp-icon sp-tt"><svg width="14" height="14" viewBox="0 0 24 24" fill="white">
           <path
             d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z" />
         </svg></span>TIKTOK</a>
-    <a class="social-pill" href="https://www.instagram.com/axs.official" target="_blank" rel="noopener"><span
+    <a class="social-pill" href="https://www.instagram.com/axs.eg" target="_blank" rel="noopener"><span
         class="sp-icon sp-ig"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white"
           stroke-width="2">
           <rect x="2" y="2" width="20" height="20" rx="5" />
           <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
           <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-linecap="round" stroke-width="2.5" />
         </svg></span>INSTAGRAM</a>
-    <a class="social-pill" href="https://www.facebook.com/axs.official" target="_blank" rel="noopener"><span
+    <a class="social-pill" href="https://www.facebook.com/axs.egypt" target="_blank" rel="noopener"><span
         class="sp-icon sp-fb"><svg width="14" height="14" viewBox="0 0 24 24" fill="white">
           <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
         </svg></span>FACEBOOK</a>
@@ -2501,10 +3155,75 @@
       } catch (e) { return false; }
     }
 
+    // Upsert a setting key/value in Supabase settings table
+    async function supabaseSetting(key, value) {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/settings`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify({ key, value })
+        });
+        return res.ok;
+      } catch (e) { return false; }
+    }
+
+    // Update a product in Supabase products table
+    async function supabaseUpdateProduct(productId, data) {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/products?id=eq.${productId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(data)
+        });
+        return res.ok;
+      } catch (e) { return false; }
+    }
+
+    // Insert or update a bundle in Supabase
+    async function supabaseUpsertBundle(bundle) {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/bundles`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify(bundle)
+        });
+        return res.ok;
+      } catch (e) { return false; }
+    }
+
+    // Delete a bundle from Supabase
+    async function supabaseDeleteBundle(bundleId) {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/bundles?id=eq.${bundleId}`, {
+          method: 'DELETE',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
+        });
+        return res.ok;
+      } catch (e) { return false; }
+    }
+
     // ═══════════════════════════════════════════════════════════════════════════════
     // ADMIN
     // ═══════════════════════════════════════════════════════════════════════════════
-    const ADMIN_PASS = 'mena 2008';
+    // Admin password is stored in Supabase settings — not in code
     const STATUSES = ['new', 'confirmed', 'shipped', 'delivered', 'cancelled'];
     const STATUS_LABELS_AR = { new: 'جديد', confirmed: 'مؤكد', shipped: 'تم الشحن', delivered: 'تم التسليم', cancelled: 'ملغي' };
     let adminOrders = [];
@@ -2512,13 +3231,15 @@
     let adminSearch = '';
     let adminSelectedOrder = null;
 
+    let adminTab = 'orders'; // 'orders' | 'products'
+    let adminProductsData = []; // colors + stock loaded for admin
+
     function renderAdmin() {
       const main = document.getElementById('main');
       main.innerHTML = `<div class="admin-wrap">
     <div class="admin-header">
       <div style="display:flex;align-items:center;gap:16px">
         <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:6px;color:#fff;">AXS <span style="color:var(--A)">ADMIN</span></span>
-        <span style="font-size:9px;color:#333;letter-spacing:3px;">ORDERS DASHBOARD</span>
       </div>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="export-btn" onclick="exportCSV()">↓ EXPORT CSV</button>
@@ -2527,36 +3248,674 @@
       </div>
     </div>
     <div class="admin-body">
-      <div id="admin-stats-row" class="admin-stats">
-        <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">TOTAL ORDERS</div><div id="stat-total" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;">—</div></div>
-        <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">NEW</div><div id="stat-new" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#f0a000;">—</div></div>
-        <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">CONFIRMED</div><div id="stat-confirmed" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#4caf50;">—</div></div>
-        <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">SHIPPED</div><div id="stat-shipped" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#2196f3;">—</div></div>
-        <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">DELIVERED</div><div id="stat-delivered" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#9c27b0;">—</div></div>
-        <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">REVENUE</div><div id="stat-revenue" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--A);">—</div></div>
+      <div class="admin-tabs">
+        <button class="admin-tab${adminTab === 'orders' ? ' active' : ''}" onclick="switchAdminTab('orders')">📦 الأوردرات</button>
+        <button class="admin-tab${adminTab === 'products' ? ' active' : ''}" onclick="switchAdminTab('products')">🛍 المنتجات</button>
+        <button class="admin-tab${adminTab === 'bundles' ? ' active' : ''}" onclick="switchAdminTab('bundles')">🎁 العروض</button>
       </div>
-      <div class="admin-filter-row">
-        <input class="admin-search" placeholder="بحث باسم أو تليفون أو أوردر..." oninput="adminSearch=this.value;renderAdminTable()" id="admin-search-input">
-        <select class="admin-select" onchange="adminFilter=this.value;renderAdminTable()">
-          <option value="all">كل الأوردرات</option>
-          ${STATUSES.map(s => `<option value="${s}">${STATUS_LABELS_AR[s] || s}</option>`).join('')}
-        </select>
-        <button class="admin-btn-sm" onclick="loadAdminOrders()" id="refresh-btn">↺ تحديث</button>
-      </div>
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead><tr>
-            <th>رقم الأوردر</th><th>التاريخ</th><th>الاسم</th><th>التليفون</th><th>المحافظة</th>
-            <th>المنتجات</th><th>الإجمالي</th><th>الدفع</th><th>الحالة</th><th>إجراء</th>
-          </tr></thead>
-          <tbody id="admin-table-body"><tr><td colspan="10" style="text-align:center;padding:48px;color:#333;letter-spacing:3px;">
-            <div class="loading-spinner" style="margin:0 auto 12px"></div><br>جاري التحميل...
-          </td></tr></tbody>
-        </table>
-      </div>
+      <div id="admin-tab-content"></div>
     </div>
   </div>`;
+      if (adminTab === 'orders') renderOrdersTab();
+      else if (adminTab === 'products') renderProductsTab();
+      else renderBundlesTab();
+    }
+
+    function switchAdminTab(tab) {
+      adminTab = tab;
+      const tabs = document.querySelectorAll('.admin-tab');
+      tabs.forEach(t => {
+        const isOrders = t.textContent.includes('الأوردرات');
+        const isProducts = t.textContent.includes('المنتجات');
+        const isBundles = t.textContent.includes('العروض');
+        t.classList.toggle('active',
+          (tab === 'orders' && isOrders) ||
+          (tab === 'products' && isProducts) ||
+          (tab === 'bundles' && isBundles)
+        );
+      });
+      const content = document.getElementById('admin-tab-content');
+      if (!content) return;
+      if (tab === 'orders') renderOrdersTab();
+      else if (tab === 'products') renderProductsTab();
+      else renderBundlesTab();
+    }
+
+    function renderOrdersTab() {
+      const content = document.getElementById('admin-tab-content');
+      if (!content) return;
+      content.innerHTML = `
+    <div id="admin-stats-row" class="admin-stats">
+      <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">TOTAL ORDERS</div><div id="stat-total" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;">—</div></div>
+      <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">NEW</div><div id="stat-new" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#f0a000;">—</div></div>
+      <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">CONFIRMED</div><div id="stat-confirmed" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#4caf50;">—</div></div>
+      <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">SHIPPED</div><div id="stat-shipped" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#2196f3;">—</div></div>
+      <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">DELIVERED</div><div id="stat-delivered" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#9c27b0;">—</div></div>
+      <div class="admin-stat"><div style="font-size:9px;letter-spacing:3px;color:#555;margin-bottom:6px">REVENUE</div><div id="stat-revenue" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--A);">—</div></div>
+    </div>
+    <div class="admin-filter-row">
+      <input class="admin-search" placeholder="بحث باسم أو تليفون أو أوردر..." oninput="adminSearch=this.value;renderAdminTable()" id="admin-search-input">
+      <select class="admin-select" onchange="adminFilter=this.value;renderAdminTable()">
+        <option value="all">كل الأوردرات</option>
+        ${STATUSES.map(s => `<option value="${s}">${STATUS_LABELS_AR[s] || s}</option>`).join('')}
+      </select>
+      <button class="admin-btn-sm" onclick="loadAdminOrders()" id="refresh-btn">↺ تحديث</button>
+    </div>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr>
+          <th>رقم الأوردر</th><th>التاريخ</th><th>الاسم</th><th>التليفون</th><th>المحافظة</th>
+          <th>المنتجات</th><th>الإجمالي</th><th>الدفع</th><th>الحالة</th><th>إجراء</th>
+        </tr></thead>
+        <tbody id="admin-table-body"><tr><td colspan="10" style="text-align:center;padding:48px;color:#333;letter-spacing:3px;">
+          <div class="loading-spinner" style="margin:0 auto 12px"></div><br>جاري التحميل...
+        </td></tr></tbody>
+      </table>
+    </div>`;
       loadAdminOrders();
+    }
+
+    async function renderProductsTab() {
+      const content = document.getElementById('admin-tab-content');
+      if (!content) return;
+      content.innerHTML = `<div style="text-align:center;padding:40px;color:#333"><div class="loading-spinner" style="margin:0 auto 12px"></div><br>جاري التحميل...</div>`;
+
+      // Load all colors and stock
+      const [allColors, allStock] = await Promise.all([
+        supabaseFetch('product_colors', 'order=product_id.asc,sort_order.asc'),
+        supabaseFetch('product_stock', 'order=product_id.asc')
+      ]);
+
+      const colorsByProduct = {};
+      if (Array.isArray(allColors)) allColors.forEach(c => { if (!colorsByProduct[c.product_id]) colorsByProduct[c.product_id] = []; colorsByProduct[c.product_id].push(c); });
+
+      const stockByProduct = {};
+      if (Array.isArray(allStock)) allStock.forEach(s => { stockByProduct[s.product_id] = s; });
+
+      content.innerHTML = `
+    <div style="margin-bottom:16px;font-size:9px;color:#555;letter-spacing:3px">
+      عدّل بيانات المنتج واضغط حفظ • اضغط على الـ toggle عشان تغير حالة البيع أو الإخفاء
+    </div>
+    ${PRODUCTS.map(p => {
+        const colors = colorsByProduct[p.id] || [];
+        const stock = stockByProduct[p.id] || { sold_out: false, stock: p.stock };
+        const isSoldOut = stock.sold_out;
+        const isHidden = adminHiddenProducts.has(p.id);
+        return `<div class="prod-manage-card" id="pmc-${p.id}" style="${isHidden ? 'opacity:0.45;' : ''}">
+        <div class="prod-manage-header">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:48px;height:48px;overflow:hidden;border:1px solid #1a1a1a;flex-shrink:0">${pv(p, 48, 0)}</div>
+            <div>
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#fff">${p.name.toUpperCase()}</div>
+              <div style="font-size:9px;color:#555;letter-spacing:3px">${p.category} · ${p.price} EGP</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <!-- HIDE TOGGLE -->
+            <div class="sold-out-toggle" onclick="toggleHideProduct(${p.id})" title="إخفاء المنتج من المتجر">
+              <span style="font-size:9px;color:${isHidden ? '#888' : '#4caf50'};letter-spacing:3px;font-family:'DM Mono',monospace">${isHidden ? 'مخفي' : 'ظاهر'}</span>
+              <div class="toggle-switch${isHidden ? '' : ' on'}" id="vis-toggle-${p.id}" style="${isHidden ? '' : 'background:#4caf50'}"></div>
+            </div>
+            <!-- SOLD OUT TOGGLE -->
+            <div class="sold-out-toggle" onclick="toggleSoldOut(${p.id},${isSoldOut},${JSON.stringify(stock.id || '').replace(/"/g, "'")})">
+              <span style="font-size:9px;color:${isSoldOut ? 'var(--A)' : '#555'};letter-spacing:3px;font-family:'DM Mono',monospace">${isSoldOut ? 'SOLD OUT' : 'IN STOCK'}</span>
+              <div class="toggle-switch${isSoldOut ? ' on' : ''}" id="toggle-${p.id}"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EDIT NAME / PRICE / DESC -->
+        <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:14px;align-items:end">
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">اسم المنتج (EN)</div>
+            <input class="admin-input" style="width:100%" id="pname-${p.id}" value="${p.name}" placeholder="Product name">
+          </div>
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">اسم المنتج (AR)</div>
+            <input class="admin-input" style="width:100%" id="pnamear-${p.id}" value="${p.nameAr || ''}" placeholder="اسم المنتج">
+          </div>
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">السعر (EGP)</div>
+            <input class="admin-input" style="width:90px" type="number" id="pprice-${p.id}" value="${p.price}" min="0">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">الوصف (EN)</div>
+            <textarea class="admin-input notes-input" id="pdesc-${p.id}" style="min-height:56px;width:100%;resize:vertical">${p.desc || ''}</textarea>
+          </div>
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">الوصف (AR)</div>
+            <textarea class="admin-input notes-input" id="pdescAr-${p.id}" style="min-height:56px;width:100%;resize:vertical">${p.descAr || ''}</textarea>
+          </div>
+        </div>
+        <div style="margin-bottom:14px">
+          <button class="admin-btn" onclick="saveProductInfo(${p.id})" style="font-size:10px;padding:7px 18px">💾 حفظ المعلومات</button>
+        </div>
+
+        ${p.badge === 'LIMITED' ? (() => {
+            const savedEnd = localStorage.getItem('axs_limited_end') || SALE_END;
+            // Format for datetime-local input: YYYY-MM-DDTHH:MM
+            const dtVal = savedEnd.length >= 16 ? savedEnd.slice(0, 16) : savedEnd;
+            return `<!-- LIMITED DEADLINE -->
+        <div style="margin-bottom:14px;background:#0a0a0a;border:1px solid #2a1a00;padding:12px 14px">
+          <div style="font-size:9px;color:#FF3B00;letter-spacing:3px;margin-bottom:8px">⏱ LIMITED — تاريخ انتهاء العرض</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <input type="datetime-local" id="limited-end-${p.id}" class="admin-input" style="flex:1;min-width:180px" value="${dtVal}">
+            <button class="admin-btn" onclick="saveLimitedEnd('${p.id}')" style="font-size:10px;padding:7px 18px;white-space:nowrap">⏱ حفظ التاريخ</button>
+          </div>
+          <div style="font-size:9px;color:#555;letter-spacing:2px;margin-top:6px;font-family:'DM Mono',monospace">الحالي: ${new Date(savedEnd).toLocaleString('ar-EG')}</div>
+        </div>`;
+          })() : ''}
+        <div style="margin-bottom:14px">
+          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:8px">STOCK PER SIZE</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap" id="stock-row-${p.id}">
+            ${p.sizes.map(sz => {
+            const qty = (stock.stock || {})[sz] ?? (p.stock[sz] || 0);
+            return `<div style="display:flex;align-items:center;gap:4px;background:#050505;border:1px solid #1a1a1a;padding:4px 8px">
+                <span style="font-size:10px;color:#888;font-family:'DM Mono',monospace;min-width:36px">${sz}</span>
+                <input type="number" min="0" value="${qty}" style="width:52px;background:#0a0a0a;border:1px solid #1a1a1a;color:#fff;padding:4px 6px;font-size:11px;font-family:'DM Mono',monospace;text-align:center" onchange="updateSizeStock(${p.id},'${sz}',this.value,'${stock.id || ''}')">
+              </div>`;
+          }).join('')}
+          </div>
+        </div>
+
+        <!-- COLORS -->
+        <div>
+          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:8px">COLORS (${colors.length}/4)</div>
+          <div id="colors-list-${p.id}">
+            ${colors.map(c => `<div class="color-manage-row" id="color-row-${c.id}">
+              <div class="color-swatch-admin" style="background:${c.hex}"></div>
+              <input class="admin-input" style="width:80px" value="${c.hex}" placeholder="#000000" onchange="updateColorField('${c.id}','hex',this.value,${p.id})">
+              <input class="admin-input" style="flex:1" value="${c.name}" placeholder="Name (EN)" onchange="updateColorField('${c.id}','name',this.value,${p.id})">
+              <input class="admin-input" style="flex:1" value="${c.name_ar}" placeholder="الاسم بالعربي" onchange="updateColorField('${c.id}','name_ar',this.value,${p.id})">
+              <div style="display:flex;flex-direction:column;gap:3px;flex:1">
+                <div style="display:flex;align-items:center;gap:4px">
+                  <input class="admin-input" style="flex:1;min-width:0" id="img1-${c.id}" value="${c.img1 || ''}" placeholder="img1.png" onchange="updateColorField('${c.id}','img1',this.value,${p.id});updateImgPreview('${c.id}',1,this.value)" oninput="updateImgPreview('${c.id}',1,this.value)">
+                  <div id="prev1-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('${c.img1 || ''}',this)" title="معاينة">
+                    ${c.img1 ? `<img src="${c.img1}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>`}
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px">
+                  <input class="admin-input" style="flex:1;min-width:0" id="img2-${c.id}" value="${c.img2 || ''}" placeholder="img2.png" onchange="updateColorField('${c.id}','img2',this.value,${p.id});updateImgPreview('${c.id}',2,this.value)" oninput="updateImgPreview('${c.id}',2,this.value)">
+                  <div id="prev2-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('${c.img2 || ''}',this)" title="معاينة">
+                    ${c.img2 ? `<img src="${c.img2}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>`}
+                  </div>
+                </div>
+              </div>
+              <button class="admin-btn-sm" onclick="saveColorRow('${c.id}',${p.id})" style="white-space:nowrap">حفظ</button>
+              <button class="admin-btn-danger" onclick="deleteColor('${c.id}',${p.id})" style="white-space:nowrap">حذف</button>
+            </div>`).join('')}
+          </div>
+          ${colors.length < 4 ? `<button class="admin-btn-sm" style="margin-top:8px" onclick="addNewColor(${p.id})">+ إضافة لون</button>` : ''}
+        </div>
+      </div>`;
+      }).join('')}`;
+    }
+
+    // ── PRODUCT INFO SAVE & HIDE ──────────────────────────────────────────────────
+    // Hidden products/bundles — loaded from Supabase settings, fallback to localStorage
+    const adminHiddenProducts = new Set(JSON.parse(localStorage.getItem('axs_hidden_products') || '[]'));
+    const adminHiddenBundlesSupabase = new Set(); // will be merged after settings load
+
+    async function saveHiddenProducts() {
+      const val = JSON.stringify([...adminHiddenProducts]);
+      localStorage.setItem('axs_hidden_products', val);
+      await supabaseSetting('hidden_products', val);
+    }
+
+    function toggleHideProduct(productId) {
+      if (adminHiddenProducts.has(productId)) {
+        adminHiddenProducts.delete(productId);
+      } else {
+        adminHiddenProducts.add(productId);
+      }
+      saveHiddenProducts();
+      // Update card opacity
+      const card = document.getElementById(`pmc-${productId}`);
+      if (card) card.style.opacity = adminHiddenProducts.has(productId) ? '0.45' : '1';
+      // Update toggle visual
+      const visToggle = document.getElementById(`vis-toggle-${productId}`);
+      if (visToggle) {
+        const hidden = adminHiddenProducts.has(productId);
+        visToggle.style.background = hidden ? '' : '#4caf50';
+        visToggle.classList.toggle('on', !hidden);
+        const label = visToggle.previousElementSibling;
+        if (label) { label.textContent = hidden ? 'مخفي' : 'ظاهر'; label.style.color = hidden ? '#888' : '#4caf50'; }
+      }
+      const p = PRODUCTS.find(x => x.id === productId);
+      addToast(`${p ? p.name : ''} — ${adminHiddenProducts.has(productId) ? 'تم الإخفاء 🙈' : 'تم الإظهار ✓'}`, adminHiddenProducts.has(productId) ? 'info' : 'success');
+    }
+
+    async function saveLimitedEnd(productId) {
+      const input = document.getElementById(`limited-end-${productId}`);
+      if (!input || !input.value) { addToast('اختار تاريخ صح', 'error'); return; }
+      const val = input.value + ':00'; // YYYY-MM-DDTHH:MM:SS
+      localStorage.setItem('axs_limited_end', val);
+      // Save to Supabase settings so all users get the new date
+      const ok = await supabaseSetting('limited_end', val);
+      addToast(ok ? `✓ تم حفظ التاريخ لكل الزوار: ${new Date(val).toLocaleString('ar-EG')}` : `✓ تم الحفظ محلياً: ${new Date(val).toLocaleString('ar-EG')}`, ok ? 'success' : 'info');
+      const lbl = input.closest('div')?.nextElementSibling;
+      if (lbl) lbl.textContent = `الحالي: ${new Date(val).toLocaleString('ar-EG')}`;
+    }
+
+    async function saveProductInfo(productId) {
+      const p = PRODUCTS.find(x => x.id === productId);
+      if (!p) return;
+      const nameEl = document.getElementById(`pname-${productId}`);
+      const nameArEl = document.getElementById(`pnamear-${productId}`);
+      const priceEl = document.getElementById(`pprice-${productId}`);
+      const descEl = document.getElementById(`pdesc-${productId}`);
+      const descArEl = document.getElementById(`pdescAr-${productId}`);
+      if (nameEl && nameEl.value.trim()) p.name = nameEl.value.trim();
+      if (nameArEl && nameArEl.value.trim()) p.nameAr = nameArEl.value.trim();
+      if (priceEl && !isNaN(parseInt(priceEl.value))) p.price = parseInt(priceEl.value);
+      if (descEl) p.desc = descEl.value;
+      if (descArEl) p.descAr = descArEl.value;
+      // Save to Supabase
+      const ok = await supabaseUpdateProduct(productId, {
+        name: p.name,
+        name_ar: p.nameAr,
+        price: p.price,
+        description: p.desc,
+        description_ar: p.descAr
+      });
+      const subInfo = document.querySelector(`#pmc-${productId} .prod-manage-header div > div > div:last-child`);
+      if (subInfo) subInfo.textContent = `${p.category} · ${p.price} EGP`;
+      addToast(ok ? `${p.name} — تم الحفظ ✓` : `${p.name} — حُفظ محلياً فقط ⚠`, ok ? 'success' : 'info');
+    }
+
+    // ── BUNDLES ADMIN TAB ─────────────────────────────────────────────────────────
+    function renderBundlesTab() {
+      const content = document.getElementById('admin-tab-content');
+      if (!content) return;
+      content.innerHTML = `
+    <div style="margin-bottom:12px;font-size:9px;color:#555;letter-spacing:3px">
+      عدّل بيانات العرض واضغط حفظ • السعر بيتحسب تلقائياً من سعر المنتجات ناقص التوفير
+    </div>
+
+    <!-- ADD NEW BUNDLE FORM -->
+    <div style="background:#060a06;border:1px solid #1a2e1a;padding:20px;margin-bottom:16px">
+      <div style="font-size:9px;color:#4caf50;letter-spacing:3px;margin-bottom:14px">＋ عرض جديد</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div>
+          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">اسم العرض (EN)</div>
+          <input class="admin-input" style="width:100%" id="nb-name" placeholder="The Bundle Name">
+        </div>
+        <div>
+          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">اسم العرض (AR)</div>
+          <input class="admin-input" style="width:100%" id="nb-namear" placeholder="اسم العرض بالعربي">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div>
+          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">الوصف (EN)</div>
+          <input class="admin-input" style="width:100%" id="nb-desc" placeholder="Product A + Product B">
+        </div>
+        <div>
+          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">الوصف (AR)</div>
+          <input class="admin-input" style="width:100%" id="nb-descar" placeholder="منتج + منتج">
+        </div>
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">التوفير (EGP)</div>
+        <input class="admin-input" style="width:120px" type="number" min="0" id="nb-save" placeholder="0" value="0">
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:8px">اختار المنتجات (2 على الأقل)</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px">
+          ${PRODUCTS.map(p => `<label style="display:flex;align-items:center;gap:8px;padding:8px;background:#050505;border:1px solid #111;cursor:pointer">
+            <input type="checkbox" class="nb-prod-check" value="${p.id}" style="accent-color:var(--A)">
+            <div style="width:28px;height:28px;overflow:hidden;border:1px solid #1a1a1a;flex-shrink:0">${pv(p, 28, 0)}</div>
+            <span style="font-size:10px;color:#aaa;font-family:'DM Mono',monospace;letter-spacing:1px">${p.name}</span>
+          </label>`).join('')}
+        </div>
+      </div>
+      <button class="admin-btn" onclick="addNewBundle()" style="font-size:10px;padding:7px 20px;background:#1a2e1a;border-color:#4caf50;color:#4caf50">＋ إضافة العرض</button>
+    </div>
+
+    ${BUNDLES.map(b => {
+        const prods = b.products.map(id => PRODUCTS.find(p => p.id === id));
+        const orig = prods.reduce((s, p) => s + (p ? p.price : 0), 0);
+        const disc = orig - b.save;
+        const isHidden = adminHiddenBundles.has(b.id);
+        const isCustom = b._custom;
+        return `<div class="prod-manage-card bundle-manage-card" id="bmc-${b.id}" style="${isHidden ? 'opacity:0.45;' : ''}">
+        <div class="prod-manage-header bundle-manage-header" style="margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="display:flex;gap:3px">
+              ${prods.slice(0, 2).map(p => p ? `<div style="width:36px;height:36px;overflow:hidden;border:1px solid #1a1a1a;flex-shrink:0">${pv(p, 36, 0)}</div>` : '').join('')}
+            </div>
+            <div>
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:#fff">${b.name.toUpperCase()}${isCustom ? ' <span style="font-size:9px;color:#4caf50;font-family:DM Mono,monospace">CUSTOM</span>' : ''}</div>
+              <div style="font-size:9px;color:#555;letter-spacing:2px;font-family:'DM Mono',monospace">${orig} EGP → <span style="color:var(--A)">${disc} EGP</span> (وفر ${b.save} EGP)</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <div class="sold-out-toggle" onclick="toggleHideBundle('${b.id}')" title="إخفاء العرض">
+              <span style="font-size:9px;color:${isHidden ? '#888' : '#4caf50'};letter-spacing:3px;font-family:'DM Mono',monospace">${isHidden ? 'مخفي' : 'ظاهر'}</span>
+              <div class="toggle-switch${isHidden ? '' : ' on'}" id="bvis-toggle-${b.id}" style="${isHidden ? '' : 'background:#4caf50'}"></div>
+            </div>
+            ${isCustom ? `<button onclick="deleteCustomBundle('${b.id}')" style="background:none;border:1px solid #f44336;color:#f44336;font-size:9px;letter-spacing:2px;padding:4px 10px;cursor:pointer;font-family:'DM Mono',monospace">🗑 حذف</button>` : ''}
+          </div>
+        </div>
+
+        <!-- EDIT BUNDLE INFO -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">اسم العرض (EN)</div>
+            <input class="admin-input" style="width:100%" id="bname-${b.id}" value="${b.name}" placeholder="Bundle name">
+          </div>
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">اسم العرض (AR)</div>
+            <input class="admin-input" style="width:100%" id="bnamear-${b.id}" value="${b.nameAr || ''}" placeholder="اسم العرض">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">الوصف (EN)</div>
+            <input class="admin-input" style="width:100%" id="bdesc-${b.id}" value="${b.desc || ''}" placeholder="Bundle description">
+          </div>
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">الوصف (AR)</div>
+            <input class="admin-input" style="width:100%" id="bdescAr-${b.id}" value="${b.descAr || ''}" placeholder="وصف العرض">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:end;margin-bottom:14px">
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">التوفير (EGP)</div>
+            <input class="admin-input" style="width:110px" type="number" min="0" id="bsave-${b.id}" value="${b.save}" placeholder="0">
+          </div>
+          <div style="font-size:9px;color:#555;font-family:'DM Mono',monospace;padding-bottom:10px">
+            السعر الأصلي: <span style="color:#fff" id="borig-display-${b.id}">${orig} EGP</span> &nbsp;·&nbsp; السعر بعد الخصم: <span style="color:var(--A)" id="bdisc-display-${b.id}">${disc} EGP</span>
+          </div>
+        </div>
+
+        <!-- PRODUCTS IN BUNDLE -->
+        <div style="margin-bottom:14px">
+          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:8px">المنتجات داخل العرض</div>
+          ${prods.map(p => p ? `<div style="background:#050505;border:1px solid #111;padding:10px 14px;margin-bottom:4px;display:flex;align-items:center;gap:10px">
+            <div style="width:36px;height:36px;overflow:hidden;border:1px solid #1a1a1a;flex-shrink:0">${pv(p, 36, 0)}</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;color:#aaa">${p.name.toUpperCase()}</div>
+            <div style="font-size:9px;color:#555;font-family:'DM Mono',monospace;margin-left:auto">${p.price} EGP</div>
+          </div>` : '').join('')}
+        </div>
+
+        <button class="admin-btn" onclick="saveBundleInfo('${b.id}')" style="font-size:10px;padding:7px 18px">💾 حفظ بيانات العرض</button>
+      </div>`;
+      }).join('')}`;
+
+      // Live update discount display when save amount changes
+      BUNDLES.forEach(b => {
+        const saveInput = document.getElementById(`bsave-${b.id}`);
+        if (saveInput) {
+          saveInput.addEventListener('input', () => updateBundleOrigPrice(b.id));
+        }
+      });
+    }
+
+    function saveBundleProductInfo(bundleId, productId) {
+      // NOTE: We do NOT edit the original PRODUCTS array here — that would corrupt shared product data.
+      // This section is display-only; the bundle uses the live PRODUCTS data.
+      // Only the bundle's own save/discount values are edited in saveBundleInfo.
+      updateBundleOrigPrice(bundleId);
+      addToast('تم تحديث حسابات العرض ✓', 'success');
+    }
+
+    function updateBundleOrigPrice(bundleId) {
+      const b = BUNDLES.find(x => x.id === bundleId);
+      if (!b) return;
+      // Read prices live from inputs if available, otherwise from PRODUCTS
+      const orig = b.products.reduce((s, pid) => {
+        const priceInput = document.getElementById(`bp-price-${bundleId}-${pid}`);
+        const p = PRODUCTS.find(x => x.id === pid);
+        const price = priceInput ? (parseInt(priceInput.value) || 0) : (p ? p.price : 0);
+        return s + price;
+      }, 0);
+      const saveInput = document.getElementById(`bsave-${bundleId}`);
+      const save = saveInput ? (parseInt(saveInput.value) || 0) : b.save;
+      const origDisplay = document.getElementById(`borig-display-${bundleId}`);
+      const discDisplay = document.getElementById(`bdisc-display-${bundleId}`);
+      if (origDisplay) origDisplay.textContent = `${orig} EGP`;
+      if (discDisplay) discDisplay.textContent = `${orig - save} EGP`;
+    }
+
+    async function saveBundleInfo(bundleId) {
+      const b = BUNDLES.find(x => x.id === bundleId);
+      if (!b) return;
+      const nameEl = document.getElementById(`bname-${bundleId}`);
+      const nameArEl = document.getElementById(`bnamear-${bundleId}`);
+      const descEl = document.getElementById(`bdesc-${bundleId}`);
+      const descArEl = document.getElementById(`bdescAr-${bundleId}`);
+      const saveEl = document.getElementById(`bsave-${bundleId}`);
+      if (nameEl && nameEl.value.trim()) b.name = nameEl.value.trim();
+      if (nameArEl && nameArEl.value.trim()) b.nameAr = nameArEl.value.trim();
+      if (descEl) b.desc = descEl.value;
+      if (descArEl) b.descAr = descArEl.value;
+      if (saveEl && !isNaN(parseInt(saveEl.value))) b.save = parseInt(saveEl.value);
+      // Save to Supabase
+      const ok = await supabaseUpsertBundle({
+        id: b.id,
+        name: b.name,
+        name_ar: b.nameAr,
+        description: b.desc,
+        description_ar: b.descAr,
+        products: b.products,
+        save: b.save,
+        bg_from: b.bgFrom || '#080808',
+        bg_to: b.bgTo || '#020202',
+        custom: b._custom || false
+      });
+      addToast(ok ? `${b.name} — تم الحفظ ✓` : `${b.name} — حُفظ محلياً فقط ⚠`, ok ? 'success' : 'info');
+    }
+
+    const adminHiddenBundles = new Set(JSON.parse(localStorage.getItem('axs_hidden_bundles') || '[]'));
+
+    async function saveHiddenBundles() {
+      const val = JSON.stringify([...adminHiddenBundles]);
+      localStorage.setItem('axs_hidden_bundles', val);
+      await supabaseSetting('hidden_bundles', val);
+    }
+
+    function toggleHideBundle(bundleId) {
+      if (adminHiddenBundles.has(bundleId)) {
+        adminHiddenBundles.delete(bundleId);
+      } else {
+        adminHiddenBundles.add(bundleId);
+      }
+      saveHiddenBundles();
+      const card = document.getElementById(`bmc-${bundleId}`);
+      if (card) card.style.opacity = adminHiddenBundles.has(bundleId) ? '0.45' : '1';
+      const visToggle = document.getElementById(`bvis-toggle-${bundleId}`);
+      if (visToggle) {
+        const hidden = adminHiddenBundles.has(bundleId);
+        visToggle.style.background = hidden ? '' : '#4caf50';
+        visToggle.classList.toggle('on', !hidden);
+        const label = visToggle.previousElementSibling;
+        if (label) { label.textContent = hidden ? 'مخفي' : 'ظاهر'; label.style.color = hidden ? '#888' : '#4caf50'; }
+      }
+      const b = BUNDLES.find(x => x.id === bundleId);
+      addToast(`${b ? b.name : ''} — ${adminHiddenBundles.has(bundleId) ? 'تم الإخفاء 🙈' : 'تم الإظهار ✓'}`, adminHiddenBundles.has(bundleId) ? 'info' : 'success');
+    }
+
+    // ── IMAGE PREVIEW HELPERS ─────────────────────────────────────────────────────
+    function updateImgPreview(colorId, imgNum, src) {
+      const box = document.getElementById(`prev${imgNum}-${colorId}`);
+      if (!box) return;
+      const trimmed = src.trim();
+      if (!trimmed) {
+        box.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>`;
+        box.onclick = () => { };
+        return;
+      }
+      box.innerHTML = `<img src="${trimmed}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#f44336;text-align:center;padding:2px\\'>✕ خطأ</div>'">`;
+      box.onclick = () => openImgPreviewFull(trimmed);
+    }
+
+    function openImgPreviewFull(src) {
+      if (!src || !src.trim()) return;
+      const modal = document.getElementById('zoom-modal');
+      const inner = document.getElementById('zoom-inner');
+      if (!modal || !inner) return;
+      inner.innerHTML = `<div style="height:600px;overflow:hidden;background:#050505;"><img src="${src.trim()}" style="width:100%;height:100%;object-fit:contain;display:block" onerror="this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;color:#555;font-size:12px;letter-spacing:3px;font-family:DM Mono,monospace\\'>الصورة مش موجودة ✕</div>'"></div>`;
+      modal.classList.add('open');
+    }
+
+    async function toggleSoldOut(productId, currentState, stockId) {
+      const newState = !currentState;
+      let ok = false;
+      if (stockId && stockId !== '') {
+        ok = await supabaseUpdate('product_stock', stockId, { sold_out: newState });
+      } else {
+        // Insert if not exists
+        const res = await supabaseInsert('product_stock', { product_id: productId, sold_out: newState, stock: PRODUCTS.find(p => p.id === productId)?.stock || {} });
+        ok = res;
+      }
+      if (ok) {
+        // Update local cache
+        S.productStock[productId] = { ...(S.productStock[productId] || {}), sold_out: newState };
+        const toggle = document.getElementById(`toggle-${productId}`);
+        if (toggle) toggle.classList.toggle('on', newState);
+        const label = toggle?.previousElementSibling;
+        if (label) { label.textContent = newState ? 'SOLD OUT' : 'IN STOCK'; label.style.color = newState ? 'var(--A)' : '#555'; }
+        addToast(`${PRODUCTS.find(p => p.id === productId)?.name} → ${newState ? 'SOLD OUT' : 'IN STOCK'}`, newState ? 'error' : 'success');
+      } else { addToast('فشل التحديث', 'error'); }
+    }
+
+    async function updateSizeStock(productId, size, newQty, stockId) {
+      const qty = parseInt(newQty) || 0;
+      const current = S.productStock[productId] || {};
+      const currentStock = { ...(current.stock || PRODUCTS.find(p => p.id === productId)?.stock || {}) };
+      currentStock[size] = qty;
+
+      let ok = false;
+      if (stockId && stockId !== '') {
+        ok = await supabaseUpdate('product_stock', stockId, { stock: currentStock });
+      } else {
+        ok = await supabaseInsert('product_stock', { product_id: productId, sold_out: false, stock: currentStock });
+      }
+      if (ok) {
+        S.productStock[productId] = { ...current, stock: currentStock };
+        addToast(`Stock updated: ${size} → ${qty}`, 'success');
+      } else { addToast('فشل التحديث', 'error'); }
+    }
+
+    const pendingColorUpdates = {}; // store unsaved changes per colorId
+
+    function updateColorField(colorId, field, value, productId) {
+      if (!pendingColorUpdates[colorId]) pendingColorUpdates[colorId] = { productId };
+      pendingColorUpdates[colorId][field] = value;
+      // Update swatch preview live
+      if (field === 'hex') {
+        const swatch = document.querySelector(`#color-row-${colorId} .color-swatch-admin`);
+        if (swatch) swatch.style.background = value;
+      }
+    }
+
+    async function saveColorRow(colorId, productId) {
+      const updates = pendingColorUpdates[colorId];
+      if (!updates || Object.keys(updates).filter(k => k !== 'productId').length === 0) {
+        addToast('مفيش تغييرات للحفظ', 'info'); return;
+      }
+      const { productId: _, ...data } = updates;
+      const ok = await supabaseUpdate('product_colors', colorId, data);
+      if (ok) {
+        delete pendingColorUpdates[colorId];
+        // Update local cache
+        if (S.productColors[productId]) {
+          const idx = S.productColors[productId].findIndex(c => c.id === colorId);
+          if (idx >= 0) S.productColors[productId][idx] = { ...S.productColors[productId][idx], ...data };
+        }
+        addToast('تم حفظ اللون ✓', 'success');
+      } else { addToast('فشل الحفظ', 'error'); }
+    }
+
+    async function deleteColor(colorId, productId) {
+      if (!confirm('مؤكد إنك عايز تحذف اللون ده؟')) return;
+      const ok = await supabaseDelete('product_colors', colorId);
+      if (ok) {
+        document.getElementById(`color-row-${colorId}`)?.remove();
+        if (S.productColors[productId]) S.productColors[productId] = S.productColors[productId].filter(c => c.id !== colorId);
+        addToast('تم حذف اللون', 'info');
+        // Show add button if now < 4 colors
+        const colorsList = document.getElementById(`colors-list-${productId}`);
+        const remaining = colorsList?.children.length || 0;
+        if (remaining < 4 && !document.querySelector(`#pmc-${productId} .admin-btn-sm[onclick*="addNewColor"]`)) {
+          const btn = document.createElement('button');
+          btn.className = 'admin-btn-sm';
+          btn.style.marginTop = '8px';
+          btn.textContent = '+ إضافة لون';
+          btn.onclick = () => addNewColor(productId);
+          colorsList?.parentNode?.appendChild(btn);
+        }
+      } else { addToast('فشل الحذف', 'error'); }
+    }
+
+    async function addNewColor(productId) {
+      const colorsList = document.getElementById(`colors-list-${productId}`);
+      if (!colorsList) return;
+      const currentCount = colorsList.children.length;
+      if (currentCount >= 4) { addToast('الحد الأقصى 4 ألوان', 'info'); return; }
+
+      const newColor = {
+        product_id: productId,
+        name: 'New Color',
+        name_ar: 'لون جديد',
+        hex: '#333333',
+        img1: '',
+        img2: '',
+        sort_order: currentCount + 1
+      };
+
+      // Insert to Supabase and get back the ID
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/product_colors`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify(newColor)
+        });
+        const data = await res.json();
+        if (data && data[0]) {
+          const c = data[0];
+          if (!S.productColors[productId]) S.productColors[productId] = [];
+          S.productColors[productId].push(c);
+          const row = document.createElement('div');
+          row.className = 'color-manage-row';
+          row.id = `color-row-${c.id}`;
+          row.innerHTML = `
+        <div class="color-swatch-admin" style="background:${c.hex}"></div>
+        <input class="admin-input" style="width:80px" value="${c.hex}" placeholder="#000000" onchange="updateColorField('${c.id}','hex',this.value,${productId})">
+        <input class="admin-input" style="flex:1" value="${c.name}" placeholder="Name (EN)" onchange="updateColorField('${c.id}','name',this.value,${productId})">
+        <input class="admin-input" style="flex:1" value="${c.name_ar}" placeholder="الاسم بالعربي" onchange="updateColorField('${c.id}','name_ar',this.value,${productId})">
+        <div style="display:flex;flex-direction:column;gap:3px;flex:1">
+          <div style="display:flex;align-items:center;gap:4px">
+            <input class="admin-input" style="flex:1;min-width:0" id="img1-${c.id}" value="" placeholder="img1.png" onchange="updateColorField('${c.id}','img1',this.value,${productId});updateImgPreview('${c.id}',1,this.value)" oninput="updateImgPreview('${c.id}',1,this.value)">
+            <div id="prev1-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('',this)" title="معاينة">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px">
+            <input class="admin-input" style="flex:1;min-width:0" id="img2-${c.id}" value="" placeholder="img2.png" onchange="updateColorField('${c.id}','img2',this.value,${productId});updateImgPreview('${c.id}',2,this.value)" oninput="updateImgPreview('${c.id}',2,this.value)">
+            <div id="prev2-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('',this)" title="معاينة">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>
+            </div>
+          </div>
+        </div>
+        <button class="admin-btn-sm" onclick="saveColorRow('${c.id}',${productId})" style="white-space:nowrap">حفظ</button>
+        <button class="admin-btn-danger" onclick="deleteColor('${c.id}',${productId})" style="white-space:nowrap">حذف</button>`;
+          colorsList.appendChild(row);
+          // Hide add button if now 4 colors
+          if (currentCount + 1 >= 4) {
+            document.querySelector(`#pmc-${productId} .admin-btn-sm[onclick*="addNewColor"]`)?.remove();
+          }
+          addToast('تم إضافة اللون — عدل البيانات واحفظ', 'success');
+        }
+      } catch (e) { addToast('فشل إضافة اللون', 'error'); }
     }
 
     async function loadAdminOrders() {
@@ -2759,15 +4118,29 @@
       setTimeout(() => document.getElementById('admin-pass-input')?.focus(), 100);
     }
 
-    function checkAdminPass() {
-      const val = document.getElementById('admin-pass-input')?.value || '';
-      if (val === ADMIN_PASS) {
-        sessionStorage.setItem('axs_admin', '1');
-        renderAdmin();
-      } else {
-        document.getElementById('admin-pass-err').textContent = 'باسورد غلط — حاول تاني';
-        document.getElementById('admin-pass-input').value = '';
-        document.getElementById('admin-pass-input').focus();
+    async function checkAdminPass() {
+      const val = document.getElementById('admin-pass-input')?.value?.trim() || '';
+      if (!val) return;
+      const btn = document.querySelector('.admin-btn.btn-full');
+      const errEl = document.getElementById('admin-pass-err');
+      if (btn) { btn.disabled = true; btn.textContent = '...'; }
+      if (errEl) errEl.textContent = '';
+      try {
+        // Fetch admin_password from Supabase settings
+        const rows = await supabaseFetch('settings', 'key=eq.admin_password');
+        const stored = Array.isArray(rows) && rows[0] ? rows[0].value : null;
+        if (stored && val === stored) {
+          sessionStorage.setItem('axs_admin', '1');
+          renderAdmin();
+        } else {
+          if (errEl) errEl.textContent = 'باسورد غلط — حاول تاني';
+          const input = document.getElementById('admin-pass-input');
+          if (input) { input.value = ''; input.focus(); }
+        }
+      } catch (e) {
+        if (errEl) errEl.textContent = 'خطأ في الاتصال — حاول تاني';
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'ENTER →'; }
       }
     }
 
@@ -2789,19 +4162,75 @@
     ];
 
     const PRODUCTS = [
-      { id: 1, name: 'AXS phantom tee', nameAr: 'فانتوم تيشيرت', category: 'T-SHIRTS', price: 500, oldPrice: 690, badge: 'DROP 014', rating: 4.7, reviewCount: 31, sizes: ['S', 'M', 'L', 'XL', 'XXL'], stock: { S: 3, M: 8, L: 5, XL: 2, XXL: 1 }, desc: '100% heavy cotton - oversized fit - screen print.', descAr: 'قطن ثقيل 100%. قياس oversized. طباعة سكرين.', details: ['100% heavy cotton', 'Oversized fit', 'Screen print', 'Dropped shoulder', 'Garment washed'], detailsAr: ['قطن ثقيل 100%', 'قياس oversized', 'طباعة سكرين', 'كتف منخفض', 'مغسول'], bgFrom: '#040410', bgTo: '#000003', wm: '#07071a', related: [4, 6, 2] },
-      { id: 2, name: 'Voidwash Denim', nameAr: 'جينز Voidwash', category: 'PANTS', price: 820, oldPrice: 1000, badge: 'NEW', rating: 4.5, reviewCount: 18, sizes: ['S', 'M', 'L', 'XL'], stock: { S: 2, M: 4, L: 7, XL: 3 }, desc: 'Baggy silhouette acid-washed to near-black. Raw hem. Wide leg.', descAr: 'سيلويت baggy مغسول حمضياً. حاشية خام. رجل واسعة.', details: ['100% cotton denim', 'Acid-wash finish', 'Wide-leg silhouette', 'Raw hem', 'Front+back pockets'], detailsAr: ['100% قطن دنيم', 'تشطيب acid-wash', 'سيلويت wide-leg', 'حاشية خام', 'جيوب أمامية وخلفية'], bgFrom: '#060810', bgTo: '#020306', wm: '#0a0c1c', related: [5, 1, 3] },
-      { id: 3, name: 'AXS Logo Cap', nameAr: 'كاب AXS', category: 'ACCESSORIES', price: 350, oldPrice: null, badge: null, rating: 4.9, reviewCount: 44, sizes: ['ONE SIZE'], stock: { 'ONE SIZE': 15 }, desc: '6-panel structured cap. Tonal embroidered AXS logo. Adjustable strap.', descAr: 'كاب 6 ألواح مُهيكل. شعار AXS مطرز.', details: ['100% cotton twill', 'Structured 6-panel', 'Tonal embroidered logo', 'Adjustable snapback', 'One size fits most'], detailsAr: ['100% قطن تويل', '6 ألواح مُهيكلة', 'شعار مطرز', 'snapback قابل للتعديل', 'مقاس موحد'], bgFrom: '#0a0a0a', bgTo: '#030303', wm: '#141414', related: [1, 4, 6] },
-      { id: 4, name: 'Cropped Zip Hood', nameAr: 'هودي كروبد', category: 'HOODIES', price: 870, oldPrice: null, badge: 'LIMITED', rating: 4.8, reviewCount: 24, sizes: ['S', 'M', 'L', 'XL', 'XXL'], stock: { S: 1, M: 2, L: 1, XL: 3, XXL: 1 }, desc: 'Cropped fit. Full zip. White contrast stitching on black. Limited run.', descAr: 'قياس كروبد. زيب كامل. خياطة بيضاء تباينية.', details: ['360gsm cotton', 'Cropped silhouette', 'YKK full zip', 'White contrast stitching', 'Fitted ribbed hem'], detailsAr: ['قطن 360gsm', 'سيلويت كروبد', 'زيب YKK كامل', 'خياطة بيضاء تباينية', 'حاشية مضلعة'], bgFrom: '#101010', bgTo: '#040404', wm: '#1a1a1a', related: [1, 2, 6] },
-      { id: 5, name: 'Tactical Cargo', nameAr: 'كارجو تاكتيكال', category: 'PANTS', price: 950, oldPrice: null, badge: 'NEW', rating: 4.6, reviewCount: 12, sizes: ['S', 'M', 'L', 'XL'], stock: { S: 6, M: 9, L: 4, XL: 5 }, desc: 'Multi-pocket cargo. Relaxed tapered fit. Heavy twill. Six pockets.', descAr: 'كارجو متعدد الجيوب. قياس tapered مريح.', details: ['Heavy cotton twill', 'Relaxed tapered fit', '6 pockets total', 'Adjustable ankle cord', 'YKK zippers'], detailsAr: ['تويل قطن ثقيل', 'قياس tapered مريح', '6 جيوب', 'حبل كاحل قابل للتعديل', 'سحابات YKK'], bgFrom: '#080a05', bgTo: '#030402', wm: '#0f1208', related: [2, 1, 6] },
-      { id: 6, name: 'Oversized Tee', nameAr: 'تيشيرت أوفرسايز', category: 'T-SHIRTS', price: 450, oldPrice: 550, badge: null, rating: 4.7, reviewCount: 67, sizes: ['S', 'M', 'L', 'XL', 'XXL'], stock: { S: 12, M: 20, L: 15, XL: 8, XXL: 4 }, desc: '240gsm cotton. Boxy cut. Garment-dyed black. Back graphic print.', descAr: 'قطن 240gsm. قطع boxy. مصبوغ أسود.', details: ['240gsm cotton', 'Boxy oversized cut', 'Garment-dyed', 'Back graphic print', 'Dropped shoulder'], detailsAr: ['قطن 240gsm', 'قطع boxy oversized', 'مصبوغ بعد التصنيع', 'طباعة خلفية', 'كتف منخفض'], bgFrom: '#080808', bgTo: '#020202', wm: '#111', related: [1, 3, 4] },
+      { id: 1, name: 'AXS phantom tee', nameAr: 'فانتوم تيشيرت', category: 'T-SHIRTS', price: 500, oldPrice: 690, badge: 'DROP 001', rating: 4.7, reviewCount: 31, sizes: ['M', 'L', 'XL', 'XXL'], stock: { S: 3, M: 8, L: 5, XL: 2, XXL: 1 }, desc: '100% heavy cotton - oversized fit - screen print.', descAr: 'قطن ثقيل 100%. قياس oversized. طباعة سكرين.', details: ['100% heavy cotton', 'Oversized fit', 'Screen print', 'Dropped shoulder', 'Garment washed'], detailsAr: ['قطن ثقيل 100%', 'قياس oversized', 'طباعة سكرين', 'كتف منخفض', 'مغسول'], bgFrom: '#040410', bgTo: '#000003', wm: '#07071a', related: [4, 6, 2] },
+      { id: 2, name: 'Voidwash Denim', nameAr: 'جينز Voidwash', category: 'PANTS', price: 820, oldPrice: 1000, badge: 'NEW', rating: 4.5, reviewCount: 18, sizes: ['M', 'L', 'XL'], stock: { S: 2, M: 4, L: 7, XL: 3 }, desc: 'Baggy silhouette acid-washed to near-black. Raw hem. Wide leg.', descAr: 'سيلويت baggy مغسول حمضياً. حاشية خام. رجل واسعة.', details: ['100% cotton denim', 'Acid-wash finish', 'Wide-leg silhouette', 'Raw hem', 'Front+back pockets'], detailsAr: ['100% قطن دنيم', 'تشطيب acid-wash', 'سيلويت wide-leg', 'حاشية خام', 'جيوب أمامية وخلفية'], bgFrom: '#060810', bgTo: '#020306', wm: '#0a0c1c', related: [5, 1, 3] },
+      { id: 3, name: 'AXS Logo Cap', nameAr: 'كاب AXS', category: 'ACCESSORIES', price: 200, oldPrice: 300, badge: null, rating: 4.2, reviewCount: 44, sizes: ['ONE SIZE'], stock: { 'ONE SIZE': 15 }, desc: '6-panel structured cap. Tonal embroidered AXS logo. Adjustable strap.', descAr: 'كاب 6 ألواح مُهيكل. شعار AXS مطرز.', details: ['100% cotton twill', 'Structured 6-panel', 'Tonal embroidered logo', 'Adjustable snapback', 'One size fits most'], detailsAr: ['100% قطن تويل', '6 ألواح مُهيكلة', 'شعار مطرز', 'snapback قابل للتعديل', 'مقاس موحد'], bgFrom: '#0a0a0a', bgTo: '#030303', wm: '#141414', related: [1, 4, 6] },
+      { id: 4, name: 'Cropped Zip Hood', nameAr: 'هودي كروبد', category: 'HOODIES', price: 870, oldPrice: null, badge: 'LIMITED', rating: 4.8, reviewCount: 24, sizes: ['M', 'L', 'XL', 'XXL'], stock: { S: 1, M: 2, L: 1, XL: 3, XXL: 1 }, desc: 'Cropped fit. Full zip. White contrast stitching on black. Limited run.', descAr: 'قياس كروبد. زيب كامل. خياطة بيضاء تباينية.', details: ['360gsm cotton', 'Cropped silhouette', 'YKK full zip', 'White contrast stitching', 'Fitted ribbed hem'], detailsAr: ['قطن 360gsm', 'سيلويت كروبد', 'زيب YKK كامل', 'خياطة بيضاء تباينية', 'حاشية مضلعة'], bgFrom: '#101010', bgTo: '#040404', wm: '#1a1a1a', related: [1, 2, 6] },
+      { id: 5, name: 'wide leg pants', nameAr: 'وايد ليج سويت بانتس ', category: 'PANTS', price: 400, oldPrice: 550, badge: 'NEW', rating: 4.6, reviewCount: 12, sizes: ['M', 'L', 'XL', 'XXL'], stock: { S: 6, M: 9, L: 4, XL: 5 }, desc: '100% Egyption cotton. oversized fit. Heavy cotton.', descAr: '100% قطن مصري. مقاس كبير. قطن ثقيل.', details: ['Heavy cotton twill', 'Relaxed tapered fit', '6 pockets total', 'Adjustable ankle cord', 'YKK zippers'], detailsAr: ['تويل قطن ثقيل', 'قياس tapered مريح', '6 جيوب', 'حبل كاحل قابل للتعديل', 'سحابات YKK'], bgFrom: '#080a05', bgTo: '#030402', wm: '#0f1208', related: [2, 1, 6] },
+      { id: 6, name: 'Oversized Tee', nameAr: 'تيشيرت أوفرسايز', category: 'T-SHIRTS', price: 450, oldPrice: 550, badge: null, rating: 4.7, reviewCount: 67, sizes: ['M', 'L', 'XL', 'XXL'], stock: { S: 12, M: 20, L: 15, XL: 8, XXL: 4 }, desc: '240gsm cotton. Boxy cut. Garment-dyed black. Back graphic print.', descAr: 'قطن 240gsm. قطع boxy. مصبوغ أسود.', details: ['240gsm cotton', 'Boxy oversized cut', 'Garment-dyed', 'Back graphic print', 'Dropped shoulder'], detailsAr: ['قطن 240gsm', 'قطع boxy oversized', 'مصبوغ بعد التصنيع', 'طباعة خلفية', 'كتف منخفض'], bgFrom: '#080808', bgTo: '#020202', wm: '#111', related: [1, 3, 4] },
     ];
 
-    const BUNDLES = [
-      { id: 'b1', name: 'The Phantom Set', nameAr: 'طقم الشبح', products: [1, 3], save: 150, desc: 'Phantom Tee + AXS Logo Cap', descAr: 'تيشيرت فانتوم + كاب AXS', bgFrom: '#040410', bgTo: '#000003' },
-      { id: 'b2', name: 'The Street Kit', nameAr: 'طقم الشارع', products: [4, 2], save: 200, desc: 'Cropped Zip Hood + Voidwash Denim', descAr: 'هودي كروبد + جينز Voidwash', bgFrom: '#060810', bgTo: '#020306' },
-      { id: 'b3', name: 'The Essential Pack', nameAr: 'الباك الأساسي', products: [6, 5], save: 170, desc: 'Oversized Tee + Tactical Cargo', descAr: 'تيشيرت أوفرسايز + كارجو تاكتيكال', bgFrom: '#080808', bgTo: '#020202' },
+    const BUNDLES_DEFAULT = [
+      { id: 'b1', name: 'The Phantom Set', nameAr: 'فانتوم كيت ', products: [1, 3], save: 150, desc: 'Phantom Tee + AXS Logo Cap', descAr: 'تيشيرت فانتوم + كاب AXS', bgFrom: '#040410', bgTo: '#000003' },
+      { id: 'b2', name: 'The Street Kit', nameAr: 'ستريت كيت ', products: [4, 2], save: 200, desc: 'Cropped Zip Hood + Voidwash Denim', descAr: 'هودي كروبد + جينز Voidwash', bgFrom: '#060810', bgTo: '#020306' },
+      { id: 'b3', name: 'The Essential Pack', nameAr: 'الباكدج المميز ', products: [6, 5], save: 170, desc: 'Oversized Tee + Tactical Cargo', descAr: 'تيشيرت أوفرسايز + كارجو تاكتيكال', bgFrom: '#080808', bgTo: '#020202' },
     ];
+    const BUNDLES_CUSTOM = JSON.parse(localStorage.getItem('axs_custom_bundles') || '[]');
+    const BUNDLES = [...BUNDLES_DEFAULT, ...BUNDLES_CUSTOM];
+
+    function saveCustomBundles() {
+      const custom = BUNDLES.filter(b => b._custom);
+      localStorage.setItem('axs_custom_bundles', JSON.stringify(custom));
+    }
+
+    async function addNewBundle() {
+      const name = (document.getElementById('nb-name') || {}).value?.trim();
+      const nameAr = (document.getElementById('nb-namear') || {}).value?.trim();
+      const desc = (document.getElementById('nb-desc') || {}).value?.trim();
+      const descAr = (document.getElementById('nb-descar') || {}).value?.trim();
+      const save = parseInt((document.getElementById('nb-save') || {}).value) || 0;
+      const prodIds = [];
+      document.querySelectorAll('.nb-prod-check:checked').forEach(cb => prodIds.push(parseInt(cb.value)));
+      if (!name) { addToast('اكتب اسم العرض الأول', 'error'); return; }
+      if (prodIds.length < 2) { addToast('اختار منتجين على الأقل', 'error'); return; }
+      const newId = 'bc_' + Date.now();
+      const newBundle = {
+        id: newId, _custom: true,
+        name: name, nameAr: nameAr || name,
+        products: prodIds, save,
+        desc: desc || '', descAr: descAr || desc || '',
+        bgFrom: '#080808', bgTo: '#020202'
+      };
+      // Save to Supabase first
+      const ok = await supabaseUpsertBundle({
+        id: newId,
+        name: newBundle.name,
+        name_ar: newBundle.nameAr,
+        description: newBundle.desc,
+        description_ar: newBundle.descAr,
+        products: prodIds,
+        save: save,
+        bg_from: '#080808',
+        bg_to: '#020202',
+        custom: true
+      });
+      BUNDLES.push(newBundle);
+      saveCustomBundles();
+      addToast(ok ? `✓ تم إضافة العرض: ${name}` : `✓ تم إضافة العرض محلياً: ${name}`, ok ? 'success' : 'info');
+      renderBundlesTab();
+    }
+
+    async function deleteCustomBundle(bundleId) {
+      const idx = BUNDLES.findIndex(b => b.id === bundleId);
+      if (idx === -1) return;
+      if (!BUNDLES[idx]._custom) { addToast('مش ممكن تحذف العروض الأساسية', 'error'); return; }
+      const name = BUNDLES[idx].name;
+      await supabaseDeleteBundle(bundleId);
+      BUNDLES.splice(idx, 1);
+      saveCustomBundles();
+      addToast(`🗑 تم حذف العرض: ${name}`, 'info');
+      renderBundlesTab();
+    }
 
     const REVIEWS = {
       1: [{ name: 'Youssef M.', date: 'Apr 2025', rating: 5, text: 'Quality is insane for the price. Perfectly oversized.', verified: true }, { name: 'Karim T.', date: 'Mar 2025', rating: 5, text: 'Heavy, warm, exactly as described.', verified: true }, { name: 'Omar H.', date: 'Feb 2025', rating: 4, text: 'Love the fit. Worth every piaster.', verified: false }],
@@ -2813,7 +4242,6 @@
     };
 
     const SIZE_GUIDE = [
-      { s: 'XS', chest: '84-88', waist: '68-72', hip: '88-92', len: '65' }, { s: 'S', chest: '88-92', waist: '72-76', hip: '92-96', len: '67' },
       { s: 'M', chest: '92-96', waist: '76-80', hip: '96-100', len: '69' }, { s: 'L', chest: '96-100', waist: '80-84', hip: '100-104', len: '71' },
       { s: 'XL', chest: '100-104', waist: '84-88', hip: '104-108', len: '73' }, { s: 'XXL', chest: '104-108', waist: '88-92', hip: '108-112', len: '75' },
     ];
@@ -2849,7 +4277,7 @@
       { name: 'الوادي الجديد', fee: 85, cities: ['الخارجة', 'الداخلة', 'الفرافرة', 'باريس'] },
     ];
 
-    const BADGE_STYLE = { 'NEW': `background:${A};color:#000`, 'LIMITED': 'background:#fff;color:#000', 'DROP 014': 'background:rgba(0,0,0,.85);color:#fff;border:1px solid #444' };
+    const BADGE_STYLE = { 'NEW': `background:${A};color:#000`, 'LIMITED': 'background:#fff;color:#000', 'DROP 001': 'background:rgba(0,0,0,.85);color:#fff;border:1px solid #444' };
 
     const TX = {
       en: { shopTheDrop: 'SHOP THE DROP →', viewAll: 'VIEW ALL →', addToCart: 'ADD TO CART', saveWish: '♡ SAVE TO WISHLIST', saved: '♥ SAVED', sizeGuide: 'SIZE GUIDE', chooseSize: 'CHOOSE SIZE', checkout: 'CHECKOUT →', continueShopping: '← CONTINUE SHOPPING', confirmPayment: 'CONFIRM PAYMENT →', shipping: 'SHIPPING', payment: 'PAYMENT', orderSummary: 'ORDER SUMMARY', subtotal: 'SUBTOTAL', total: 'TOTAL', promoCode: 'PROMO CODE', apply: 'APPLY', discount: 'DISCOUNT', trackOrder: 'TRACK ORDER', enterOrder: 'ENTER ORDER NUMBER', track: 'TRACK →', about: 'ABOUT', shop: 'SHOP', drops: 'DROPS', bundles: 'BUNDLES', wishlist: 'WISHLIST', cart: 'CART', noResults: 'No results for', soldOut: 'SOLD OUT', lowStock: 'LOW STOCK', onlyLeft: 'ONLY', left: 'LEFT', related: 'RELATED PRODUCTS', youMightLike: 'YOU MIGHT ALSO LIKE', reviews: 'REVIEWS', customer: 'CUSTOMER', verified: 'VERIFIED', cartEmpty: 'YOUR CART IS EMPTY', wishEmpty: 'YOUR WISHLIST IS EMPTY', shopNow: 'SHOP NOW', size: 'SIZE', nextPayment: 'NEXT: PAYMENT →', orderConfirmed: 'ORDER CONFIRMED', thankyou: 'Thank you', contactYou: "We'll contact you on", toConfirm: 'to confirm your order.', estimatedDelivery: 'Estimated delivery 3–5 business days.', dropAlerts: 'GET DROP ALERTS', stayLoop: 'STAY IN THE LOOP', notify: 'NOTIFY →', notifyPh: 'YOUR PHONE OR EMAIL', builtFor: 'BUILT FOR', theStreets: 'THE STREETS.', theDrop: 'THE DROP', featured: 'FEATURED', collections: 'COLLECTIONS', items: 'ITEMS', collection: 'COLLECTION', taxIncluded: 'TAX INCLUDED · SHIPPING AT CHECKOUT', productDetails: 'PRODUCT DETAILS', shippingReturns: 'SHIPPING & RETURNS', sizingNotes: 'SIZING NOTES', instantBank: 'INSTANT BANK TRANSFER', mobileWallet: 'MOBILE WALLET TRANSFER', payOnDelivery: 'PAY WHEN YOU RECEIVE', cashOnDelivery: 'CASH ON DELIVERY', transferTo: 'TRANSFER TO', uploadScreenshot: 'UPLOAD PAYMENT SCREENSHOT', clickUpload: 'CLICK TO UPLOAD', selectMethod: 'SELECT METHOD', processing: 'Processing', shipped: 'Shipped', outForDelivery: 'Out for delivery', delivered: 'Delivered', orderPlaced: 'Order placed', saveWith: 'SAVE WITH A BUNDLE', addBundle: 'ADD BUNDLE TO CART →', youSave: 'YOU SAVE', latestDrops: 'LATEST DROPS', ourStory: 'OUR STORY', aboutAxs: 'ABOUT AXS', manifesto: 'MANIFESTO', recentlyViewed: 'RECENTLY VIEWED', keepBrowsing: 'KEEP BROWSING', rights: 'ALL RIGHTS RESERVED', allMeasurements: 'ALL MEASUREMENTS IN CENTIMETERS', sizeNote: '* For oversized pieces, size up for extra baggy fit.', fullName: 'FULL NAME', phone: 'PHONE NUMBER', address: 'ADDRESS', scrollHint: '↓ SCROLL', clearCart: 'CLEAR CART', bundlesPage: 'BUNDLES', bundleContains: 'THIS BUNDLE CONTAINS', viewBundle: 'VIEW BUNDLE →', addedToCart: 'added to cart ✓', viewCart: 'VIEW CART', saved2: 'Save', sizeRequired: 'Choose a size for', soldOutSize: 'This size is sold out', allFields: 'Please fill all fields', chooseGov: 'Choose a governorate', chooseCity: 'Choose a city', choosePayment: 'Choose a payment method', cartCleared: 'Cart cleared', chooseSizesFirst: 'Choose sizes for all items first' },
@@ -2870,9 +4298,16 @@
       catFilter: 'ALL', sortFilter: 'FEATURED', shopSearch: '',
       trackInput: '', trackResult: null,
       bundleSizes: {},
+      bundleColors: {},     // { bundleId: { productId: colorId } }
+      color: null,          // اللون المختار في صفحة المنتج
+      productColors: {},    // { productId: [colors array from Supabase] }
+      productStock: {},     // { productId: { sold_out, stock } }
     };
 
-    const END_TIME = new Date(SALE_END).getTime();
+    function getLimitedEndTime() {
+      const saved = localStorage.getItem('axs_limited_end');
+      return new Date(saved || SALE_END).getTime();
+    }
     let countdownInterval = null;
 
     // ═══════════════════════════════════════════════════════════════════════════════
@@ -2894,6 +4329,66 @@
     function getBundleSize(bid, pid) { return (S.bundleSizes[bid] || {})[pid] || null; }
     function setBundleSize(bid, pid, size) { if (!S.bundleSizes[bid]) S.bundleSizes[bid] = {}; S.bundleSizes[bid][pid] = size; render(); }
     function bundleAllSizesSelected(b) { return b.products.every(id => { const p = getProduct(id); if (!p) return false; if (p.sizes.length === 1 && p.sizes[0] === 'ONE SIZE') return true; return !!getBundleSize(b.id, id); }); }
+    function getBundleColor(bid, pid) { return (S.bundleColors[bid] || {})[pid] || null; }
+    function setBundleColor(bid, pid, colorId) { if (!S.bundleColors[bid]) S.bundleColors[bid] = {}; S.bundleColors[bid][pid] = colorId; render(); }
+
+    // ── COLOR & STOCK HELPERS ──────────────────────────────────────────────────
+    function getProductColors(pid) { return S.productColors[pid] || []; }
+    function getProductStock(pid) { return S.productStock[pid] || null; }
+    function isProductSoldOut(pid) {
+      const st = getProductStock(pid);
+      return st ? st.sold_out : false;
+    }
+    function getStockForSize(pid, size) {
+      const st = getProductStock(pid);
+      if (!st) return 99; // fallback to PRODUCTS data
+      const stk = st.stock || {};
+      return stk[size] !== undefined ? stk[size] : 0;
+    }
+    function totalStockFromSupabase(p) {
+      const st = getProductStock(p.id);
+      if (!st) return totalStock(p);
+      if (st.sold_out) return 0;
+      return Object.values(st.stock || {}).reduce((a, b) => a + b, 0);
+    }
+
+    // Load colors and stock for a product from Supabase
+    async function loadProductData(pid) {
+      const [colors, stocks] = await Promise.all([
+        supabaseFetch('product_colors', `product_id=eq.${pid}&order=sort_order.asc`),
+        supabaseFetch('product_stock', `product_id=eq.${pid}`)
+      ]);
+      S.productColors[pid] = Array.isArray(colors) ? colors : [];
+      S.productStock[pid] = Array.isArray(stocks) && stocks.length > 0 ? stocks[0] : null;
+    }
+
+    // Load all products data (for shop page sold out display)
+    async function loadAllProductsData() {
+      const [colors, stocks] = await Promise.all([
+        supabaseFetch('product_colors', 'order=sort_order.asc'),
+        supabaseFetch('product_stock', '')
+      ]);
+      if (Array.isArray(colors)) {
+        colors.forEach(c => { if (!S.productColors[c.product_id]) S.productColors[c.product_id] = []; S.productColors[c.product_id].push(c); });
+      }
+      if (Array.isArray(stocks)) {
+        stocks.forEach(s => { S.productStock[s.product_id] = s; });
+      }
+    }
+
+    function selectColor(colorId) {
+      S.color = colorId;
+      S.imgIdx = 0;
+      render();
+    }
+
+    // Get current color images for product page
+    function getColorImgs(pid) {
+      const colors = getProductColors(pid);
+      if (!colors.length) return null;
+      const sel = colors.find(c => c.id === S.color) || colors[0];
+      return sel ? [sel.img1, sel.img2].filter(Boolean) : null;
+    }
 
     function calcGrandTotal() {
       const raw = S.cart.reduce((s, i) => s + i.price * i.qty, 0);
@@ -2945,6 +4440,12 @@
 
     function pv(p, h = 320, forceImgIdx = null) {
       const idx = forceImgIdx !== null ? forceImgIdx : S.imgIdx;
+      // Try color images first
+      const colorImgs = getColorImgs(p.id);
+      if (colorImgs && colorImgs.length > 0) {
+        const src = colorImgs[idx] || colorImgs[0];
+        return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
+      }
       const src = (IMGS[p.id] || [])[idx] || (IMGS[p.id] || [])[0];
       if (!src) return pvFallback(p, h, idx);
       return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
@@ -2958,16 +4459,23 @@
 
     function productCard(p, showWish = true) {
       const wished = S.wish.includes(p.id);
-      const sl = stockLabel(totalStock(p));
+      const soldOut = isProductSoldOut(p.id);
+      const stockTotal = soldOut ? 0 : totalStockFromSupabase(p);
+      const sl = soldOut ? { label: tx('soldOut'), c: '#555' } : stockLabel(stockTotal);
       const bs = BADGE_STYLE[p.badge] || '';
+      const colors = getProductColors(p.id);
+      const colorDots = colors.length > 0 ? `<div style="display:flex;gap:5px;margin-top:6px">${colors.slice(0, 4).map(c => `<div style="width:14px;height:14px;border-radius:50%;background:${c.hex};border:1px solid rgba(255,255,255,.2)" title="${S.lang === 'ar' ? c.name_ar : c.name}"></div>`).join('')}${colors.length > 4 ? `<span style="font-size:8px;color:var(--text3);font-family:var(--fm);line-height:14px">+${colors.length - 4}</span>` : ''}</div>` : '';
       return `<div class="pcard" onclick="openProduct(${p.id})">
-    <div class="pcard-img">${pv(p, 300, 0)}
+    <div class="pcard-img" style="position:relative">
+      ${pv(p, 300, 0)}
+      ${soldOut ? `<div class="sold-out-overlay"><div class="sold-out-badge-big">${tx('soldOut')}</div></div>` : ''}
       ${showWish ? `<div class="pcard-wish" onclick="event.stopPropagation();toggleWish(${p.id})" style="color:${wished ? A : 'var(--text3)'}">${wished ? '♥' : '♡'}</div>` : ''}
       ${p.badge ? `<div class="pcard-badge" style="${bs}">${p.badge}</div>` : ''}
     </div>
     <div class="pcard-info">
       <div class="pcard-cat">${p.category}</div>
       <div class="pcard-row"><div class="pcard-name">${pName(p).toUpperCase()}</div><div class="pcard-price">${p.oldPrice ? `<div class="pcard-old">${p.oldPrice}</div>` : ''}<span class="pcard-new">${p.price}</span><span class="pcard-eqp">EGP</span></div></div>
+      ${colorDots}
       <div class="pcard-footer"><div>${stars(p.rating, 11)} <span style="font-size:9px;color:var(--text3);font-family:var(--fm)">(${p.reviewCount})</span></div>${sl ? `<span class="stock-badge" style="color:${sl.c};background:${sl.c}22">${sl.label}</span>` : ''}</div>
     </div>
   </div>`;
@@ -2992,29 +4500,64 @@
     // PAGE RENDERS (Home, Shop, Bundles, Bundle Detail, Product, Cart, Checkout, Confirmation, Wishlist, Track, About, Return)
     // ═══════════════════════════════════════════════════════════════════════════════
     function renderHome() {
-      const featured = PRODUCTS.filter(p => p.badge).slice(0, 3);
+      const featured = PRODUCTS.filter(p => !adminHiddenProducts.has(p.id) && p.badge).slice(0, 3);
+      // Pick up to 6 visible products for orbit
+      const orbitProds = PRODUCTS.filter(p => !adminHiddenProducts.has(p.id)).slice(0, 6);
       return `<div>
-    <div class="hero" style="background:radial-gradient(ellipse at 50% 70%,var(--bg3),var(--bg));">
-      <div class="hero-bg-text">AXS</div>
-      ${[20, 40, 60, 80].map(x => `<div style="position:absolute;left:${x}%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.02)"></div>`).join('')}
-      <div style="position:absolute;bottom:0;left:0;right:0;height:35%;background:linear-gradient(to top,var(--bg),transparent)"></div>
-      <div class="hero-content">
-        <div class="hero-tag">FW/25 — VOL.01 — DROP 014</div>
-        <div class="hero-title">AXS</div>
+    <div class="hero hero-aura" style="background:#000;overflow:hidden;">
+
+      <!-- ORBIT RING: product images spinning around the figure -->
+      <div class="orbit-ring" id="orbit-ring">
+        ${orbitProds.map((p, i) => {
+        const angle = (360 / orbitProds.length) * i;
+        return `<div class="orbit-item" style="--angle:${angle}deg;--i:${i};" onclick="openProduct(${p.id})">
+            <div class="orbit-card">
+              ${pv(p, 120, 0)}
+              <div class="orbit-label">${pName(p).toUpperCase()}</div>
+            </div>
+          </div>`;
+      }).join('')}
+      </div>
+
+      <!-- AURA GLOW LAYERS -->
+      <div class="aura-glow aura-glow-1"></div>
+      <div class="aura-glow aura-glow-2"></div>
+      <div class="aura-glow aura-glow-3"></div>
+
+      <!-- HERO FIGURE -->
+      <div class="hero-figure-wrap">
+        <img src="hero.png" class="hero-figure-img" alt="AXS figure"
+          onerror="this.style.display='none';document.getElementById('hero-figure-fallback').style.display='flex'">
+        <div id="hero-figure-fallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;">
+          <div style="font-family:var(--fd);font-size:clamp(80px,20vw,160px);color:rgba(255,255,255,.04);letter-spacing:10px">AXS</div>
+        </div>
+      </div>
+
+      <!-- VERTICAL GRID LINES -->
+      ${[20, 40, 60, 80].map(x => `<div style="position:absolute;left:${x}%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.015);pointer-events:none"></div>`).join('')}
+
+      <!-- BOTTOM FADE -->
+      <div style="position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,#000,transparent);pointer-events:none;z-index:6"></div>
+
+      <!-- HERO TEXT -->
+      <div class="hero-content" style="position:relative;z-index:7;">
+        <div class="hero-tag">FW/25 — VOL.01 — DROP 001</div>
+        <div class="hero-title" style="mix-blend-mode:normal">AXS</div>
         <div class="hero-sub">${S.lang === 'ar' ? 'صمت مخيط بالقطن.' : 'Silence stitched in cotton.'}</div>
         <div class="hero-sub2">${S.lang === 'ar' ? 'ستريتوير مصمم لما بعد منتصف الليل.' : 'Streetwear engineered for the after-hours.'}</div>
         <button class="btn" onclick="navigate('shop')">${tx('shopTheDrop')}</button>
       </div>
-      <div class="hero-scroll">${tx('scrollHint')}</div>
+
+      <div class="hero-scroll" style="z-index:7;position:absolute;">${tx('scrollHint')}</div>
     </div>
-    <div class="ticker"><div class="ticker-track"><span>AXS DROP 014 — THE SPOTLIGHT EDIT — LIMITED PIECES — USE CODE AXS10 FOR 10% OFF — CASH ON DELIVERY AVAILABLE — &nbsp;&nbsp;</span><span>AXS DROP 014 — THE SPOTLIGHT EDIT — LIMITED PIECES — USE CODE AXS10 FOR 10% OFF — CASH ON DELIVERY AVAILABLE — &nbsp;&nbsp;</span></div></div>
+    <div class="ticker"><div class="ticker-track"><span>AXS DROP 001 — PHANTOM ERA — LIMITED PIECES — USE CODE AXS10 FOR 10% OFF — CASH ON DELIVERY AVAILABLE — &nbsp;&nbsp;</span><span>AXS DROP 001 — PHANTOM ERA — LIMITED PIECES — USE CODE AXS10 FOR 10% OFF — CASH ON DELIVERY AVAILABLE — &nbsp;&nbsp;</span></div></div>
     <div class="section">
       <div class="section-header"><div><div class="section-tag">02 — ${tx('featured').toUpperCase()}</div><div class="section-title">${tx('theDrop').toUpperCase()}</div></div><button class="btn-outline" onclick="navigate('shop')">${tx('viewAll')}</button></div>
       <div class="grid-2">${featured.map(p => productCard(p)).join('')}</div>
     </div>
     <div style="padding:0 24px 64px;max-width:1200px;margin:0 auto">
       <div class="section-header"><div><div class="section-tag">06 — ${tx('bundlesPage').toUpperCase()}</div><div class="section-title">${tx('saveWith').toUpperCase()}</div></div><button class="btn-outline" onclick="navigate('bundles')">${tx('viewAll')}</button></div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px">${BUNDLES.map(b => bundleCard(b)).join('')}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px">${BUNDLES.filter(b => !adminHiddenBundles.has(b.id)).map(b => bundleCard(b)).join('')}</div>
     </div>
     <div class="section">
       <div class="section-tag">03 — ${tx('collections').toUpperCase()}</div>
@@ -3050,7 +4593,7 @@
     }
 
     function renderShop() {
-      let items = PRODUCTS.filter(p => S.catFilter === 'ALL' || p.category === S.catFilter).filter(p => !S.shopSearch || pName(p).toLowerCase().includes(S.shopSearch.toLowerCase()));
+      let items = PRODUCTS.filter(p => !adminHiddenProducts.has(p.id)).filter(p => S.catFilter === 'ALL' || p.category === S.catFilter).filter(p => !S.shopSearch || pName(p).toLowerCase().includes(S.shopSearch.toLowerCase()));
       if (S.sortFilter === 'PRICE: LOW') items = [...items].sort((a, b) => a.price - b.price);
       if (S.sortFilter === 'PRICE: HIGH') items = [...items].sort((a, b) => b.price - a.price);
       if (S.sortFilter === 'RATING') items = [...items].sort((a, b) => b.rating - a.rating);
@@ -3074,7 +4617,7 @@
     <div class="section-tag">06 — ${tx('bundlesPage').toUpperCase()}</div>
     <div class="section-title" style="margin-bottom:8px;font-size:clamp(36px,7vw,64px)">${tx('saveWith').toUpperCase()}</div>
     <p style="font-size:13px;color:var(--text3);font-family:Georgia,serif;font-style:italic;margin-bottom:32px">${S.lang === 'ar' ? 'اشتري أكتر وفر أكتر — كل باندل مجمع بحب.' : 'Buy more, save more — every bundle curated with care.'}</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px">${BUNDLES.map(b => bundleCard(b)).join('')}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px">${BUNDLES.filter(b => !adminHiddenBundles.has(b.id)).map(b => bundleCard(b)).join('')}</div>
   </div>`;
     }
 
@@ -3103,6 +4646,9 @@
         const isOneSize = p.sizes.length === 1 && p.sizes[0] === 'ONE SIZE';
         const sel = isOneSize ? 'ONE SIZE' : getBundleSize(b.id, p.id);
         const sl = stockLabel(totalStock(p));
+        const pColors = getProductColors(p.id);
+        const selColorId = getBundleColor(b.id, p.id);
+        const selColor = pColors.find(c => c.id === selColorId) || null;
         return `<div class="bundle-size-picker">
           <div class="bundle-size-picker-header">
             <div style="display:flex;align-items:center;gap:10px">
@@ -3111,6 +4657,7 @@
             </div>
             ${sel ? `<div style="font-size:10px;color:${A};font-family:var(--fm);letter-spacing:2px;font-weight:bold">${sel} ✓</div>` : `<div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:2px">${tx('chooseSize')}</div>`}
           </div>
+          ${pColors.length > 0 ? `<div style="margin-bottom:10px"><div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">${S.lang === 'ar' ? 'اختار اللون' : 'CHOOSE COLOR'}${selColor ? ` — <span style="color:${A}">${selColor.name}</span>` : ''}</div><div style="display:flex;gap:6px;flex-wrap:wrap">${pColors.map(c => `<button onclick="setBundleColor('${b.id}',${p.id},${c.id})" title="${c.name}" style="width:28px;height:28px;border-radius:50%;background:${c.hex};border:2px solid ${selColorId === c.id ? A : 'transparent'};outline:${selColorId === c.id ? `2px solid ${A}` : 'none'};cursor:pointer;transition:all .2s"></button>`).join('')}</div></div>` : ''}
           ${isOneSize ? `<div style="font-size:10px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;padding-top:4px">ONE SIZE</div>` : `<div class="bundle-size-btns">${p.sizes.map(s => { const stk = p.stock[s] || 0; return `<button class="bundle-size-btn${sel === s ? ' active' : ''}${stk === 0 ? ' sold' : ''}" onclick="${stk > 0 ? `setBundleSize('${b.id}',${p.id},'${s}')` : ''}" ${stk === 0 ? 'disabled' : ''}>  ${s}${stk === 0 ? '<span style="font-size:7px;display:block;color:#555">OUT</span>' : ''}</button>`; }).join('')}</div>`}
         </div>`;
       }).join('')}
@@ -3132,18 +4679,69 @@
       const reviews = REVIEWS[p.id] || [];
       const related = PRODUCTS.filter(rp => p.related.includes(rp.id));
       const rv = PRODUCTS.filter(rp => S.rv.includes(rp.id) && rp.id !== p.id).slice(0, 3);
-      const sizeStock = S.size ? (p.stock[S.size] || 0) : null;
-      const sl = sizeStock != null ? stockLabel(sizeStock) : stockLabel(totalStock(p));
+      const colors = getProductColors(p.id);
+      const soldOut = isProductSoldOut(p.id);
+
+      // الصور — من اللون المختار أو الافتراضية
+      const selColor = colors.find(c => c.id === S.color) || colors[0] || null;
+      const colorImgs = selColor ? [selColor.img1, selColor.img2].filter(Boolean) : (IMGS[p.id] || []);
+      const thumbCount = colorImgs.length || 1;
+
+      // Stock من Supabase
+      const stData = getProductStock(p.id);
+      const sizeStockFn = (sz) => {
+        if (soldOut) return 0;
+        if (stData) return (stData.stock || {})[sz] ?? 0;
+        return p.stock[sz] || 0;
+      };
+      const sizeStock = S.size ? sizeStockFn(S.size) : null;
+      const totalSt = soldOut ? 0 : (stData ? Object.values(stData.stock || {}).reduce((a, b) => a + b, 0) : totalStock(p));
+      const sl = sizeStock != null ? stockLabel(sizeStock) : stockLabel(totalSt);
+
       const details = pDetails(p);
       const accs = [
         { t: tx('productDetails'), c: `<ul style="padding-left:18px;line-height:2;font-size:12px;color:var(--text2)">${details.map(d => `<li style="font-family:Georgia,serif">${d}</li>`).join('')}</ul>` },
         { t: tx('shippingReturns'), c: `<p style="font-size:12px;line-height:1.8;color:var(--text2);font-family:Georgia,serif">${S.lang === 'ar' ? 'توصيل عادي 3-5 أيام عمل. استرجاع مجاني خلال 14 يوم.' : 'Standard delivery 3-5 business days. Free returns within 14 days.'}</p>` },
         { t: tx('sizingNotes'), c: `<p style="font-size:12px;line-height:1.8;color:var(--text2);font-family:Georgia,serif">${S.lang === 'ar' ? 'هذا المنتج oversized by design.' : 'This product is oversized by design. Size up for extra baggy.'}</p>` },
       ];
-      const thumbsHtml = [0, 1, 2].map(i => `<div class="prod-thumb${S.imgIdx === i ? ' active' : ''}" onclick="selectImg(${i})">${pvThumb(p, 88, i)}</div>`).join('');
+
+      // Thumbnails
+      const thumbsHtml = colorImgs.length > 0
+        ? colorImgs.map((src, i) => `<div class="prod-thumb${S.imgIdx === i ? ' active' : ''}" onclick="selectImg(${i})"><div style="height:88px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});"><img src="${src}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'"></div></div>`).join('')
+        : [0, 1, 2].map(i => `<div class="prod-thumb${S.imgIdx === i ? ' active' : ''}" onclick="selectImg(${i})">${pvThumb(p, 88, i)}</div>`).join('');
+
+      // Main image
+      const mainImgSrc = colorImgs[S.imgIdx] || colorImgs[0];
+      const mainImg = mainImgSrc
+        ? `<div style="height:480px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img src="${mainImgSrc}" style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, 480, S.imgIdx)}</div></div>`
+        : pv(p, 480);
+
+      // Color picker HTML
+      const colorPickerHtml = colors.length > 0 ? `
+    <div style="margin-bottom:16px">
+      <div style="font-size:9px;letter-spacing:4px;color:var(--text3);font-family:var(--fm);margin-bottom:8px">
+        ${S.lang === 'ar' ? 'اللون' : 'COLOR'} ${selColor ? `— <span style="color:var(--text)">${S.lang === 'ar' ? selColor.name_ar : selColor.name}</span>` : ''}
+      </div>
+      <div class="color-row">
+        ${colors.map(c => `
+          <div style="text-align:center">
+            <div class="color-swatch${S.color === c.id || (!S.color && colors[0] && colors[0].id === c.id) ? ' active' : ''}"
+              style="background:${c.hex};border-color:${S.color === c.id || (!S.color && colors[0] && colors[0].id === c.id) ? 'var(--text)' : 'transparent'}"
+              onclick="selectColor('${c.id}')"
+              title="${S.lang === 'ar' ? c.name_ar : c.name}">
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>` : '';
+
       return `<div class="prod-grid">
     <div>
-      <div class="prod-main" onclick="showZoom(${p.id})">${pv(p, 480)}${p.badge ? `<div style="position:absolute;top:16px;left:16px;${BADGE_STYLE[p.badge]};font-size:9px;letter-spacing:3px;padding:5px 10px;font-family:var(--fd)">${p.badge}</div>` : ''}<div class="prod-zoom-hint">🔍 ZOOM</div></div>
+      <div class="prod-main" onclick="showZoomImg('${mainImgSrc || ''}',${p.id})" style="position:relative">
+        ${mainImg}
+        ${soldOut ? `<div class="sold-out-overlay"><div class="sold-out-badge-big">${tx('soldOut')}</div></div>` : ''}
+        ${p.badge ? `<div style="position:absolute;top:16px;left:16px;${BADGE_STYLE[p.badge]};font-size:9px;letter-spacing:3px;padding:5px 10px;font-family:var(--fd)">${p.badge}</div>` : ''}
+        <div class="prod-zoom-hint">🔍 ZOOM</div>
+      </div>
       <div class="prod-thumbs">${thumbsHtml}</div>
     </div>
     <div>
@@ -3155,13 +4753,17 @@
       <div class="prod-tax">${tx('taxIncluded')}</div>
       <p class="prod-desc">${pDesc(p)}</p>
       ${p.badge === 'LIMITED' ? `<div class="countdown"><span class="cdown-tag">⏱ ENDS IN</span><span class="cdown-time" id="cdown-h">00</span><span class="cdown-sep">:</span><span class="cdown-time" id="cdown-m">00</span><span class="cdown-sep">:</span><span class="cdown-time" id="cdown-s">00</span></div>` : ''}
-      ${sl ? `<div class="stock-row"><div class="stock-dot" style="background:${sl.c}"></div><span class="stock-text" style="color:${sl.c}">${sl.label}</span></div>` : ''}
-      <div class="sizes-row"><span class="size-label">${tx('chooseSize')}</span><button class="size-guide-btn" onclick="showSizeModal()">${tx('sizeGuide')}</button></div>
-      <div class="size-btns">${p.sizes.map(s => { const st = p.stock[s] || 0; return `<button class="size-btn${S.size === s ? ' active' : ''}${st === 0 ? ' sold' : ''}" onclick="${st > 0 ? `selectSize('${s}')` : ''}">${s}</button>`; }).join('')}</div>
-      <div class="qty-add">
-        <div class="qty-ctrl"><button onclick="setQty(${S.qty - 1})">−</button><span class="qty-val">${S.qty}</span><button onclick="setQty(${S.qty + 1})">+</button></div>
-        <button class="btn" style="flex:1;height:52px" onclick="doAddToCart()">${tx('addToCart')}</button>
-      </div>
+      ${colorPickerHtml}
+      ${soldOut
+          ? `<div style="background:rgba(255,255,255,.05);border:1px solid #333;padding:14px;text-align:center;margin-bottom:16px"><span style="font-family:var(--fd);font-size:18px;letter-spacing:4px;color:#555">${tx('soldOut')}</span></div>`
+          : `${sl ? `<div class="stock-row"><div class="stock-dot" style="background:${sl.c}"></div><span class="stock-text" style="color:${sl.c}">${sl.label}</span></div>` : ''}
+           <div class="sizes-row"><span class="size-label">${tx('chooseSize')}</span><button class="size-guide-btn" onclick="showSizeModal()">${tx('sizeGuide')}</button></div>
+           <div class="size-btns">${p.sizes.map(s => { const st = sizeStockFn(s); return `<button class="size-btn${S.size === s ? ' active' : ''}${st === 0 ? ' sold' : ''}" onclick="${st > 0 ? `selectSize('${s}')` : ''}">${s}${st === 0 ? `<span style="font-size:7px;display:block;color:#555">OUT</span>` : ''}</button>`; }).join('')}</div>
+           <div class="qty-add">
+             <div class="qty-ctrl"><button onclick="setQty(${S.qty - 1})">−</button><span class="qty-val">${S.qty}</span><button onclick="setQty(${S.qty + 1})">+</button></div>
+             <button class="btn" style="flex:1;height:52px" onclick="doAddToCart()">${tx('addToCart')}</button>
+           </div>`
+        }
       <button class="wish-btn${wished ? ' active' : ''}" onclick="toggleWish(${p.id})">${wished ? tx('saved') : tx('saveWish')}</button>
       <div>${accs.map((a, i) => `<div class="acc-item"><button class="acc-btn" onclick="toggleAccordion(${i})">${a.t}<span class="acc-icon${S.accordion === i ? ' open' : ''}">+</span></button>${S.accordion === i ? `<div class="acc-body">${a.c}</div>` : ''}</div>`).join('')}</div>
     </div>
@@ -3354,23 +4956,131 @@
       container.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">${results.map(p => `<div onclick="openProduct(${p.id});toggleSearch()" style="display:flex;gap:12px;padding:12px;border:1px solid #1a1a1a;cursor:pointer;background:#0a0a0a;align-items:center" onmouseover="this.style.borderColor='${A}'" onmouseout="this.style.borderColor='#1a1a1a'"><div style="width:56px;height:56px;flex-shrink:0;overflow:hidden">${pv(p, 56, 0)}</div><div><div style="font-size:14px;font-family:var(--fd);letter-spacing:2px;color:#fff">${pName(p).toUpperCase()}</div><div style="font-size:10px;color:#555;font-family:var(--fm);margin-top:2px">${p.price} EGP</div></div></div>`).join('')}</div>`;
     }
 
+    // ── SIZE MODAL ─────────────────────────────────────────────────────────────
+    let _sgFit = null; // selected fit inside modal
+
     function showSizeModal() {
-      document.getElementById('sg-title').textContent = tx('sizeGuide');
-      document.getElementById('sg-sub').textContent = tx('allMeasurements');
+      // Populate table tab
       document.getElementById('sg-note').textContent = tx('sizeNote');
       document.getElementById('sg-thead').innerHTML = ['SIZE', 'CHEST', 'WAIST', 'HIP', 'LENGTH'].map(h => `<th>${h}</th>`).join('');
       document.getElementById('sg-tbody').innerHTML = SIZE_GUIDE.map(r => `<tr><td class="size-name">${r.s}</td><td>${r.chest}</td><td>${r.waist}</td><td>${r.hip}</td><td>${r.len}</td></tr>`).join('');
+      // Reset calculator
+      _sgFit = null;
+      const hi = document.getElementById('sg-height'); if (hi) hi.value = '';
+      const wi = document.getElementById('sg-weight'); if (wi) wi.value = '';
+      document.getElementById('sg-result').style.display = 'none';
+      document.getElementById('sg-empty').style.display = 'block';
+      ['regular', 'oversized', 'baggy'].forEach(f => {
+        const btn = document.getElementById('fit-' + f);
+        if (btn) { btn.style.background = 'transparent'; btn.style.color = 'var(--text3)'; btn.style.borderColor = 'var(--border)'; }
+      });
+      // Start on calculator tab
+      sgTab('calc');
       document.getElementById('size-modal').classList.add('open');
     }
+
+    function sgTab(tab) {
+      const isCalc = tab === 'calc';
+      document.getElementById('sg-panel-calc').style.display = isCalc ? 'block' : 'none';
+      document.getElementById('sg-panel-table').style.display = isCalc ? 'none' : 'block';
+      const tCalc = document.getElementById('sg-tab-calc');
+      const tTable = document.getElementById('sg-tab-table');
+      if (tCalc) { tCalc.style.background = isCalc ? 'var(--A)' : 'transparent'; tCalc.style.color = isCalc ? '#000' : 'var(--text3)'; }
+      if (tTable) { tTable.style.background = isCalc ? 'transparent' : 'var(--A)'; tTable.style.color = isCalc ? 'var(--text3)' : '#000'; }
+    }
+
+    function selectFit(fit) {
+      _sgFit = fit;
+      ['regular', 'oversized', 'baggy'].forEach(f => {
+        const btn = document.getElementById('fit-' + f);
+        if (!btn) return;
+        const active = f === fit;
+        btn.style.background = active ? 'var(--A)' : 'transparent';
+        btn.style.color = active ? '#000' : 'var(--text3)';
+        btn.style.borderColor = active ? 'var(--A)' : 'var(--border)';
+      });
+      calcMySize();
+    }
+
+    function calcMySize() {
+      const h = parseFloat(document.getElementById('sg-height').value);
+      const w = parseFloat(document.getElementById('sg-weight').value);
+      const resultEl = document.getElementById('sg-result');
+      const emptyEl = document.getElementById('sg-empty');
+      if (!h || !w || !_sgFit || h < 140 || h > 220 || w < 40 || w > 200) {
+        resultEl.style.display = 'none';
+        emptyEl.style.display = 'block';
+        return;
+      }
+      // Estimate chest from height & weight using BMI-based formula
+      const bmi = w / ((h / 100) ** 2);
+      let baseChest = 75 + (h - 160) * 0.4 + (bmi - 18) * 1.6;
+
+      // Fit adjustments
+      const fitAdj = { regular: 0, oversized: 6, baggy: 12 };
+      const targetChest = baseChest + fitAdj[_sgFit];
+
+      // Match to SIZE_GUIDE
+      let matched = SIZE_GUIDE[SIZE_GUIDE.length - 1];
+      for (const row of SIZE_GUIDE) {
+        const [lo] = row.chest.split('-').map(Number);
+        if (targetChest <= lo + 4) { matched = row; break; }
+      }
+
+      const fitLabels = {
+        regular: S.lang === 'ar' ? 'مناسب لتلبيسة مظبوطة ومريحة' : 'True-to-size, comfortable fit',
+        oversized: S.lang === 'ar' ? 'مناسب لمظهر الأوفر سايز المميز' : 'Relaxed oversized look',
+        baggy: S.lang === 'ar' ? 'مناسب لتلبيسة فضفاضة وواسعة جداً' : 'Extra baggy, streetwear style',
+      };
+
+      document.getElementById('sg-result-size').textContent = matched.s;
+      document.getElementById('sg-result-note').textContent = fitLabels[_sgFit];
+
+      // Show apply button only if on a product page
+      const applyBtn = document.getElementById('sg-apply-btn');
+      if (applyBtn) {
+        applyBtn.style.display = S.page === 'product' ? 'block' : 'none';
+        applyBtn.setAttribute('data-size', matched.s);
+      }
+
+      resultEl.style.display = 'block';
+      emptyEl.style.display = 'none';
+    }
+
+    function applySizeFromGuide() {
+      const btn = document.getElementById('sg-apply-btn');
+      if (!btn) return;
+      const size = btn.getAttribute('data-size');
+      if (!size || S.page !== 'product') return;
+      const p = getProduct(S.prodId);
+      if (!p || !p.sizes.includes(size)) {
+        addToast(S.lang === 'ar' ? 'المقاس ده مش متاح في المنتج ده' : 'This size is not available for this product', 'error');
+        return;
+      }
+      selectSize(size);
+      closeSizeModal();
+      addToast(S.lang === 'ar' ? `✓ تم تطبيق مقاس ${size}` : `✓ Size ${size} applied`, 'success');
+    }
+
     function closeSizeModal() { document.getElementById('size-modal').classList.remove('open'); }
 
     function showZoom(id) { const p = getProduct(id); document.getElementById('zoom-inner').innerHTML = pv(p, 600); document.getElementById('zoom-modal').classList.add('open'); }
+    function showZoomImg(src, pid) {
+      const p = getProduct(pid);
+      const inner = document.getElementById('zoom-inner');
+      if (src) {
+        inner.innerHTML = `<div style="height:600px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});"><img src="${src}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`;
+      } else {
+        inner.innerHTML = pv(p, 600);
+      }
+      document.getElementById('zoom-modal').classList.add('open');
+    }
     function closeZoom() { document.getElementById('zoom-modal').classList.remove('open'); }
 
     function startCountdown() {
       if (countdownInterval) clearInterval(countdownInterval);
       countdownInterval = setInterval(() => {
-        const diff = Math.max(0, END_TIME - Date.now());
+        const diff = Math.max(0, getLimitedEndTime() - Date.now());
         const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000), sec = Math.floor((diff % 60000) / 1000);
         const eh = document.getElementById('cdown-h'), em = document.getElementById('cdown-m'), es = document.getElementById('cdown-s');
         if (eh) eh.textContent = String(h).padStart(2, '0');
@@ -3439,10 +5149,16 @@
       render();
     }
 
-    function openProduct(id) {
-      S.prodId = id; S.page = 'product'; S.size = null; S.qty = 1; S.imgIdx = 0; S.accordion = null;
+    async function openProduct(id) {
+      S.prodId = id; S.page = 'product'; S.size = null; S.qty = 1; S.imgIdx = 0; S.accordion = null; S.color = null;
       S.rv = [id, ...S.rv.filter(x => x !== id)].slice(0, 6);
-      render();
+      render(); // render first with existing data
+      // load fresh data from Supabase
+      await loadProductData(id);
+      // set default color
+      const colors = getProductColors(id);
+      if (colors.length > 0) S.color = colors[0].id;
+      render(); // re-render with colors and stock
     }
     function openBundle(id) { S.bundleId = id; S.page = 'bundle'; render(); }
     function selectSize(size) { S.size = size; render(); }
@@ -3474,13 +5190,24 @@
     function doAddToCart() {
       const p = getProduct(S.prodId);
       if (!p) return;
+      if (isProductSoldOut(p.id)) { addToast(tx('soldOut'), 'error'); return; }
       if (!S.size) { addToast(`${tx('sizeRequired')} ${pName(p)}`, 'error'); return; }
-      if ((p.stock[S.size] || 0) === 0) { addToast(tx('soldOutSize'), 'error'); return; }
-      const ex = S.cart.findIndex(i => !i.isBundle && i.id === p.id && i.size === S.size);
+      const stData = getProductStock(p.id);
+      const stk = stData ? ((stData.stock || {})[S.size] ?? 0) : (p.stock[S.size] || 0);
+      if (stk === 0) { addToast(tx('soldOutSize'), 'error'); return; }
+      const colors = getProductColors(p.id);
+      const selColor = colors.find(c => c.id === S.color) || colors[0] || null;
+      const colorName = selColor ? (S.lang === 'ar' ? selColor.name_ar : selColor.name) : null;
+      const ex = S.cart.findIndex(i => !i.isBundle && i.id === p.id && i.size === S.size && i.colorId === (S.color || null));
       if (ex >= 0) S.cart[ex].qty += S.qty;
-      else S.cart.push({ id: p.id, name: p.name, nameAr: p.nameAr, price: p.price, size: S.size, qty: S.qty, bgFrom: p.bgFrom, bgTo: p.bgTo, wm: p.wm, category: p.category, isBundle: false });
+      else S.cart.push({
+        id: p.id, name: p.name, nameAr: p.nameAr, price: p.price,
+        size: S.size, qty: S.qty,
+        colorId: S.color || null, colorName, colorHex: selColor ? selColor.hex : null,
+        bgFrom: p.bgFrom, bgTo: p.bgTo, wm: p.wm, category: p.category, isBundle: false
+      });
       saveCart(); updateNav();
-      addToast(`${pName(p)} ${tx('addedToCart')}`, 'success', { label: tx('viewCart'), fn: "navigate('cart')" });
+      addToast(`${pName(p)}${colorName ? ` — ${colorName}` : ''} ${tx('addedToCart')}`, 'success', { label: tx('viewCart'), fn: "navigate('cart')" });
       render();
     }
 
@@ -3491,7 +5218,7 @@
       prods.forEach(p => { if (p.sizes.length === 1 && p.sizes[0] === 'ONE SIZE') { if (!S.bundleSizes[bid]) S.bundleSizes[bid] = {}; S.bundleSizes[bid][p.id] = 'ONE SIZE'; } });
       if (!bundleAllSizesSelected(b)) { addToast(tx('chooseSizesFirst'), 'error'); return; }
       const orig = bundleOriginal(b), disc = bundleDiscounted(b);
-      const bundleItems = prods.map(p => ({ id: p.id, name: pName(p), size: getBundleSize(bid, p.id) || p.sizes[0], price: p.price }));
+      const bundleItems = prods.map(p => { const selColorId = getBundleColor(bid, p.id); const colors = getProductColors(p.id); const selColor = colors.find(c => c.id === selColorId) || null; return { id: p.id, name: pName(p), size: getBundleSize(bid, p.id) || p.sizes[0], price: p.price, colorId: selColorId || null, colorName: selColor ? selColor.name : null }; });
       S.cart.push({ isBundle: true, bundleId: bid, name: bName(b), nameAr: b.nameAr, price: disc, originalPrice: orig, savedAmount: b.save, qty: 1, bundleItems });
       saveCart(); updateNav();
       addToast(`${bName(b)} — ${tx('saved2')} ${b.save} EGP ✓`, 'success', { label: tx('viewCart'), fn: "navigate('cart')" });
@@ -3533,6 +5260,7 @@
         discount: S.discount,
         total: grandTotal,
         payment_method: S.pay,
+        transfer_from: S.pay !== 'cash' ? (S.transfer || '') : '',
         status: 'new',
         notes: '',
       };
@@ -3546,9 +5274,77 @@
 
       S.orderNum = orderNum;
       S.orderData = orderData;
-      sendWhatsApp(orderData);
+      sendTelegramNotification(orderData);
       S.cart = []; saveCart(); S.page = 'confirmation';
       render();
+    }
+
+    async function sendTelegramNotification(od) {
+      const TELEGRAM_TOKEN = '8689322944:AAGEztOKhKPojeKtMVCOQS1cOpsAYR5drIU';
+      const CHAT_ID = '7161460779';
+
+      const itemsStr = od.items.map(item => {
+        if (item.isBundle) {
+          const subItems = item.bundleItems ? item.bundleItems.map(bi => `   · ${bi.name} (${bi.size})`).join('\n') : '';
+          return `▣ *${item.name}* (BUNDLE) — ${item.price} EGP${subItems ? '\n' + subItems : ''}`;
+        }
+        const colorPart = item.colorName ? ` — اللون: ${item.colorName}` : '';
+        return `• *${item.name}* (${item.size}${colorPart}) × ${item.qty} = ${item.price * item.qty} EGP`;
+      }).join('\n');
+
+      const payLabel = {
+        cash: 'كاش عند الاستلام 💵',
+        instapay: 'Instapay 📲',
+        vodafone: 'Vodafone Cash 📲'
+      }[od.payment_method] || od.payment_method;
+
+      const transferFromLine = (od.payment_method !== 'cash' && od.transfer_from)
+        ? `\n📱 *رقم المحول منه:* ${od.transfer_from}` : '';
+
+      const noReceiptWarning = (od.payment_method !== 'cash' && !S.file)
+        ? '\n⚠️ *العميل لم يرفع صورة إيصال*' : '';
+
+      const msg = `🛍️ *أوردر جديد!*
+━━━━━━━━━━━━━━━━
+🔢 *رقم الأوردر:* \`${od.order_num}\`
+👤 *الاسم:* ${od.customer_name}
+📞 *الموبايل:* ${od.phone}
+📍 *العنوان:* ${od.address}، ${od.city}، ${od.governorate}
+
+🛒 *المنتجات:*
+${itemsStr}
+
+🚚 شحن: ${od.shipping} EGP${od.cod_fee > 0 ? `\n💵 رسوم كاش: ${od.cod_fee} EGP` : ''}${od.discount > 0 ? `\n🎁 خصم: ${od.discount * 100}%` : ''}
+💰 *الإجمالي: ${od.total} EGP*
+💳 *الدفع:* ${payLabel}${transferFromLine}${noReceiptWarning}`;
+
+      try {
+        // If customer uploaded a receipt image, send it as photo with caption
+        if (S.file && od.payment_method !== 'cash') {
+          const formData = new FormData();
+          formData.append('chat_id', CHAT_ID);
+          formData.append('photo', S.file);
+          formData.append('caption', msg);
+          formData.append('parse_mode', 'Markdown');
+          await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, {
+            method: 'POST',
+            body: formData
+          });
+        } else {
+          // No image — send text only
+          await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: CHAT_ID,
+              text: msg,
+              parse_mode: 'Markdown'
+            })
+          });
+        }
+      } catch (e) {
+        console.error('Telegram notification failed:', e);
+      }
     }
 
     function doTrack() {
@@ -3589,10 +5385,108 @@
     }
 
     // ═══════════════════════════════════════════════════════════════════════════════
-    // INIT
+    // INIT — Load from Supabase then render
     // ═══════════════════════════════════════════════════════════════════════════════
-    loadCart();
-    render();
+    async function initApp() {
+      loadCart();
+
+      // 1. Load settings (limited_end, hidden_products, hidden_bundles) from Supabase
+      try {
+        const settings = await supabaseFetch('settings', '');
+        if (Array.isArray(settings)) {
+          settings.forEach(row => {
+            if (row.key === 'limited_end' && row.value) {
+              localStorage.setItem('axs_limited_end', row.value);
+            }
+            if (row.key === 'hidden_products' && row.value) {
+              try {
+                const ids = JSON.parse(row.value);
+                ids.forEach(id => adminHiddenProducts.add(id));
+                localStorage.setItem('axs_hidden_products', row.value);
+              } catch (e) { }
+            }
+            if (row.key === 'hidden_bundles' && row.value) {
+              try {
+                const ids = JSON.parse(row.value);
+                ids.forEach(id => adminHiddenBundles.add(id));
+                localStorage.setItem('axs_hidden_bundles', row.value);
+              } catch (e) { }
+            }
+          });
+        }
+      } catch (e) { console.warn('Settings load failed, using localStorage fallback'); }
+
+      // 2. Load products from Supabase — override local PRODUCTS data
+      try {
+        const dbProducts = await supabaseFetch('products', 'order=id.asc');
+        if (Array.isArray(dbProducts) && dbProducts.length > 0) {
+          dbProducts.forEach(dbP => {
+            const local = PRODUCTS.find(p => p.id === dbP.id);
+            if (local) {
+              if (dbP.name) local.name = dbP.name;
+              if (dbP.name_ar) local.nameAr = dbP.name_ar;
+              if (dbP.price) local.price = dbP.price;
+              if (dbP.description) local.desc = dbP.description;
+              if (dbP.description_ar) local.descAr = dbP.description_ar;
+            }
+          });
+        }
+      } catch (e) { console.warn('Products load failed, using local data'); }
+
+      // 3. Load custom bundles from Supabase
+      try {
+        const dbBundles = await supabaseFetch('bundles', 'custom=eq.true&order=id.asc');
+        if (Array.isArray(dbBundles) && dbBundles.length > 0) {
+          dbBundles.forEach(dbB => {
+            const exists = BUNDLES.find(b => b.id === dbB.id);
+            if (!exists) {
+              BUNDLES.push({
+                id: dbB.id,
+                _custom: true,
+                name: dbB.name,
+                nameAr: dbB.name_ar || dbB.name,
+                products: Array.isArray(dbB.products) ? dbB.products : JSON.parse(dbB.products || '[]'),
+                save: dbB.save || 0,
+                desc: dbB.description || '',
+                descAr: dbB.description_ar || '',
+                bgFrom: dbB.bg_from || '#080808',
+                bgTo: dbB.bg_to || '#020202'
+              });
+            } else if (exists._custom) {
+              // Update existing custom bundle with Supabase data
+              exists.name = dbB.name;
+              exists.nameAr = dbB.name_ar || dbB.name;
+              exists.products = Array.isArray(dbB.products) ? dbB.products : JSON.parse(dbB.products || '[]');
+              exists.save = dbB.save || 0;
+              exists.desc = dbB.description || '';
+              exists.descAr = dbB.description_ar || '';
+            }
+          });
+          // Also sync Supabase bundle edits for default bundles
+          const defaultBundles = await supabaseFetch('bundles', 'custom=eq.false&order=id.asc');
+          if (Array.isArray(defaultBundles)) {
+            defaultBundles.forEach(dbB => {
+              const local = BUNDLES.find(b => b.id === dbB.id);
+              if (local) {
+                if (dbB.name) local.name = dbB.name;
+                if (dbB.name_ar) local.nameAr = dbB.name_ar;
+                if (dbB.description) local.desc = dbB.description;
+                if (dbB.description_ar) local.descAr = dbB.description_ar;
+                if (dbB.save !== null && dbB.save !== undefined) local.save = dbB.save;
+              }
+            });
+          }
+        }
+      } catch (e) { console.warn('Bundles load failed, using local data'); }
+
+      // 4. First render
+      render();
+
+      // 5. Load colors and stock in background
+      loadAllProductsData().then(() => { if (S.page === 'home' || S.page === 'shop') render(); });
+    }
+
+    initApp();
   </script>
 </body>
 
