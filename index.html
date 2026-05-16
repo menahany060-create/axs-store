@@ -3228,6 +3228,7 @@
         <button class="export-btn" onclick="exportCSV()">↓ EXPORT CSV</button>
         <button class="export-btn" onclick="navigate('home')" style="color:var(--A);border-color:rgba(255,59,0,.3)">← BACK TO STORE</button>
         <button class="export-btn" onclick="adminLogout()">LOGOUT</button>
+        <span id="admin-live-dot" style="font-size:9px;font-family:'DM Mono',monospace;letter-spacing:2px;padding:4px 10px;border:1px solid #1a1a1a;color:#333;cursor:default;transition:all .3s">○ OFF</span>
       </div>
     </div>
     <div class="admin-body">
@@ -5545,8 +5546,9 @@ ${itemsStr}
     // ADMIN NOTIFICATIONS — Supabase Realtime polling (tab must be open)
     // ═══════════════════════════════════════════════════════════════════════════════
     let _notifInterval = null;
-    let _lastOrderCount = null;
     let _notifGranted = false;
+    let _adminOpenTime = null;      // وقت فتح صفحة الأدمن — بنجيب الأوردرات الأحدث منه بس
+    let _notifiedOrderIds = new Set(); // الأوردرات اللي بعتنا إشعار عنها عشان ما نكررش
 
     async function requestNotifPermission() {
       if (!('Notification' in window)) return;
@@ -5557,51 +5559,98 @@ ${itemsStr}
       }
     }
 
-    function startOrderPolling() {
-      if (_notifInterval) return; // already running
-      _notifInterval = setInterval(async () => {
-        try {
-          const rows = await supabaseFetch('orders', 'order=created_at.desc&limit=1&select=id,order_num,customer_name,total,created_at');
-          if (!Array.isArray(rows) || !rows.length) return;
-          const latest = rows[0];
-          // First run — just record
-          if (_lastOrderCount === null) { _lastOrderCount = latest.id; return; }
-          // New order came in
-          if (latest.id !== _lastOrderCount) {
-            _lastOrderCount = latest.id;
-            showOrderNotification(latest);
+    async function _pollOnce() {
+      try {
+        // جيب الأوردرات الأحدث من وقت فتح صفحة الأدمن
+        const sinceParam = encodeURIComponent(_adminOpenTime);
+        const rows = await supabaseFetch(
+          'orders',
+          `created_at=gt.${sinceParam}&order=created_at.asc&select=id,order_num,customer_name,total,created_at`
+        );
+        if (!Array.isArray(rows) || !rows.length) return;
+        rows.forEach(order => {
+          const uid = String(order.id);
+          if (!_notifiedOrderIds.has(uid)) {
+            _notifiedOrderIds.add(uid);
+            showOrderNotification(order);
           }
-        } catch(e) {}
-      }, 30000); // check every 30 seconds
+        });
+      } catch(e) { console.warn('Polling error:', e); }
+    }
+
+    function startOrderPolling() {
+      if (_notifInterval) return; // شغّال بالفعل
+      // سجّل وقت فتح الأدمن بدقة
+      _adminOpenTime = new Date().toISOString();
+      _notifiedOrderIds.clear();
+
+      // فحص أوّلي بعد ثانيتين (عشان يطلع أول نتيجة بسرعة)
+      setTimeout(_pollOnce, 2000);
+
+      // ثم فحص كل 12 ثانية
+      _notifInterval = setInterval(_pollOnce, 12000);
+
+      // مؤشر "LIVE" في الأدمن
+      _updateLiveDot(true);
     }
 
     function stopOrderPolling() {
       if (_notifInterval) { clearInterval(_notifInterval); _notifInterval = null; }
+      _adminOpenTime = null;
+      _notifiedOrderIds.clear();
+      _updateLiveDot(false);
+    }
+
+    function _updateLiveDot(active) {
+      const dot = document.getElementById('admin-live-dot');
+      if (!dot) return;
+      dot.style.background  = active ? '#4caf50' : '#333';
+      dot.title             = active ? 'يراقب الأوردرات الجديدة' : 'إيقاف المراقبة';
+      dot.textContent       = active ? '● LIVE' : '○ OFF';
     }
 
     function showOrderNotification(order) {
-      // In-app toast always
-      addToast(`🛍️ أوردر جديد! ${order.customer_name} — ${order.total} EGP`, 'success');
-      // Play sound
+      // ── Toast داخلي — يبقى أطول (8 ثواني) ويُغلق يدوياً
+      const c = document.getElementById('toasts');
+      if (c) {
+        const d = document.createElement('div');
+        d.className = 'toast success';
+        d.style.cssText = 'pointer-events:all;cursor:pointer;min-width:260px;border-color:#4caf50';
+        d.innerHTML = `<span style="color:#4caf50;font-size:18px">🛍️</span>
+          <span style="flex:1">
+            <strong style="display:block;font-size:13px;letter-spacing:1px">أوردر جديد!</strong>
+            <span style="font-size:11px;opacity:.8">${order.customer_name} — ${order.total} EGP</span>
+          </span>
+          <button onclick="this.closest('.toast').remove()" style="background:none;border:none;color:#888;font-size:16px;cursor:pointer;flex-shrink:0">✕</button>`;
+        d.onclick = () => { switchAdminTab('orders'); d.remove(); };
+        c.appendChild(d);
+        // يختفي بعد 8 ثواني
+        setTimeout(() => d.remove(), 8000);
+      }
+
+      // ── صوت تنبيه
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
         osc.connect(gain); gain.connect(ctx.destination);
-        osc.frequency.setValueAtTime(880, ctx.currentTime);
-        osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.4);
+        osc.frequency.setValueAtTime(880,  ctx.currentTime);
+        osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.12);
+        osc.frequency.setValueAtTime(880,  ctx.currentTime + 0.24);
+        gain.gain.setValueAtTime(0.35, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.5);
       } catch(e) {}
-      // Browser notification
+
+      // ── إشعار المتصفح (لو الإذن متاح)
       if (_notifGranted && Notification.permission === 'granted') {
         try {
           const n = new Notification('🛍️ أوردر جديد — AXS', {
-            body: `${order.customer_name} · ${order.total} EGP
-${order.order_num}`,
+            body: `${order.customer_name} · ${order.total} EGP\n${order.order_num || ''}`,
             icon: '/favicon.ico',
             badge: '/favicon.ico',
-            tag: 'new-order',
+            tag: `axs-order-${order.id}`,  // tag فريد عشان كل أوردر يطلع إشعاره
             requireInteraction: true
           });
           n.onclick = () => { window.focus(); navigate('admin'); n.close(); };
