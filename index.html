@@ -4301,7 +4301,7 @@
     const SALE_END = '2025-07-01T23:59:59';
     const COD_FEE = 25;
     const SOLD_OUT = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false };
-    const IG_PAGE_LINK = 'https://www.instagram.com/axs.official';
+    const IG_PAGE_LINK = 'https://www.instagram.com/axs.eg';
     const IG_POSTS = [
       { productIdx: 0, likes: '2.4K', comments: '89', link: 'https://www.instagram.com/p/YOUR_POST_1/' },
       { productIdx: 3, likes: '3.1K', comments: '142', link: 'https://www.instagram.com/p/YOUR_POST_2/' },
@@ -4529,7 +4529,8 @@
     function selectColor(colorId) {
       S.color = colorId;
       S.imgIdx = 0;
-      render(true);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      render();
     }
 
     // Get current color images for product page
@@ -4718,10 +4719,10 @@
       <div class="section-tag">05 — INSTAGRAM</div>
       <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px">
         <div style="font-family:var(--fd);font-size:clamp(28px,5vw,44px)">${tx('latestDrops').toUpperCase()}</div>
-        <a href="https://www.instagram.com/axs.eg" target="_blank" rel="noopener" style="font-size:9px;color:${A};font-family:var(--fm);letter-spacing:3px;text-decoration:none;display:flex;align-items:center;gap:6px" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-linecap="round" stroke-width="2.5"/></svg>@axs.eg →</a>
+        <a href="${IG_PAGE_LINK}" target="_blank" rel="noopener" style="font-size:9px;color:${A};font-family:var(--fm);letter-spacing:3px;text-decoration:none;display:flex;align-items:center;gap:6px" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-linecap="round" stroke-width="2.5"/></svg>@axs.official →</a>
       </div>
       <div class="grid-6">${IG_POSTS.map(({ productIdx, likes, comments, link }) => { const p = PRODUCTS[productIdx]; return `<a class="ig-post-link" href="${link}" target="_blank" rel="noopener">${pv(p, 220, 0)}<div class="ig-overlay"><div style="font-size:22px;color:#fff">♥ ${likes}</div><div style="font-size:13px;color:#ccc;font-family:var(--fm)">💬 ${comments}</div><div style="font-size:9px;color:rgba(255,255,255,.6);font-family:var(--fm);letter-spacing:2px;margin-top:4px">TAP TO VIEW →</div></div></a>`; }).join('')}</div>
-      <div style="text-align:center;margin-top:16px"><a href="https://www.instagram.com/axs.eg" target="_blank" rel="noopener" style="display:inline-block;padding:10px 28px;font-size:10px;letter-spacing:4px;border:1px solid var(--border);color:var(--text3);transition:all .2s;font-family:var(--fd)" onmouseover="this.style.borderColor='var(--text)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">${S.lang === 'ar' ? 'عرض الصفحة كاملة على انستاجرام ↗' : 'VIEW FULL INSTAGRAM PROFILE ↗'}</a></div>
+      <div style="text-align:center;margin-top:16px"><a href="${IG_PAGE_LINK}" target="_blank" rel="noopener" style="display:inline-block;padding:10px 28px;font-size:10px;letter-spacing:4px;border:1px solid var(--border);color:var(--text3);transition:all .2s;font-family:var(--fd)" onmouseover="this.style.borderColor='var(--text)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">${S.lang === 'ar' ? 'عرض الصفحة كاملة على انستاجرام ↗' : 'VIEW FULL INSTAGRAM PROFILE ↗'}</a></div>
     </div>
     <div class="newsletter">
       <div class="section-tag" style="margin-bottom:8px">07 — ${tx('stayLoop').toUpperCase()}</div>
@@ -4734,7 +4735,7 @@
       <div class="footer-copy">© 2025 AXS — ${tx('rights').toUpperCase()}</div>
       <div class="footer-links">
         <a class="footer-link" href="https://www.instagram.com/axs.eg" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-linecap="round" stroke-width="2.5"/></svg>INSTAGRAM</a>
-        <a class="footer-link" href="https://www.tiktok.com/@axs-eg" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>TIKTOK</a>
+        <a class="footer-link" href="https://www.tiktok.com/@axs_eg" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>TIKTOK</a>
         <span class="footer-link" onclick="navigate('return')">RETURNS</span>
         <span class="footer-link" onclick="navigate('admin')" style="color:#222">⚙</span>
       </div>
@@ -4827,8 +4828,8 @@
       if (!p) return '<div class="empty"><div class="empty-text">PRODUCT NOT FOUND</div></div>';
       const wished = S.wish.includes(p.id);
       const reviews = REVIEWS[p.id] || [];
-      const related = PRODUCTS.filter(rp => p.related.includes(rp.id));
-      const rv = PRODUCTS.filter(rp => S.rv.includes(rp.id) && rp.id !== p.id).slice(0, 3);
+      const related = PRODUCTS.filter(rp => p.related.includes(rp.id) && !adminHiddenProducts.has(rp.id));
+      const rv = PRODUCTS.filter(rp => S.rv.includes(rp.id) && rp.id !== p.id && !adminHiddenProducts.has(rp.id)).slice(0, 3);
       const colors = getProductColors(p.id);
       const soldOut = isProductSoldOut(p.id);
 
@@ -5330,37 +5331,21 @@
     // ═══════════════════════════════════════════════════════════════════════════════
     // RENDER & NAV
     // ═══════════════════════════════════════════════════════════════════════════════
-    let _lastPage = null;
-    let _lastProdId = null;
-    function render(scrollTop = false) {
+    function render() {
       const main = document.getElementById('main');
       const pages = { home: renderHome, shop: renderShop, bundles: renderBundles, bundle: renderBundle, product: renderProduct, cart: renderCart, checkout: renderCheckout, confirmation: renderConfirmation, wishlist: renderWishlist, track: renderTrack, about: renderAbout, return: renderReturn };
-      const pageChanged = S.page !== _lastPage || (S.page === 'product' && S.prodId !== _lastProdId);
-      _lastPage = S.page;
-      _lastProdId = S.prodId;
-
-      // Save scroll before re-render (same-page updates only)
-      const savedScroll = (!pageChanged && !scrollTop) ? window.scrollY : 0;
-
+      // Save scroll position before re-render so in-page actions don't jump
+      const savedScroll = window.scrollY;
       try {
         main.innerHTML = (pages[S.page] || renderHome)();
-        if (pageChanged) {
-          main.style.animation = 'none';
-          main.offsetHeight;
-          main.style.animation = '';
-        }
       } catch (e) {
         console.error('Render error:', e);
         main.innerHTML = `<div style="padding:80px 24px;text-align:center;color:var(--text)"><div style="font-family:var(--fd);font-size:48px;margin-bottom:16px">AXS</div><div style="font-size:12px;color:#555;font-family:var(--fm);margin-bottom:24px">${e.message}</div><button onclick="S.page='home';render()" style="background:${A};color:#fff;border:none;padding:14px 32px;font-family:var(--fd);font-size:16px;letter-spacing:4px;cursor:pointer">HOME</button></div>`;
       }
       updateNav();
       if (S.page === 'product' && getProduct(S.prodId)?.badge === 'LIMITED') startCountdown();
-
-      if (pageChanged || scrollTop) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        window.scrollTo({ top: savedScroll, behavior: 'instant' });
-      }
+      // Restore scroll — navigation functions handle scrolling to top themselves
+      window.scrollTo({ top: savedScroll, behavior: 'instant' });
     }
 
     function updateNav() {
@@ -5436,21 +5421,21 @@
       if (page !== 'product') { S.size = null; S.qty = 1; S.imgIdx = 0; S.accordion = null; }
       if (page !== 'bundle') { S.bundleId = null; }
       if (page === 'checkout') { S.step = 1; S.pay = null; S.discount = 0; S.promo = ''; S.transfer = ''; S.file = null; S.fileName = null; }
+      window.scrollTo({ top: 0, behavior: 'instant' });
       render();
     }
 
     async function openProduct(id) {
       S.prodId = id; S.page = 'product'; S.size = null; S.qty = 1; S.imgIdx = 0; S.accordion = null; S.color = null;
       S.rv = [id, ...S.rv.filter(x => x !== id)].slice(0, 6);
-      render(); // render first with existing data
-      // load fresh data from Supabase
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      render();
       await loadProductData(id);
-      // set default color
       const colors = getProductColors(id);
       if (colors.length > 0) S.color = colors[0].id;
-      render(); // re-render with colors and stock
+      render();
     }
-    function openBundle(id) { S.bundleId = id; S.page = 'bundle'; render(); }
+    function openBundle(id) { S.bundleId = id; S.page = 'bundle'; window.scrollTo({ top: 0, behavior: 'instant' }); render(); }
     function selectSize(size) { S.size = size; render(); }
     function setQty(n) { S.qty = Math.max(1, n); render(); }
     function selectImg(i) { S.imgIdx = i; render(); }
