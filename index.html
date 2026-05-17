@@ -5,6 +5,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>AXS — PHANTOM ERA</title>
+
+  <!-- SEO -->
+  <meta name="description" content="AXS — Egyptian streetwear brand. DROP 001: PHANTOM ERA. Shop oversized tees, hoodies, and pants with free shipping over 1500 EGP.">
+  <meta name="keywords" content="AXS, streetwear, Egypt, fashion, phantom era, oversized, hoodies, تيشيرت, هودي">
+  <meta name="author" content="AXS">
+  <meta name="theme-color" content="#FF3B00">
+
+  <!-- Open Graph (social sharing) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AXS — PHANTOM ERA">
+  <meta property="og:description" content="Egyptian streetwear. DROP 001 now live. Free shipping over 1500 EGP.">
+  <meta property="og:site_name" content="AXS">
+  <meta property="og:locale" content="ar_EG">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AXS — PHANTOM ERA">
+  <meta name="twitter:description" content="Egyptian streetwear. DROP 001 now live.">
+
+  <!-- Favicon (SVG inline — no extra file needed) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FF3B00'/><text y='.9em' font-size='70' font-family='Arial Black' fill='white' x='50%25' text-anchor='middle' dominant-baseline='middle' dy='0.1em'>A</text></svg>">
+
+  <!-- Performance: preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400&display=swap"
     rel="stylesheet">
   <style>
@@ -46,6 +71,7 @@
       color: var(--text);
       font-family: var(--fd);
       transition: background .3s, color .3s;
+      scroll-behavior: smooth;
     }
 
     ::-webkit-scrollbar {
@@ -81,8 +107,8 @@
     }
 
     select option {
-      background: #111;
-      color: #fff;
+      background: var(--bg2);
+      color: var(--text);
     }
 
     button {
@@ -2236,6 +2262,124 @@
       50%       { opacity: 0.45; transform: scale(0.82); }
     }
 
+    /* ══ PAGE TRANSITION ══ */
+    #main {
+      animation: pageFadeIn .25s ease both;
+    }
+    @keyframes pageFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══ MOBILE DRAWER MENU ══ */
+    #mobile-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: flex;
+      visibility: hidden;
+    }
+    #mobile-drawer.open {
+      visibility: visible;
+    }
+    #mobile-drawer-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.75);
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    #mobile-drawer.open #mobile-drawer-overlay {
+      opacity: 1;
+    }
+    #mobile-drawer-panel {
+      position: relative;
+      width: 280px;
+      max-width: 85vw;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(-100%);
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+      overflow-y: auto;
+    }
+    #mobile-drawer.open #mobile-drawer-panel {
+      transform: translateX(0);
+    }
+    .mob-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mob-drawer-logo {
+      font-family: var(--fd);
+      font-size: 24px;
+      letter-spacing: 6px;
+    }
+    .mob-drawer-close {
+      background: none;
+      border: none;
+      color: var(--text3);
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .mob-drawer-links {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 0;
+      flex: 1;
+    }
+    .mob-drawer-link {
+      padding: 14px 20px;
+      font-family: var(--fd);
+      font-size: 20px;
+      letter-spacing: 4px;
+      color: var(--text3);
+      cursor: pointer;
+      transition: color .2s, background .2s;
+      border-bottom: 1px solid var(--border);
+    }
+    .mob-drawer-link:hover,
+    .mob-drawer-link.active {
+      color: var(--text);
+      background: var(--bg3);
+    }
+    .mob-drawer-link.active {
+      color: var(--A);
+    }
+    .mob-drawer-footer {
+      padding: 16px 20px;
+      display: flex;
+      gap: 8px;
+      border-top: 1px solid var(--border);
+    }
+    /* Hamburger button — only on mobile */
+    #hamburger-btn {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text3);
+      width: 36px;
+      height: 36px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all .2s;
+      flex-shrink: 0;
+    }
+    #hamburger-btn:hover {
+      border-color: var(--text);
+      color: var(--text);
+    }
+    @media(max-width:768px) {
+      #hamburger-btn { display: flex; }
+    }
+
     /* COLOR PICKER */
     .color-swatch {
       width: 28px;
@@ -2909,14 +3053,15 @@
 
   <div id="ann-bar">
     <div class="ann-track">
-      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTOM ERA &nbsp;·&nbsp; USE CODE AXS10 FOR 10%
+      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTOM ERA &nbsp;·&nbsp; USE CODE AXS5 FOR 5%
         OFF &nbsp;·&nbsp; CASH ON DELIVERY AVAILABLE &nbsp;·&nbsp; </span>
-      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTOM ERA &nbsp;·&nbsp; USE CODE AXS10 FOR 10%
+      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTOM ERA &nbsp;·&nbsp; USE CODE AXS5 FOR 5%
         OFF &nbsp;·&nbsp; CASH ON DELIVERY AVAILABLE &nbsp;·&nbsp; </span>
     </div>
   </div>
 
   <nav id="navbar">
+    <button id="hamburger-btn" onclick="toggleMobileDrawer()" aria-label="Menu">☰</button>
     <div class="nav-logo" onclick="navigate('home')">AXS</div>
     <div class="nav-links" id="nav-links"></div>
     <div class="nav-right">
@@ -2947,6 +3092,29 @@
   </nav>
 
   <div id="main"></div>
+
+  <!-- MOBILE NAVIGATION DRAWER -->
+  <div id="mobile-drawer">
+    <div id="mobile-drawer-overlay" onclick="toggleMobileDrawer()"></div>
+    <div id="mobile-drawer-panel">
+      <div class="mob-drawer-header">
+        <span class="mob-drawer-logo">AXS</span>
+        <button class="mob-drawer-close" onclick="toggleMobileDrawer()">✕</button>
+      </div>
+      <div class="mob-drawer-links" id="mob-drawer-links">
+        <div class="mob-drawer-link" onclick="navigate('shop');toggleMobileDrawer()">SHOP</div>
+        <div class="mob-drawer-link" onclick="navigate('bundles');toggleMobileDrawer()">BUNDLES</div>
+        <div class="mob-drawer-link" onclick="navigate('about');toggleMobileDrawer()">ABOUT</div>
+        <div class="mob-drawer-link" onclick="navigate('return');toggleMobileDrawer()">الاسترجاع</div>
+        <div class="mob-drawer-link" onclick="navigate('track');toggleMobileDrawer()">TRACK ORDER</div>
+        <div class="mob-drawer-link" onclick="navigate('wishlist');toggleMobileDrawer()">WISHLIST ♡</div>
+      </div>
+      <div class="mob-drawer-footer">
+        <button class="nav-toggle" onclick="toggleLang()" id="mob-lang-btn" style="flex:1">EN</button>
+        <button class="nav-toggle" onclick="toggleTheme()" id="mob-theme-btn" style="flex:1">☀</button>
+      </div>
+    </div>
+  </div>
 
   <div id="search-overlay">
     <button onclick="toggleSearch()"
@@ -3417,13 +3585,13 @@
                 <div style="display:flex;align-items:center;gap:4px">
                   <input class="admin-input" style="flex:1;min-width:0" id="img1-${c.id}" value="${c.img1 || ''}" placeholder="img1.png" onchange="updateColorField('${c.id}','img1',this.value,${p.id});updateImgPreview('${c.id}',1,this.value)" oninput="updateImgPreview('${c.id}',1,this.value)">
                   <div id="prev1-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('${c.img1 || ''}',this)" title="معاينة">
-                    ${c.img1 ? `<img src="${c.img1}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>`}
+                    ${c.img1 ? `<img loading="lazy" src="${c.img1}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>`}
                   </div>
                 </div>
                 <div style="display:flex;align-items:center;gap:4px">
                   <input class="admin-input" style="flex:1;min-width:0" id="img2-${c.id}" value="${c.img2 || ''}" placeholder="img2.png" onchange="updateColorField('${c.id}','img2',this.value,${p.id});updateImgPreview('${c.id}',2,this.value)" oninput="updateImgPreview('${c.id}',2,this.value)">
                   <div id="prev2-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('${c.img2 || ''}',this)" title="معاينة">
-                    ${c.img2 ? `<img src="${c.img2}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>`}
+                    ${c.img2 ? `<img loading="lazy" src="${c.img2}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>`}
                   </div>
                 </div>
               </div>
@@ -3730,7 +3898,7 @@
         box.onclick = () => { };
         return;
       }
-      box.innerHTML = `<img src="${trimmed}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#f44336;text-align:center;padding:2px\\'>✕ خطأ</div>'">`;
+      box.innerHTML = `<img loading="lazy" src="${trimmed}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#f44336;text-align:center;padding:2px\\'>✕ خطأ</div>'">`;
       box.onclick = () => openImgPreviewFull(trimmed);
     }
 
@@ -3739,7 +3907,7 @@
       const modal = document.getElementById('zoom-modal');
       const inner = document.getElementById('zoom-inner');
       if (!modal || !inner) return;
-      inner.innerHTML = `<div style="height:600px;overflow:hidden;background:#050505;"><img src="${src.trim()}" style="width:100%;height:100%;object-fit:contain;display:block" onerror="this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;color:#555;font-size:12px;letter-spacing:3px;font-family:DM Mono,monospace\\'>الصورة مش موجودة ✕</div>'"></div>`;
+      inner.innerHTML = `<div style="height:600px;overflow:hidden;background:#050505;"><img loading="lazy" src="${src.trim()}" style="width:100%;height:100%;object-fit:contain;display:block" onerror="this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;color:#555;font-size:12px;letter-spacing:3px;font-family:DM Mono,monospace\\'>الصورة مش موجودة ✕</div>'"></div>`;
       modal.classList.add('open');
     }
 
@@ -3937,7 +4105,7 @@
       }
       body.innerHTML = filtered.map(o => {
         const items = o.items ? (Array.isArray(o.items) ? o.items : JSON.parse(o.items)) : [];
-        const itemsSummary = items.map(i => i.isBundle ? `▣ ${i.name}` : `${i.name} (${i.size || ''}) ×${i.qty || 1}`).join('<br>');
+        const itemsSummary = items.map(i => i.isBundle ? `▣ ${i.name}` : `${i.name} (${i.size || ''}${i.colorName ? ` — ${i.colorName}` : ''}) ×${i.qty || 1}`).join('<br>');
         const payMap = { instapay: 'Instapay', vodafone: 'Vodafone', cash: 'كاش' };
         const payLabel = payMap[o.payment_method] || o.payment_method || '—';
         const date = o.created_at ? new Date(o.created_at).toLocaleDateString('ar-EG', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
@@ -3996,7 +4164,7 @@
         if (i.isBundle) {
           return `<div style="margin-bottom:8px"><span style="color:var(--A);font-size:10px">▣ ${i.name} (BUNDLE)</span> — <span style="color:#fff;font-family:'Bebas Neue',sans-serif">${i.price} EGP</span>${i.bundleItems ? '<div style="padding-left:12px;margin-top:4px">' + i.bundleItems.map(bi => `<div style="font-size:9px;color:#555">· ${bi.name} (${bi.size})</div>`).join('') + '</div>' : ''}</div>`;
         }
-        return `<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:#bbb;font-size:11px">${i.name || ''} (${i.size || ''}) ×${i.qty || 1}</span><span style="color:#fff;font-family:'Bebas Neue',sans-serif">${((i.price || 0) * (i.qty || 1)).toLocaleString()} EGP</span></div>`;
+        return `<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:#bbb;font-size:11px">${i.name || ''} (${i.size || ''}${i.colorName ? ` — <span style="color:${i.colorHex || '#aaa'}">●</span> ${i.colorName}` : ''}) ×${i.qty || 1}</span><span style="color:#fff;font-family:'Bebas Neue',sans-serif">${((i.price || 0) * (i.qty || 1)).toLocaleString()} EGP</span></div>`;
       }).join('')}
       <div style="border-top:1px solid #1a1a1a;margin-top:10px;padding-top:10px">
         ${o.shipping > 0 ? `<div style="display:flex;justify-content:space-between;font-size:10px;color:#555;margin-bottom:4px"><span>شحن</span><span>${o.shipping} EGP</span></div>` : ''}
@@ -4228,35 +4396,35 @@
       { s: 'XL', chest: '100-104', waist: '84-88', hip: '104-108', len: '73' }, { s: 'XXL', chest: '104-108', waist: '88-92', hip: '108-112', len: '75' },
     ];
 
-    const PROMOS = { AXS10: 0.10, AXS20: 0.20, WELCOME: 0.15, FIRSTORDER: 0.12 };
+    const PROMOS = { AXS5: 0.05, AXS20: 0.20, WELCOME: 0.15, FIRSTORDER: 0.12 };
     const GOVERNORATES = [
-      { name: 'القاهرة', fee: 60, cities: ['مدينة نصر', 'المعادي', 'مصر الجديدة', 'عين شمس', 'الزيتون', 'شبرا', 'التجمع الخامس', 'حلوان', 'المقطم', 'وسط البلد'] },
-      { name: 'الجيزة', fee: 60, cities: ['الدقي', 'المهندسين', '6 أكتوبر', 'الشيخ زايد', 'فيصل', 'بولاق الدكرور', 'إمبابة', 'الهرم', 'الوراق'] },
-      { name: 'القليوبية', fee: 65, cities: ['شبرا الخيمة', 'بنها', 'قليوب', 'كفر شكر', 'طوخ', 'القناطر الخيرية'] },
-      { name: 'الإسكندرية', fee: 70, cities: ['المنتزه', 'سيدي بشر', 'العجمي', 'برج العرب', 'الدخيلة', 'العامرية', 'المعمورة', 'كليوباترا'] },
-      { name: 'الغربية', fee: 65, cities: ['طنطا', 'المحلة الكبرى', 'كفر الزيات', 'زفتى', 'السنطة', 'بسيون'] },
-      { name: 'الدقهلية', fee: 65, cities: ['المنصورة', 'دكرنس', 'ميت غمر', 'السنبلاوين', 'أجا', 'طلخا', 'شربين'] },
-      { name: 'الشرقية', fee: 65, cities: ['الزقازيق', 'العاشر من رمضان', 'بلبيس', 'منيا القمح', 'ههيا', 'أبو حماد'] },
-      { name: 'المنوفية', fee: 65, cities: ['شبين الكوم', 'مينوف', 'أشمون', 'السادات', 'قويسنا', 'بركة السبع'] },
-      { name: 'البحيرة', fee: 65, cities: ['دمنهور', 'كفر الدوار', 'رشيد', 'إيتاي البارود', 'أبو حمص', 'وادي النطرون'] },
-      { name: 'كفر الشيخ', fee: 65, cities: ['كفر الشيخ', 'دسوق', 'فوه', 'بلطيم', 'سيدي سالم', 'الحامول'] },
-      { name: 'دمياط', fee: 65, cities: ['دمياط', 'رأس البر', 'الزرقا', 'فارسكور', 'كفر سعد'] },
-      { name: 'الإسماعيلية', fee: 65, cities: ['الإسماعيلية', 'القنطرة', 'فايد', 'أبو صوير'] },
-      { name: 'الفيوم', fee: 65, cities: ['الفيوم', 'طامية', 'سنورس', 'إطسا', 'يوسف الصديق'] },
-      { name: 'بني سويف', fee: 60, cities: ['بني سويف', 'الفشن', 'ناصر', 'إهناسيا', 'ببا', 'سمسطا'] },
-      { name: 'المنيا', fee: 60, cities: ['المنيا', 'ملوي', 'سمالوط', 'مغاغة', 'أبو قرقاص'] },
-      { name: 'بورسعيد', fee: 60, cities: ['بورسعيد', 'بور فؤاد'] },
-      { name: 'السويس', fee: 60, cities: ['السويس', 'عتاقة', 'السخنة'] },
-      { name: 'سوهاج', fee: 40, cities: ['سوهاج', 'أخميم', 'جرجا', 'طما', 'طهطا', 'البلينا'] },
-      { name: 'أسيوط', fee: 40, cities: ['أسيوط', 'ديروط', 'منفلوط', 'القوصية', 'أبنوب', 'أبو تيج'] },
-      { name: 'قنا', fee: 60, cities: ['قنا', 'نجع حمادي', 'أبو تشت', 'قفط', 'دشنا'] },
-      { name: 'الأقصر', fee: 80, cities: ['الأقصر', 'إسنا', 'أرمنت', 'القرنة'] },
-      { name: 'أسوان', fee: 85, cities: ['أسوان', 'كوم أمبو', 'إدفو', 'نصر النوبة', 'دراو'] },
-      { name: 'البحر الأحمر', fee: 75, cities: ['الغردقة', 'سفاجا', 'القصير', 'مرسى علم', 'رأس غارب'] },
-      { name: 'شمال سيناء', fee: 95, cities: ['العريش', 'الشيخ زويد', 'رفح', 'بئر العبد'] },
-      { name: 'جنوب سيناء', fee: 90, cities: ['شرم الشيخ', 'دهب', 'طابا', 'نويبع', 'أبو رديس'] },
-      { name: 'مطروح', fee: 80, cities: ['مرسى مطروح', 'العلمين', 'سيوه', 'الضبعة'] },
-      { name: 'الوادي الجديد', fee: 85, cities: ['الخارجة', 'الداخلة', 'الفرافرة', 'باريس'] },
+      { name: 'القاهرة', fee: 90, cities: ['مدينة نصر', 'المعادي', 'مصر الجديدة', 'عين شمس', 'الزيتون', 'شبرا', 'التجمع الخامس', 'حلوان', 'المقطم', 'وسط البلد'] },
+      { name: 'الجيزة', fee: 90, cities: ['الدقي', 'المهندسين', '6 أكتوبر', 'الشيخ زايد', 'فيصل', 'بولاق الدكرور', 'إمبابة', 'الهرم', 'الوراق'] },
+      { name: 'القليوبية', fee: 90, cities: ['شبرا الخيمة', 'بنها', 'قليوب', 'كفر شكر', 'طوخ', 'القناطر الخيرية'] },
+      { name: 'الإسكندرية', fee: 90, cities: ['المنتزه', 'سيدي بشر', 'العجمي', 'برج العرب', 'الدخيلة', 'العامرية', 'المعمورة', 'كليوباترا'] },
+      { name: 'الغربية', fee: 90, cities: ['طنطا', 'المحلة الكبرى', 'كفر الزيات', 'زفتى', 'السنطة', 'بسيون'] },
+      { name: 'الدقهلية', fee: 90, cities: ['المنصورة', 'دكرنس', 'ميت غمر', 'السنبلاوين', 'أجا', 'طلخا', 'شربين'] },
+      { name: 'الشرقية', fee: 90, cities: ['الزقازيق', 'العاشر من رمضان', 'بلبيس', 'منيا القمح', 'ههيا', 'أبو حماد'] },
+      { name: 'المنوفية', fee: 90, cities: ['شبين الكوم', 'مينوف', 'أشمون', 'السادات', 'قويسنا', 'بركة السبع'] },
+      { name: 'البحيرة', fee: 90, cities: ['دمنهور', 'كفر الدوار', 'رشيد', 'إيتاي البارود', 'أبو حمص', 'وادي النطرون'] },
+      { name: 'كفر الشيخ', fee: 90, cities: ['كفر الشيخ', 'دسوق', 'فوه', 'بلطيم', 'سيدي سالم', 'الحامول'] },
+      { name: 'دمياط', fee: 90, cities: ['دمياط', 'رأس البر', 'الزرقا', 'فارسكور', 'كفر سعد'] },
+      { name: 'الإسماعيلية', fee: 90, cities: ['الإسماعيلية', 'القنطرة', 'فايد', 'أبو صوير'] },
+      { name: 'الفيوم', fee: 90, cities: ['الفيوم', 'طامية', 'سنورس', 'إطسا', 'يوسف الصديق'] },
+      { name: 'بني سويف', fee: 90, cities: ['بني سويف', 'الفشن', 'ناصر', 'إهناسيا', 'ببا', 'سمسطا'] },
+      { name: 'المنيا', fee: 90, cities: ['المنيا', 'ملوي', 'سمالوط', 'مغاغة', 'أبو قرقاص'] },
+      { name: 'بورسعيد', fee: 90, cities: ['بورسعيد', 'بور فؤاد'] },
+      { name: 'السويس', fee: 90, cities: ['السويس', 'عتاقة', 'السخنة'] },
+      { name: 'سوهاج', fee: 90, cities: ['سوهاج', 'أخميم', 'جرجا', 'طما', 'طهطا', 'البلينا'] },
+      { name: 'أسيوط', fee: 90, cities: ['أسيوط', 'ديروط', 'منفلوط', 'القوصية', 'أبنوب', 'أبو تيج'] },
+      { name: 'قنا', fee: 90, cities: ['قنا', 'نجع حمادي', 'أبو تشت', 'قفط', 'دشنا'] },
+      { name: 'الأقصر', fee: 90, cities: ['الأقصر', 'إسنا', 'أرمنت', 'القرنة'] },
+      { name: 'أسوان', fee: 90, cities: ['أسوان', 'كوم أمبو', 'إدفو', 'نصر النوبة', 'دراو'] },
+      { name: 'البحر الأحمر', fee: 90, cities: ['الغردقة', 'سفاجا', 'القصير', 'مرسى علم', 'رأس غارب'] },
+      { name: 'شمال سيناء', fee: 90, cities: ['العريش', 'الشيخ زويد', 'رفح', 'بئر العبد'] },
+      { name: 'جنوب سيناء', fee: 90, cities: ['شرم الشيخ', 'دهب', 'طابا', 'نويبع','أبو رديس'] },
+      { name: 'مطروح', fee: 90, cities: ['مرسى مطروح', 'العلمين', 'سيوه', 'الضبعة'] },
+      { name: 'الوادي الجديد', fee: 90, cities: ['الخارجة', 'الداخلة', 'الفرافرة', 'باريس'] },
     ];
 
     const BADGE_STYLE = { 'NEW': `background:${A};color:#000`, 'LIMITED': 'background:#fff;color:#000', 'DROP 001': 'background:rgba(0,0,0,.85);color:#fff;border:1px solid #444' };
@@ -4361,7 +4529,7 @@
     function selectColor(colorId) {
       S.color = colorId;
       S.imgIdx = 0;
-      render();
+      render(true);
     }
 
     // Get current color images for product page
@@ -4426,17 +4594,17 @@
       const colorImgs = getColorImgs(p.id);
       if (colorImgs && colorImgs.length > 0) {
         const src = colorImgs[idx] || colorImgs[0];
-        return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
+        return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
       }
       const src = (IMGS[p.id] || [])[idx] || (IMGS[p.id] || [])[0];
       if (!src) return pvFallback(p, h, idx);
-      return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
+      return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
     }
 
     function pvThumb(p, h = 88, thumbIdx = 0) {
       const src = (IMGS[p.id] || [])[thumbIdx] || (IMGS[p.id] || [])[0];
       if (!src) return pvFallback(p, h, thumbIdx);
-      return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;width:100%;"><img src="${src}" style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, thumbIdx)}</div></div>`;
+      return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;width:100%;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, thumbIdx)}</div></div>`;
     }
 
     function productCard(p, showWish = true) {
@@ -4508,7 +4676,7 @@
 
       <!-- HERO FIGURE -->
       <div class="hero-figure-wrap">
-        <img src="hero.png" class="hero-figure-img" alt="AXS figure"
+        <img loading="lazy" src="hero.png" class="hero-figure-img" alt="AXS figure"
           onerror="this.style.display='none';document.getElementById('hero-figure-fallback').style.display='flex'">
         <div id="hero-figure-fallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;">
           <div style="font-family:var(--fd);font-size:clamp(80px,20vw,160px);color:rgba(255,255,255,.04);letter-spacing:10px">AXS</div>
@@ -4532,7 +4700,7 @@
 
       <div class="hero-scroll" style="z-index:7;position:absolute;">${tx('scrollHint')}</div>
     </div>
-    <div class="ticker"><div class="ticker-track"><span>AXS DROP 001 — PHANTOM ERA — LIMITED PIECES — USE CODE AXS10 FOR 10% OFF — CASH ON DELIVERY AVAILABLE — &nbsp;&nbsp;</span><span>AXS DROP 001 — PHANTOM ERA — LIMITED PIECES — USE CODE AXS10 FOR 10% OFF — CASH ON DELIVERY AVAILABLE — &nbsp;&nbsp;</span></div></div>
+    <div class="ticker"><div class="ticker-track"><span>AXS DROP 001 — PHANTOM ERA — LIMITED PIECES — USE CODE AXS5 FOR 5% OFF — CASH ON DELIVERY AVAILABLE — &nbsp;&nbsp;</span><span>AXS DROP 001 — PHANTOM ERA — LIMITED PIECES — USE CODE AXS5 FOR 5% OFF — CASH ON DELIVERY AVAILABLE — &nbsp;&nbsp;</span></div></div>
     <div class="section">
       <div class="section-header"><div><div class="section-tag">02 — ${tx('featured').toUpperCase()}</div><div class="section-title">${tx('theDrop').toUpperCase()}</div></div><button class="btn-outline" onclick="navigate('shop')">${tx('viewAll')}</button></div>
       <div class="grid-2">${featured.map(p => productCard(p)).join('')}</div>
@@ -4689,13 +4857,13 @@
 
       // Thumbnails
       const thumbsHtml = colorImgs.length > 0
-        ? colorImgs.map((src, i) => `<div class="prod-thumb${S.imgIdx === i ? ' active' : ''}" onclick="selectImg(${i})"><div style="height:88px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});"><img src="${src}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'"></div></div>`).join('')
+        ? colorImgs.map((src, i) => `<div class="prod-thumb${S.imgIdx === i ? ' active' : ''}" onclick="selectImg(${i})"><div style="height:88px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'"></div></div>`).join('')
         : [0, 1, 2].map(i => `<div class="prod-thumb${S.imgIdx === i ? ' active' : ''}" onclick="selectImg(${i})">${pvThumb(p, 88, i)}</div>`).join('');
 
       // Main image
       const mainImgSrc = colorImgs[S.imgIdx] || colorImgs[0];
       const mainImg = mainImgSrc
-        ? `<div style="height:480px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img src="${mainImgSrc}" style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, 480, S.imgIdx)}</div></div>`
+        ? `<div style="height:480px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${mainImgSrc}" style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, 480, S.imgIdx)}</div></div>`
         : pv(p, 480);
 
       // Color picker HTML
@@ -4790,7 +4958,7 @@
         }
         return `<div class="cart-item">
           <div class="cart-thumb">${pv(getProduct(item.id) || item, 88, 0)}</div>
-          <div style="flex:1"><div class="cart-name">${item.name.toUpperCase()}</div><div class="cart-size">${tx('size')} ${item.size}</div></div>
+          <div style="flex:1"><div class="cart-name">${item.name.toUpperCase()}</div><div class="cart-size">${tx('size')} ${item.size}${item.colorName ? ` <span style="display:inline-flex;align-items:center;gap:4px;margin-left:6px">${item.colorHex ? `<span style="width:10px;height:10px;border-radius:50%;background:${item.colorHex};border:1px solid rgba(255,255,255,.2);display:inline-block"></span>` : ''}<span style="color:var(--text3)">${item.colorName}</span></span>` : ''}</div></div>
           <div class="cart-qty"><button onclick="updateQty(${idx},${item.qty - 1})">−</button><span>${item.qty}</span><button onclick="updateQty(${idx},${item.qty + 1})">+</button></div>
           <div class="cart-total">${item.price * item.qty}<span style="font-size:9px;color:var(--text3);font-family:var(--fm);margin-left:3px">EGP</span></div>
           <button class="cart-remove" onclick="removeFromCart(${idx})">✕</button>
@@ -4829,7 +4997,7 @@
     `: `
       <div style="font-family:var(--fd);font-size:48px;margin-bottom:24px">${tx('payment').toUpperCase()}</div>
       <div style="font-size:9px;letter-spacing:5px;color:var(--text3);font-family:var(--fm);margin-bottom:8px">00 — ${tx('promoCode')}</div>
-      <div class="promo-row"><input class="promo-input" placeholder="${S.lang === 'ar' ? 'مثال: AXS10' : 'e.g. AXS10'}" value="${S.promo}" oninput="S.promo=this.value"><button class="promo-btn" onclick="applyPromo()">${tx('apply')}</button></div>
+      <div class="promo-row"><input class="promo-input" placeholder="${S.lang === 'ar' ? 'كود الخصم' : 'Promo code'}" value="${S.promo}" oninput="S.promo=this.value"><button class="promo-btn" onclick="applyPromo()">${tx('apply')}</button></div>
       <div class="promo-msg" style="color:${S.discount > 0 ? '#4caf50' : A}">${S.discount > 0 ? (S.lang === 'ar' ? `تم تطبيق خصم ${S.discount * 100}% ✓` : `${S.discount * 100}% discount applied ✓`) : ''}</div>
       <div style="font-size:9px;letter-spacing:5px;color:var(--text3);font-family:var(--fm);margin:18px 0 10px">01 — ${tx('selectMethod').toUpperCase()}</div>
       ${pays.map(m => `<div class="pay-option${S.pay === m.id ? ' active' : ''}" onclick="selectPay('${m.id}')"><div class="pay-icon">${m.icon}</div><div style="flex:1"><div class="pay-label">${m.label}</div><div class="pay-sub">${m.sub}</div></div><div class="pay-radio${S.pay === m.id ? ' active' : ''}">${S.pay === m.id ? '✓' : ''}</div></div>`).join('')}
@@ -4839,7 +5007,7 @@
         <div class="summary-tag">${tx('orderSummary')}</div>
         ${S.cart.map(item => {
         if (item.isBundle) return `<div class="summary-row" style="font-weight:bold"><span style="color:${A}">▣ ${item.name.toUpperCase()}</span><span>${item.price} EGP</span></div>${item.bundleItems.map(bi => `<div class="summary-sub">· ${bi.name} (${bi.size})</div>`).join('')}`;
-        return `<div class="summary-row"><span>${item.name.toUpperCase()} ×${item.qty} (${item.size})</span><span>${item.price * item.qty} EGP</span></div>`;
+        return `<div class="summary-row"><span>${item.name.toUpperCase()} ×${item.qty} (${item.size}${item.colorName ? ` — ${item.colorName}` : ''})</span><span>${item.price * item.qty} EGP</span></div>`;
       }).join('')}
         ${S.discount > 0 ? `<div class="summary-row" style="color:#4caf50"><span>${tx('discount')} (${S.discount * 100}%)</span><span>−${rawTotal - discounted} EGP</span></div>` : ''}
         ${S.gov ? `<div class="summary-row"><span>شحن — ${S.gov.name}</span><span style="color:${A}">${S.shipping} EGP</span></div>` : ''}
@@ -4862,7 +5030,7 @@
     <div class="order-summary" style="margin-bottom:20px;text-align:left">
       ${od.items.map(item => {
         if (item.isBundle) return `<div class="summary-row" style="font-weight:bold"><span style="color:${A}">▣ ${item.name.toUpperCase()}</span><span>${item.price} EGP</span></div>${item.bundleItems.map(bi => `<div class="summary-sub">· ${bi.name} (${bi.size})</div>`).join('')}`;
-        return `<div class="summary-row"><span>${item.name.toUpperCase()} ×${item.qty} (${item.size})</span><span>${item.price * item.qty} EGP</span></div>`;
+        return `<div class="summary-row"><span>${item.name.toUpperCase()} ×${item.qty} (${item.size}${item.colorName ? ` — ${item.colorName}` : ''})</span><span>${item.price * item.qty} EGP</span></div>`;
       }).join('')}
       <div class="summary-divider"><span style="font-size:9px;letter-spacing:4px;color:var(--text3);font-family:var(--fm)">${tx('total')}</span><span style="font-family:var(--fd);font-size:24px">${od.total} EGP</span></div>
     </div>
@@ -4984,7 +5152,7 @@
       <div class="section-tag">01 — ${tx('ourStory').toUpperCase()}</div>
       <div class="section-title" style="margin-bottom:28px">${S.lang === 'ar' ? 'وُلدنا من الشوارع.' : 'BORN FROM THE STREETS.'}</div>
       <p style="font-size:15px;color:var(--text2);line-height:2;font-family:Georgia,serif;margin-bottom:40px">${S.lang === 'ar' ? "AXS ليست مجرد علامة تجارية — إنها شعور. نصنع لأولئك الذين يتحركون بصمت." : "AXS isn't just a clothing brand — it's a feeling. We build for those who move in silence. Started in 2023 from Cairo."}</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:56px">${[['2023', S.lang === 'ar' ? 'سنة التأسيس' : 'Founded'], ['014', S.lang === 'ar' ? 'الإصدار الحالي' : 'Current Drop'], ['6+', S.lang === 'ar' ? 'منتجات حصرية' : 'Exclusive Pieces']].map(([num, label]) => `<div style="background:var(--bg3);border:1px solid var(--border);padding:28px 20px;text-align:center"><div style="font-family:var(--fd);font-size:48px;color:${A};line-height:1;margin-bottom:4px">${num}</div><div style="font-size:10px;color:var(--text3);font-family:var(--fm);letter-spacing:3px">${label.toUpperCase()}</div></div>`).join('')}</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:56px">${[['2026', S.lang === 'ar' ? 'سنة التأسيس' : 'Founded'], ['001', S.lang === 'ar' ? 'الإصدار الحالي' : 'Current Drop'], ['4+', S.lang === 'ar' ? 'منتجات حصرية' : 'Exclusive Pieces']].map(([num, label]) => `<div style="background:var(--bg3);border:1px solid var(--border);padding:28px 20px;text-align:center"><div style="font-family:var(--fd);font-size:48px;color:${A};line-height:1;margin-bottom:4px">${num}</div><div style="font-size:10px;color:var(--text3);font-family:var(--fm);letter-spacing:3px">${label.toUpperCase()}</div></div>`).join('')}</div>
       <div class="section-tag">02 — ${tx('manifesto').toUpperCase()}</div>
       <div class="manifesto-block"><p style="font-size:18px;color:var(--text);line-height:1.8;font-family:Georgia,serif;font-style:italic">"${S.lang === 'ar' ? 'الصمت مخيط بالقطن. الشوارع مصنوعة للذين يجرؤون.' : 'Silence stitched in cotton. Streets made for those who dare.'}"</p></div>
       <div class="values-grid">${(S.lang === 'ar' ? [['الجودة أولاً', 'نستخدم أجود المواد فقط.'], ['محدود بقصد', 'كل قطعة محدودة.'], ['مصنوع في مصر', 'فخورون بجذورنا.'], ['للشوارع', 'مصمم لكل من يعيش الشارع.']] : [['Quality First', 'We use only the finest materials.'], ['Limited by Design', 'Every piece is limited.'], ['Made in Egypt', 'Proud of our roots.'], ['For the Streets', 'Designed for everyone who lives the street.']]).map(([title, desc]) => `<div class="value-card"><div style="font-family:var(--fd);font-size:18px;letter-spacing:2px;margin-bottom:8px">${title.toUpperCase()}</div><p style="font-size:12px;color:var(--text2);font-family:Georgia,serif;line-height:1.7">${desc}</p></div>`).join('')}</div>
@@ -5130,7 +5298,7 @@
       const p = getProduct(pid);
       const inner = document.getElementById('zoom-inner');
       if (src) {
-        inner.innerHTML = `<div style="height:600px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});"><img src="${src}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`;
+        inner.innerHTML = `<div style="height:600px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`;
       } else {
         inner.innerHTML = pv(p, 600);
       }
@@ -5162,36 +5330,95 @@
     // ═══════════════════════════════════════════════════════════════════════════════
     // RENDER & NAV
     // ═══════════════════════════════════════════════════════════════════════════════
-    function render() {
+    let _lastPage = null;
+    let _lastProdId = null;
+    function render(scrollTop = false) {
       const main = document.getElementById('main');
       const pages = { home: renderHome, shop: renderShop, bundles: renderBundles, bundle: renderBundle, product: renderProduct, cart: renderCart, checkout: renderCheckout, confirmation: renderConfirmation, wishlist: renderWishlist, track: renderTrack, about: renderAbout, return: renderReturn };
+      const pageChanged = S.page !== _lastPage || (S.page === 'product' && S.prodId !== _lastProdId);
+      _lastPage = S.page;
+      _lastProdId = S.prodId;
+
+      // Save scroll before re-render (same-page updates only)
+      const savedScroll = (!pageChanged && !scrollTop) ? window.scrollY : 0;
+
       try {
         main.innerHTML = (pages[S.page] || renderHome)();
+        if (pageChanged) {
+          main.style.animation = 'none';
+          main.offsetHeight;
+          main.style.animation = '';
+        }
       } catch (e) {
         console.error('Render error:', e);
-        main.innerHTML = `<div style="padding:80px 24px;text-align:center;color:var(--text)"><div style="font-family:var(--fd);font-size:48px;margin-bottom:16px">AXS</div><div style="font-size:12px;color:#555;font-family:var(--fm);margin-bottom:24px">${e.message}</div><button onclick="S.page='home';render()" style="background:${A};color:#fff;border:none;padding:14px 32px;font-family:var(--fd);font-size:16px;letter-spacing:4px;cursor:pointer">← HOME</button></div>`;
+        main.innerHTML = `<div style="padding:80px 24px;text-align:center;color:var(--text)"><div style="font-family:var(--fd);font-size:48px;margin-bottom:16px">AXS</div><div style="font-size:12px;color:#555;font-family:var(--fm);margin-bottom:24px">${e.message}</div><button onclick="S.page='home';render()" style="background:${A};color:#fff;border:none;padding:14px 32px;font-family:var(--fd);font-size:16px;letter-spacing:4px;cursor:pointer">HOME</button></div>`;
       }
       updateNav();
       if (S.page === 'product' && getProduct(S.prodId)?.badge === 'LIMITED') startCountdown();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (pageChanged || scrollTop) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: savedScroll, behavior: 'instant' });
+      }
     }
 
     function updateNav() {
       const links = [[tx('shop'), 'shop'], [tx('bundles'), 'bundles'], [tx('about'), 'about'], ['الاسترجاع', 'return']];
       document.getElementById('nav-links').innerHTML = links.map(([l, p]) => `<span class="nav-link${(S.page === p || (p === 'bundles' && S.page === 'bundle')) ? ' active' : ''}" onclick="navigate('${p}')">${l}</span>`).join('');
+
+      // Update mobile drawer active state
+      const mobLinks = document.querySelectorAll('.mob-drawer-link[data-page]');
+      mobLinks.forEach(el => el.classList.toggle('active', el.dataset.page === S.page));
+
       document.getElementById('lang-btn').textContent = S.lang === 'en' ? 'ع' : 'EN';
       document.getElementById('theme-btn').textContent = S.dark ? '☀' : '🌙';
+      const mobLang = document.getElementById('mob-lang-btn');
+      const mobTheme = document.getElementById('mob-theme-btn');
+      if (mobLang) mobLang.textContent = S.lang === 'en' ? 'ع' : 'EN';
+      if (mobTheme) mobTheme.textContent = S.dark ? '☀' : '🌙';
+
       const cc = S.cart.reduce((s, i) => s + i.qty, 0);
       const cb = document.getElementById('cart-btn'), wb = document.getElementById('wish-btn');
       if (cb) cb.innerHTML = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>${cc > 0 ? `<span class="nav-badge">${cc > 9 ? '9+' : cc}</span>` : ''}`;
       const wc = S.wish.length;
       if (wb) wb.innerHTML = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${wc > 0 ? `<span class="nav-badge">${wc > 9 ? '9+' : wc}</span>` : ''}`;
+
+      // ── Dynamic page title
+      const pageTitles = {
+        home: 'AXS — PHANTOM ERA',
+        shop: 'Shop — AXS',
+        bundles: 'Bundles — AXS',
+        about: 'About — AXS',
+        cart: 'Cart — AXS',
+        checkout: 'Checkout — AXS',
+        wishlist: 'Wishlist — AXS',
+        track: 'Track Order — AXS',
+        return: 'Return Policy — AXS',
+        confirmation: 'Order Confirmed — AXS',
+        product: S.prodId ? `${(getProduct(S.prodId)?.name || 'Product').toUpperCase()} — AXS` : 'AXS',
+        bundle: 'Bundle — AXS',
+      };
+      document.title = pageTitles[S.page] || 'AXS';
+    }
+
+    // ── Mobile drawer toggle
+    function toggleMobileDrawer() {
+      const drawer = document.getElementById('mobile-drawer');
+      drawer.classList.toggle('open');
+      document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
     }
 
     // ═══════════════════════════════════════════════════════════════════════════════
     // NAVIGATION
     // ═══════════════════════════════════════════════════════════════════════════════
     function navigate(page) {
+      // Always close mobile drawer when navigating
+      const drawer = document.getElementById('mobile-drawer');
+      if (drawer && drawer.classList.contains('open')) {
+        drawer.classList.remove('open');
+        document.body.style.overflow = '';
+      }
       if (page === 'admin') {
         document.getElementById('ann-bar').style.display = 'none';
         document.getElementById('navbar').style.display = 'none';
@@ -5291,7 +5518,7 @@
     function removeFromCart(idx) { S.cart.splice(idx, 1); saveCart(); render(); }
     function updateQty(idx, qty) { if (S.cart[idx] && S.cart[idx].isBundle) return; if (qty <= 0) S.cart.splice(idx, 1); else S.cart[idx].qty = qty; saveCart(); render(); }
     function clearCart() { if (!S.cart.length) return; S.cart = []; saveCart(); addToast(tx('cartCleared'), 'info'); render(); }
-    function toggleWish(id) { const has = S.wish.includes(id); S.wish = has ? S.wish.filter(x => x !== id) : [...S.wish, id]; addToast(has ? (S.lang === 'ar' ? 'أُزيل من المفضلة' : 'Removed from wishlist') : (S.lang === 'ar' ? 'حُفظ في المفضلة ♥' : 'Saved to wishlist ♥'), has ? 'info' : 'success'); render(); }
+    function toggleWish(id) { const has = S.wish.includes(id); S.wish = has ? S.wish.filter(x => x !== id) : [...S.wish, id]; saveWish(); addToast(has ? (S.lang === 'ar' ? 'أُزيل من المفضلة' : 'Removed from wishlist') : (S.lang === 'ar' ? 'حُفظ في المفضلة ♥' : 'Saved to wishlist ♥'), has ? 'info' : 'success'); render(); }
     function applyPromo() { const d = PROMOS[S.promo.toUpperCase()]; if (d) { S.discount = d; addToast(S.lang === 'ar' ? `تم تطبيق خصم ${d * 100}% ✓` : `${d * 100}% discount applied ✓`, 'success'); } else { S.discount = 0; addToast(S.lang === 'ar' ? 'كود الخصم غير صحيح' : 'Invalid promo code', 'error'); } render(); }
 
     function nextStep() {
@@ -5454,14 +5681,16 @@ ${itemsStr}
     }
 
     function toggleSearch() { const el = document.getElementById('search-overlay'); el.classList.toggle('open'); if (el.classList.contains('open')) document.getElementById('search-input').focus(); }
-    function toggleTheme() { S.dark = !S.dark; if (S.dark) document.body.removeAttribute('data-light'); else document.body.setAttribute('data-light', ''); updateNav(); }
-    function toggleLang() { S.lang = S.lang === 'en' ? 'ar' : 'en'; document.documentElement.setAttribute('lang', S.lang); document.documentElement.setAttribute('dir', S.lang === 'ar' ? 'rtl' : 'ltr'); render(); }
+    function toggleTheme() { S.dark = !S.dark; if (S.dark) document.body.removeAttribute('data-light'); else document.body.setAttribute('data-light', ''); try { localStorage.setItem('axs_dark', S.dark ? '1' : '0'); } catch(e){} updateNav(); }
+    function toggleLang() { S.lang = S.lang === 'en' ? 'ar' : 'en'; document.documentElement.setAttribute('lang', S.lang); document.documentElement.setAttribute('dir', S.lang === 'ar' ? 'rtl' : 'ltr'); try { localStorage.setItem('axs_lang', S.lang); } catch(e){} render(); }
 
     // ═══════════════════════════════════════════════════════════════════════════════
     // STORAGE & WHATSAPP
     // ═══════════════════════════════════════════════════════════════════════════════
     function saveCart() { try { localStorage.setItem('axs_cart', JSON.stringify(S.cart)); } catch (e) { } }
     function loadCart() { try { const c = localStorage.getItem('axs_cart'); if (c) S.cart = JSON.parse(c); } catch (e) { } }
+    function saveWish() { try { localStorage.setItem('axs_wish', JSON.stringify(S.wish)); } catch (e) { } }
+    function loadWish() { try { const w = localStorage.getItem('axs_wish'); if (w) S.wish = JSON.parse(w); } catch (e) { } }
 
     function sendWhatsApp(od) {
       const itemsStr = od.items.map(item => {
@@ -5663,6 +5892,23 @@ ${itemsStr}
     // ═══════════════════════════════════════════════════════════════════════════════
     async function initApp() {
       loadCart();
+      loadWish();
+
+      // Restore theme & lang from localStorage
+      try {
+        const savedDark = localStorage.getItem('axs_dark');
+        const savedLang = localStorage.getItem('axs_lang');
+        if (savedDark !== null) {
+          S.dark = savedDark === '1';
+          if (!S.dark) document.body.setAttribute('data-light', '');
+          else document.body.removeAttribute('data-light');
+        }
+        if (savedLang) {
+          S.lang = savedLang;
+          document.documentElement.setAttribute('lang', S.lang);
+          document.documentElement.setAttribute('dir', S.lang === 'ar' ? 'rtl' : 'ltr');
+        }
+      } catch(e) {}
 
       // 1. Load settings (limited_end, hidden_products, hidden_bundles) from Supabase
       try {
