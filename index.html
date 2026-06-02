@@ -4529,7 +4529,7 @@
     function selectColor(colorId) {
       S.color = colorId;
       S.imgIdx = 0;
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       render();
     }
 
@@ -5397,14 +5397,34 @@
     // ═══════════════════════════════════════════════════════════════════════════════
     // NAVIGATION
     // ═══════════════════════════════════════════════════════════════════════════════
-    function navigate(page) {
-      // Always close mobile drawer when navigating
+    function _pushHistory(state) {
+      window.history.pushState(state, '');
+    }
+
+    window.addEventListener('popstate', function(e) {
+      const state = e.state;
+      if (!state || !state.page) {
+        // مفيش state — ارجع للهوم
+        _goToPage('home', null, null, false);
+        return;
+      }
+      if (state.page === 'product' && state.prodId) {
+        _goToPage('product', state.prodId, null, false);
+      } else if (state.page === 'bundle' && state.bundleId) {
+        _goToPage('bundle', null, state.bundleId, false);
+      } else {
+        _goToPage(state.page, null, null, false);
+      }
+    });
+
+    function _goToPage(page, prodId, bundleId, pushState) {
       const drawer = document.getElementById('mobile-drawer');
       if (drawer && drawer.classList.contains('open')) {
         drawer.classList.remove('open');
         document.body.style.overflow = '';
       }
       if (page === 'admin') {
+        if (pushState) _pushHistory({ page: 'admin' });
         document.getElementById('ann-bar').style.display = 'none';
         document.getElementById('navbar').style.display = 'none';
         document.getElementById('social-hub').style.display = 'none';
@@ -5415,27 +5435,34 @@
       document.getElementById('ann-bar').style.display = '';
       document.getElementById('navbar').style.display = '';
       document.getElementById('social-hub').style.display = '';
-      // Stop order polling when leaving admin
       stopOrderPolling();
       S.page = page;
+      if (prodId) S.prodId = prodId;
+      if (bundleId) S.bundleId = bundleId;
       if (page !== 'product') { S.size = null; S.qty = 1; S.imgIdx = 0; S.accordion = null; }
       if (page !== 'bundle') { S.bundleId = null; }
       if (page === 'checkout') { S.step = 1; S.pay = null; S.discount = 0; S.promo = ''; S.transfer = ''; S.file = null; S.fileName = null; }
       window.scrollTo({ top: 0, behavior: 'instant' });
+      if (pushState) _pushHistory({ page, prodId: prodId || null, bundleId: bundleId || null });
       render();
+    }
+
+    function navigate(page) {
+      _goToPage(page, null, null, true);
     }
 
     async function openProduct(id) {
       S.prodId = id; S.page = 'product'; S.size = null; S.qty = 1; S.imgIdx = 0; S.accordion = null; S.color = null;
       S.rv = [id, ...S.rv.filter(x => x !== id)].slice(0, 6);
       window.scrollTo({ top: 0, behavior: 'instant' });
+      _pushHistory({ page: 'product', prodId: id });
       render();
       await loadProductData(id);
       const colors = getProductColors(id);
       if (colors.length > 0) S.color = colors[0].id;
       render();
     }
-    function openBundle(id) { S.bundleId = id; S.page = 'bundle'; window.scrollTo({ top: 0, behavior: 'instant' }); render(); }
+    function openBundle(id) { S.bundleId = id; S.page = 'bundle'; window.scrollTo({ top: 0, behavior: 'instant' }); _pushHistory({ page: 'bundle', bundleId: id }); render(); }
     function selectSize(size) { S.size = size; render(); }
     function setQty(n) { S.qty = Math.max(1, n); render(); }
     function selectImg(i) { S.imgIdx = i; render(); }
@@ -5878,6 +5905,11 @@ ${itemsStr}
     async function initApp() {
       loadCart();
       loadWish();
+
+      // Initial history entry so back button stays inside the site
+      if (!window.history.state) {
+        window.history.replaceState({ page: 'home' }, '');
+      }
 
       // Restore theme & lang from localStorage
       try {
