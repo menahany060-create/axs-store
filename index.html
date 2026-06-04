@@ -419,6 +419,19 @@
 
     .pcard-img {
       position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+    }
+    .pcard-img > div {
+      position: absolute !important;
+      inset: 0 !important;
+      height: 100% !important;
+    }
+    .pcard-img img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center top !important;
     }
 
     .pcard-wish {
@@ -4595,11 +4608,11 @@
       const colorImgs = getColorImgs(p.id);
       if (colorImgs && colorImgs.length > 0) {
         const src = colorImgs[idx] || colorImgs[0];
-        return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
+        return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;object-position:center top;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
       }
       const src = (IMGS[p.id] || [])[idx] || (IMGS[p.id] || [])[0];
       if (!src) return pvFallback(p, h, idx);
-      return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
+      return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;object-position:center top;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
     }
 
     function pvThumb(p, h = 88, thumbIdx = 0) {
