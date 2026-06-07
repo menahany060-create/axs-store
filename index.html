@@ -2624,6 +2624,50 @@
       }
     }
 
+    /* ── STICKY MOBILE ATC BAR ── */
+    #sticky-atc-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 90;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 10px 16px;
+      gap: 8px;
+      align-items: center;
+    }
+    #sticky-atc-bar .sticky-name {
+      flex: 1;
+      font-family: var(--fd);
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+    #sticky-atc-bar .sticky-price {
+      font-family: var(--fd);
+      font-size: 18px;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+    #sticky-atc-bar .sticky-buy {
+      background: var(--A);
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      font-size: 11px;
+      letter-spacing: 4px;
+      font-family: var(--fd);
+      cursor: pointer;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
     @media(max-width:768px) {
 
       .prod-grid,
@@ -2658,6 +2702,11 @@
 
       .bundle-detail-imgs {
         grid-template-columns: 1fr 1fr;
+      }
+
+      /* ── STICKY MOBILE BAR ── */
+      #sticky-atc-bar {
+        display: flex !important;
       }
 
       .admin-stats {
@@ -3402,7 +3451,7 @@
     // SUPABASE CONFIG
     // ═══════════════════════════════════════════════════════════════════════════════
     const SUPABASE_URL = 'https://wzdpderjzzmpuukmvhem.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_lqu3xYvqiGgBc4MCwb5Uag__2AwbTeV';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6ZHBkZXJqenptcHV1a212aGVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NDU3NTMsImV4cCI6MjA5NDAyMTc1M30.at1NmWU7dtnjflNdr4nhsyk9NmgMrZEUw9ul8KUketc';
 
     async function supabaseInsert(table, data) {
       try {
@@ -3416,6 +3465,10 @@
           },
           body: JSON.stringify(data)
         });
+        if (!res.ok) {
+          const errText = await res.text();
+          console.error('Supabase insert failed:', res.status, errText);
+        }
         return res.ok;
       } catch (e) { console.error('Supabase insert error:', e); return false; }
     }
@@ -4343,8 +4396,10 @@
     <div style="display:flex;gap:8px">
       <button class="admin-btn" onclick="saveOrderNotes('${o.id}')">حفظ الملاحظات</button>
       <a href="https://wa.me/${o.phone || ''}" target="_blank" class="admin-btn" style="background:#25D366;text-decoration:none;display:inline-flex;align-items:center;gap:6px">📱 واتساب</a>
+      ${o.receipt_url ? `<a href="${o.receipt_url}" target="_blank" class="admin-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px">🖼 إيصال الدفع</a>` : ''}
       <button class="admin-btn-danger" style="margin-left:auto" onclick="deleteOrder('${o.id}');closeOrderDetail()">حذف الأوردر</button>
-    </div>`;
+    </div>
+    ${o.receipt_url ? `<div style="margin-top:16px"><div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:8px">إيصال الدفع</div><a href="${o.receipt_url}" target="_blank"><img src="${o.receipt_url}" style="max-width:100%;max-height:300px;object-fit:contain;border:1px solid #1a1a1a;display:block" onerror="this.style.display='none'"></a></div>` : `${o.payment_method !== 'cash' ? `<div style="margin-top:12px;padding:10px 14px;border:1px solid #2a1a1a;background:#110808"><span style="font-size:9px;color:#f44336;letter-spacing:2px;font-family:'DM Mono',monospace">⚠ لم يرفع العميل إيصال دفع</span></div>` : ''}`}`;
       document.getElementById('order-detail-modal').classList.add('open');
     }
 
@@ -4601,7 +4656,7 @@
       cart: [], wish: [], dark: true, lang: 'en', rv: [],
       step: 1, form: { name: '', phone: '', address: '' },
       gov: null, govCity: '', shipping: 0, codFee: 0,
-      pay: null, promo: '', discount: 0, transfer: '', file: null, fileName: null, filePreviewUrl: null,
+      pay: null, promo: '', discount: 0, transfer: '', file: null, fileName: null, filePreviewUrl: null, promoOpen: false,
       orderNum: null, orderData: null,
       catFilter: 'ALL', sortFilter: 'FEATURED', shopSearch: '',
       trackInput: '', trackResult: null,
@@ -5076,9 +5131,9 @@
            <div class="size-btns">${p.sizes.map(s => { const st = sizeStockFn(s); return `<button class="size-btn${S.size === s ? ' active' : ''}${st === 0 ? ' sold' : ''}" onclick="${st > 0 ? `selectSize('${s}')` : ''}">${s}${st === 0 ? `<span style="font-size:7px;display:block;color:#555">OUT</span>` : ''}</button>`; }).join('')}</div>
            <div class="qty-add">
              <div class="qty-ctrl"><button onclick="setQty(${S.qty - 1})">−</button><span class="qty-val">${S.qty}</span><button onclick="setQty(${S.qty + 1})">+</button></div>
-             <button class="btn" style="flex:1;height:52px" onclick="doAddToCart()">${tx('addToCart')}</button>
+             <button class="btn" style="flex:1;height:52px;min-width:0" onclick="doAddToCart()">${tx('addToCart')}</button>
            </div>
-           <button class="btn btn-full" style="background:var(--A);color:#000;height:52px;margin-bottom:10px;border:none" onclick="doBuyNow()">BUY NOW →</button>`
+           <button class="btn btn-full" style="background:var(--A);color:#000;height:52px;margin-bottom:10px;border:none;letter-spacing:6px" onclick="doBuyNow()">BUY NOW →</button>`
         }
       <button class="wish-btn${wished ? ' active' : ''}" onclick="toggleWish(${p.id})">${wished ? tx('saved') : tx('saveWish')}</button>
       <div>${accs.map((a, i) => `<div class="acc-item"><button class="acc-btn" onclick="toggleAccordion(${i})">${a.t}<span class="acc-icon${S.accordion === i ? ' open' : ''}">+</span></button>${S.accordion === i ? `<div class="acc-body">${a.c}</div>` : ''}</div>`).join('')}</div>
@@ -5091,7 +5146,12 @@
     </div>
     <div style="margin-bottom:48px"><div class="section-tag">${tx('youMightLike').toUpperCase()}</div><div class="section-title" style="margin-bottom:24px">${tx('related').toUpperCase()}</div><div class="grid-3">${related.map(rp => productCard(rp)).join('')}</div></div>
     ${rv.length > 0 ? `<div><div class="section-tag">${tx('keepBrowsing').toUpperCase()}</div><div class="section-title" style="margin-bottom:24px">${tx('recentlyViewed').toUpperCase()}</div><div class="grid-3">${rv.map(rp => productCard(rp)).join('')}</div></div>` : ''}
-  </div>`;
+  </div>
+  ${!soldOut ? `<div id="sticky-atc-bar">
+    <span class="sticky-name">${pName(p).toUpperCase()}</span>
+    <span class="sticky-price">${p.price} <span style="font-size:11px;color:var(--text3);font-family:var(--fm)">EGP</span></span>
+    <button class="sticky-buy" onclick="doBuyNow()">${S.lang === 'ar' ? 'اشتري دلوقتي' : 'BUY NOW'}</button>
+  </div>` : ''}`;
     }
 
     function renderCart() {
@@ -5163,8 +5223,13 @@
     `: `
       <div style="font-family:var(--fd);font-size:48px;margin-bottom:24px">${tx('payment').toUpperCase()}</div>
       <div style="font-size:9px;letter-spacing:5px;color:var(--text3);font-family:var(--fm);margin-bottom:8px">00 — ${tx('promoCode')}</div>
-      <div class="promo-row"><input class="promo-input" placeholder="${S.lang === 'ar' ? 'كود الخصم' : 'Promo code'}" value="${S.promo}" oninput="S.promo=this.value"><button class="promo-btn" onclick="applyPromo()">${tx('apply')}</button></div>
-      <div class="promo-msg" style="color:${S.discount > 0 ? '#4caf50' : A}">${S.discount > 0 ? (S.lang === 'ar' ? `تم تطبيق خصم ${S.discount * 100}% ✓` : `${S.discount * 100}% discount applied ✓`) : ''}</div>
+      <div style="border:1px solid var(--border);margin-bottom:14px">
+        <button onclick="S.promoOpen=!S.promoOpen;render()" style="width:100%;background:none;border:none;color:${S.discount>0?'#4caf50':'var(--text3)'};display:flex;justify-content:space-between;align-items:center;padding:12px 14px;font-size:10px;letter-spacing:3px;font-family:var(--fm);cursor:pointer">
+          <span>${S.discount > 0 ? (S.lang==='ar' ? `✓ خصم ${S.discount*100}% مطبّق` : `✓ ${S.discount*100}% discount applied`) : (S.lang==='ar' ? 'عندك كود خصم؟' : 'Have a promo code?')}</span>
+          <span style="font-size:14px">${S.promoOpen ? '−' : '+'}</span>
+        </button>
+        ${S.promoOpen ? `<div style="padding:0 14px 14px"><div class="promo-row" style="margin-bottom:6px"><input class="promo-input" placeholder="${S.lang==='ar' ? 'كود الخصم' : 'Promo code'}" value="${S.promo}" oninput="S.promo=this.value"><button class="promo-btn" onclick="applyPromo()">${tx('apply')}</button></div></div>` : ''}
+      </div>
       <div style="font-size:9px;letter-spacing:5px;color:var(--text3);font-family:var(--fm);margin:18px 0 10px">01 — ${tx('selectMethod').toUpperCase()}</div>
       ${pays.map(m => `<div class="pay-option${S.pay === m.id ? ' active' : ''}" onclick="selectPay('${m.id}')"><div class="pay-icon">${m.icon}</div><div style="flex:1"><div class="pay-label">${m.label}</div><div class="pay-sub">${m.sub}</div></div><div class="pay-radio${S.pay === m.id ? ' active' : ''}">${S.pay === m.id ? '✓' : ''}</div></div>`).join('')}
       ${S.pay && S.pay !== 'cash' ? `<div style="margin:16px 0"><div style="font-size:9px;letter-spacing:5px;color:var(--text3);font-family:var(--fm);margin-bottom:8px">02 — ${tx('transferTo').toUpperCase()}</div><div style="background:var(--bg3);border:1px solid var(--border);padding:12px 16px;font-size:13px;letter-spacing:2px;color:${A};font-family:var(--fm);margin-bottom:10px">${pays.find(pm => pm.id === S.pay)?.num || ''}</div><input class="field" style="margin-bottom:14px" value="${S.transfer}" oninput="S.transfer=this.value" placeholder="${S.lang === 'ar' ? 'رقم حسابك' : 'YOUR NUMBER'}"><div style="font-size:9px;letter-spacing:5px;color:var(--text3);font-family:var(--fm);margin-bottom:8px">03 — ${tx('uploadScreenshot').toUpperCase()}</div><label class="upload-zone${S.file ? ' has-file' : ''}" style="${S.file ? 'height:auto;padding:10px;' : ''}"><input type="file" accept="image/*" style="display:none" onchange="setFile(this)" id="receipt-upload">${S.file && S.filePreviewUrl ? `<img src="${S.filePreviewUrl}" style="width:100%;max-height:220px;object-fit:contain;border:1px solid rgba(255,59,0,.3);display:block;margin-bottom:8px"><span style="font-size:9px;letter-spacing:3px;color:${A};font-family:var(--fm)">${S.fileName} ✓</span><span style="font-size:8px;color:var(--text3);letter-spacing:2px;font-family:var(--fm)">${S.lang === 'ar' ? 'اضغط لتغيير الصورة' : 'Click to change'}</span>` : `<span style="font-size:20px;opacity:.35">↑</span><span id="upload-label" style="font-size:9px;letter-spacing:3px;color:var(--text3);font-family:var(--fm)">${tx('clickUpload')}</span><span style="font-size:8px;color:var(--text3);letter-spacing:2px;font-family:var(--fm)">JPG OR PNG · MAX 10MB</span>`}</label></div>` : ''}
@@ -5203,7 +5268,10 @@
     <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">${od.address}، ${od.city}، ${od.governorate}</div>
     <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:6px">شحن: <span style="color:${A}">${od.shipping} EGP</span></div>
     <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:3px;margin-bottom:28px">${od.payment_method === 'cash' ? tx('cashOnDelivery') : od.payment_method === 'instapay' ? 'INSTAPAY' : 'VODAFONE CASH'}</div>
-    <button class="btn" onclick="navigate('home')">${S.lang === 'ar' ? 'متابعة التسوق' : 'CONTINUE SHOPPING'}</button>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn" onclick="navigate('home')">${S.lang === 'ar' ? 'متابعة التسوق' : 'CONTINUE SHOPPING'}</button>
+      <button class="btn-outline" onclick="S.trackInput='${S.orderNum}';navigate('track')" style="padding:14px 32px;font-size:13px;letter-spacing:6px">${S.lang === 'ar' ? 'تتبع الأوردر →' : 'TRACK ORDER →'}</button>
+    </div>
   </div>`;
     }
 
@@ -5606,7 +5674,7 @@
       if (bundleId) S.bundleId = bundleId;
       if (page !== 'product') { S.size = null; S.qty = 1; S.imgIdx = 0; S.accordion = null; }
       if (page !== 'bundle') { S.bundleId = null; }
-      if (page === 'checkout') { S.step = 1; S.pay = null; S.discount = 0; S.promo = ''; S.transfer = ''; if (S.filePreviewUrl) { try { URL.revokeObjectURL(S.filePreviewUrl); } catch(e){} } S.file = null; S.fileName = null; S.filePreviewUrl = null; }
+      if (page === 'checkout') { S.step = 1; S.pay = null; S.discount = 0; S.promo = ''; S.promoOpen = false; S.transfer = ''; if (S.filePreviewUrl) { try { URL.revokeObjectURL(S.filePreviewUrl); } catch(e){} } S.file = null; S.fileName = null; S.filePreviewUrl = null; }
       window.scrollTo({ top: 0, behavior: 'instant' });
       if (pushState) _pushHistory({ page, prodId: prodId || null, bundleId: bundleId || null });
       render();
@@ -5619,6 +5687,7 @@
     async function openProduct(id) {
       S.prodId = id; S.page = 'product'; S.size = null; S.qty = 1; S.imgIdx = 0; S.accordion = null; S.color = null;
       S.rv = [id, ...S.rv.filter(x => x !== id)].slice(0, 6);
+      saveRv();
       window.scrollTo({ top: 0, behavior: 'instant' });
       _pushHistory({ page: 'product', prodId: id });
       render();
@@ -5761,6 +5830,8 @@
     function nextStep() {
       const f = S.form;
       if (!f.name || !f.phone || !f.address) { addToast(tx('allFields'), 'error'); return; }
+      const phoneClean = f.phone.replace(/\s/g, '');
+      if (!/^01[0-9]{9}$/.test(phoneClean)) { addToast(S.lang === 'ar' ? 'رقم التليفون لازم يكون 11 رقم ويبدأ بـ 01' : 'Phone must be 11 digits starting with 01', 'error'); return; }
       if (!S.gov) { addToast(tx('chooseGov'), 'error'); return; }
       if (!S.govCity) { addToast(tx('chooseCity'), 'error'); return; }
       S.step = 2; render();
@@ -5772,7 +5843,28 @@
       const rawTotal = S.cart.reduce((s, i) => s + i.price * i.qty, 0);
       const orderNum = genOrder();
 
-      // Build order object for Supabase
+      // Upload receipt image to Supabase Storage (if provided)
+      let receiptUrl = '';
+      if (S.file && S.pay !== 'cash') {
+        try {
+          const ext = S.file.name.split('.').pop().toLowerCase();
+          const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/receipts/${orderNum}.${ext}`, {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${SUPABASE_KEY}`,
+              'Content-Type': S.file.type,
+              'x-upsert': 'true'
+            },
+            body: S.file
+          });
+          if (uploadRes.ok) {
+            receiptUrl = `${SUPABASE_URL}/storage/v1/object/public/receipts/${orderNum}.${ext}`;
+          }
+        } catch(e) { console.warn('Receipt upload failed:', e); }
+      }
+
+      // Build order object
       const orderData = {
         order_num: orderNum,
         customer_name: S.form.name,
@@ -5780,7 +5872,7 @@
         address: S.form.address,
         city: S.govCity,
         governorate: S.gov ? S.gov.name : '',
-        items: S.cart,           // jsonb column
+        items: S.cart,
         subtotal: rawTotal,
         shipping: S.shipping,
         cod_fee: S.codFee,
@@ -5788,22 +5880,54 @@
         total: grandTotal,
         payment_method: S.pay,
         transfer_from: S.pay !== 'cash' ? (S.transfer || '') : '',
+        receipt_url: receiptUrl,
         status: 'new',
         notes: '',
       };
 
-      // Save to Supabase
-      const saved = await supabaseInsert('orders', orderData);
-      if (!saved) {
-        addToast(S.lang === 'ar' ? 'فشل حفظ الأوردر — جاري المحاولة مرة أخرى' : 'Order save failed — retrying', 'error');
-        // Still continue to WhatsApp even if Supabase fails
+      // Save to localStorage first as backup (in case of network failure)
+      try { localStorage.setItem('axs_pending_order', JSON.stringify(orderData)); } catch(e) {}
+
+      // Try to save to Supabase with 3 retries
+      let saved = false;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        saved = await supabaseInsert('orders', orderData);
+        if (saved) break;
+        if (attempt < 3) await new Promise(r => setTimeout(r, 1000 * attempt));
       }
 
+      if (saved) {
+        // Clear pending backup only after successful save
+        try { localStorage.removeItem('axs_pending_order'); } catch(e) {}
+      } else {
+        // Supabase failed — still complete the order flow but notify
+        console.warn('Order saved to localStorage backup only');
+        addToast(S.lang === 'ar' ? '⚠️ تم تسجيل أوردرك — سيتم التأكيد قريباً' : '⚠️ Order recorded — confirmation coming soon', 'info');
+      }
+
+      // Clear cart ONLY after order is confirmed
       S.orderNum = orderNum;
       S.orderData = orderData;
+      S.cart = []; saveCart();
       sendTelegramNotification(orderData);
-      S.cart = []; saveCart(); S.page = 'confirmation';
+      S.page = 'confirmation';
       render();
+    }
+
+    // On app start — retry any pending orders that failed to save
+    async function retryPendingOrder() {
+      try {
+        const pending = localStorage.getItem('axs_pending_order');
+        if (!pending) return;
+        const orderData = JSON.parse(pending);
+        // Check if already saved (avoid duplicate)
+        const existing = await supabaseFetch('orders', `order_num=eq.${orderData.order_num}&limit=1`);
+        if (Array.isArray(existing) && existing.length > 0) {
+          localStorage.removeItem('axs_pending_order'); return;
+        }
+        const saved = await supabaseInsert('orders', orderData);
+        if (saved) { localStorage.removeItem('axs_pending_order'); console.log('Pending order recovered:', orderData.order_num); }
+      } catch(e) {}
     }
 
     async function sendTelegramNotification(od) {
@@ -5928,6 +6052,8 @@ ${itemsStr}
     function loadCart() { try { const c = localStorage.getItem('axs_cart'); if (c) S.cart = JSON.parse(c); } catch (e) { } }
     function saveWish() { try { localStorage.setItem('axs_wish', JSON.stringify(S.wish)); } catch (e) { } }
     function loadWish() { try { const w = localStorage.getItem('axs_wish'); if (w) S.wish = JSON.parse(w); } catch (e) { } }
+    function saveRv() { try { localStorage.setItem('axs_rv', JSON.stringify(S.rv)); } catch (e) { } }
+    function loadRv() { try { const r = localStorage.getItem('axs_rv'); if (r) S.rv = JSON.parse(r); } catch (e) { } }
 
     function sendWhatsApp(od) {
       const itemsStr = od.items.map(item => {
@@ -6130,6 +6256,8 @@ ${itemsStr}
     async function initApp() {
       loadCart();
       loadWish();
+      loadRv();
+      retryPendingOrder();
 
       // Initial history entry so back button stays inside the site
       if (!window.history.state) {
@@ -6351,6 +6479,25 @@ ${itemsStr}
         if (!navbar) return;
         if (window.scrollY > 40) navbar.classList.add('scrolled');
         else navbar.classList.remove('scrolled');
+      }, { passive: true });
+    })();
+
+    // ── 3b. STICKY ATC BAR — show after scrolling past the main buttons ──────────
+    (function initStickyAtc() {
+      window.addEventListener('scroll', function() {
+        if (S.page !== 'product') return;
+        var bar = document.getElementById('sticky-atc-bar');
+        if (!bar) return;
+        var qtyAdd = document.querySelector('.qty-add');
+        if (!qtyAdd) { bar.style.transform = 'translateY(100%)'; return; }
+        var rect = qtyAdd.getBoundingClientRect();
+        if (rect.bottom < 0) {
+          bar.style.transform = 'translateY(0)';
+          bar.style.transition = 'transform .25s ease';
+        } else {
+          bar.style.transform = 'translateY(100%)';
+          bar.style.transition = 'transform .25s ease';
+        }
       }, { passive: true });
     })();
 
