@@ -3590,7 +3590,7 @@
     let adminSearch = '';
     let adminSelectedOrder = null;
 
-    let adminTab = 'orders'; // 'orders' | 'products' | 'bundles' | 'newproduct'
+    let adminTab = 'orders'; // 'orders' | 'products'
     let adminProductsData = []; // colors + stock loaded for admin
 
     function renderAdmin() {
@@ -3614,14 +3614,12 @@
         <button class="admin-tab${adminTab === 'orders' ? ' active' : ''}" onclick="switchAdminTab('orders')">📦 الأوردرات</button>
         <button class="admin-tab${adminTab === 'products' ? ' active' : ''}" onclick="switchAdminTab('products')">🛍 المنتجات</button>
         <button class="admin-tab${adminTab === 'bundles' ? ' active' : ''}" onclick="switchAdminTab('bundles')">🎁 العروض</button>
-        <button class="admin-tab${adminTab === 'newproduct' ? ' active' : ''}" onclick="switchAdminTab('newproduct')" style="color:${adminTab==='newproduct'?'#fff':'#4caf50'};border-color:${adminTab==='newproduct'?'var(--A)':'transparent'}">➕ منتج جديد</button>
       </div>
       <div id="admin-tab-content"></div>
     </div>
   </div>`;
       if (adminTab === 'orders') renderOrdersTab();
       else if (adminTab === 'products') renderProductsTab();
-      else if (adminTab === 'newproduct') renderNewProductTab();
       else renderBundlesTab();
     }
 
@@ -3630,268 +3628,19 @@
       const tabs = document.querySelectorAll('.admin-tab');
       tabs.forEach(t => {
         const isOrders = t.textContent.includes('الأوردرات');
-        const isProducts = t.textContent.includes('المنتجات') && !t.textContent.includes('➕');
+        const isProducts = t.textContent.includes('المنتجات');
         const isBundles = t.textContent.includes('العروض');
-        const isNew = t.textContent.includes('➕');
         t.classList.toggle('active',
           (tab === 'orders' && isOrders) ||
           (tab === 'products' && isProducts) ||
-          (tab === 'bundles' && isBundles) ||
-          (tab === 'newproduct' && isNew)
+          (tab === 'bundles' && isBundles)
         );
-        if (isNew) {
-          t.style.color = (tab === 'newproduct') ? '#fff' : '#4caf50';
-          t.style.borderBottomColor = (tab === 'newproduct') ? 'var(--A)' : 'transparent';
-        }
       });
       const content = document.getElementById('admin-tab-content');
       if (!content) return;
       if (tab === 'orders') renderOrdersTab();
       else if (tab === 'products') renderProductsTab();
-      else if (tab === 'newproduct') renderNewProductTab();
       else renderBundlesTab();
-    }
-
-    // ── ADD NEW PRODUCT TAB ───────────────────────────────────────────────────────
-    function renderNewProductTab() {
-      const content = document.getElementById('admin-tab-content');
-      if (!content) return;
-      const nextId = Math.max(...PRODUCTS.map(p => p.id), 0) + 1;
-      const categories = ['T-SHIRTS', 'HOODIES', 'PANTS', 'ACCESSORIES', 'OTHER'];
-      const badges = ['', 'NEW', 'LIMITED', 'DROP 001', 'SALE'];
-      content.innerHTML = `
-    <div style="max-width:780px">
-      <div style="font-size:9px;color:#4caf50;letter-spacing:3px;margin-bottom:18px">➕ إضافة منتج جديد — ID سيكون: ${nextId}</div>
-
-      <!-- NAME & CATEGORY -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">اسم المنتج (EN) *</div>
-          <input class="admin-input" style="width:100%" id="np-name" placeholder="Product Name">
-        </div>
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">اسم المنتج (AR)</div>
-          <input class="admin-input" style="width:100%" id="np-namear" placeholder="اسم المنتج بالعربي">
-        </div>
-      </div>
-
-      <!-- PRICE & OLD PRICE & CATEGORY & BADGE -->
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:10px">
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">السعر (EGP) *</div>
-          <input class="admin-input" style="width:100%" type="number" id="np-price" placeholder="500" min="0">
-        </div>
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">السعر القديم (اختياري)</div>
-          <input class="admin-input" style="width:100%" type="number" id="np-oldprice" placeholder="700" min="0">
-        </div>
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">الكاتيجوري *</div>
-          <select class="admin-input admin-select" style="width:100%" id="np-category">
-            ${categories.map(c => `<option value="${c}">${c}</option>`).join('')}
-          </select>
-        </div>
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">Badge</div>
-          <select class="admin-input admin-select" style="width:100%" id="np-badge">
-            ${badges.map(b => `<option value="${b}">${b || '— لا يوجد —'}</option>`).join('')}
-          </select>
-        </div>
-      </div>
-
-      <!-- DESCRIPTION -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">الوصف (EN)</div>
-          <textarea class="admin-input notes-input" id="np-desc" style="min-height:64px;width:100%;resize:vertical" placeholder="100% heavy cotton..."></textarea>
-        </div>
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">الوصف (AR)</div>
-          <textarea class="admin-input notes-input" id="np-descar" style="min-height:64px;width:100%;resize:vertical" placeholder="قطن ثقيل..."></textarea>
-        </div>
-      </div>
-
-      <!-- SIZES & STOCK -->
-      <div style="margin-bottom:10px">
-        <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:8px">المقاسات والمخزون *</div>
-        <div style="background:#060606;border:1px solid #1a1a1a;padding:14px">
-          <div style="font-size:9px;color:#555;letter-spacing:2px;margin-bottom:10px;font-family:'DM Mono',monospace">اختار المقاسات وادخل الكمية (0 = مش متاح)</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px" id="np-sizes-row">
-            ${['XS','S','M','L','XL','XXL','ONE SIZE'].map(sz => `
-            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:#050505;border:1px solid #1a1a1a;padding:8px 10px;min-width:70px">
-              <label style="display:flex;align-items:center;gap:4px;cursor:pointer">
-                <input type="checkbox" class="np-size-check" value="${sz}" onchange="toggleNpSizeInput('${sz}')" style="accent-color:var(--A)">
-                <span style="font-size:10px;color:#888;font-family:'DM Mono',monospace;letter-spacing:2px">${sz}</span>
-              </label>
-              <input type="number" min="0" value="10" id="np-stock-${sz}" class="admin-input np-stock-input" style="width:58px;text-align:center;display:none" placeholder="qty">
-            </div>`).join('')}
-          </div>
-        </div>
-      </div>
-
-      <!-- DETAILS BULLETS -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">تفاصيل المنتج (EN) — سطر لكل نقطة</div>
-          <textarea class="admin-input notes-input" id="np-details" style="min-height:72px;width:100%;resize:vertical" placeholder="100% heavy cotton&#10;Oversized fit&#10;DTF print"></textarea>
-        </div>
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">تفاصيل المنتج (AR) — سطر لكل نقطة</div>
-          <textarea class="admin-input notes-input" id="np-detailsar" style="min-height:72px;width:100%;resize:vertical" placeholder="قطن ثقيل 100%&#10;قياس oversized&#10;طباعة DTF"></textarea>
-        </div>
-      </div>
-
-      <!-- BACKGROUND COLORS -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">خلفية بداية (bgFrom)</div>
-          <div style="display:flex;align-items:center;gap:6px">
-            <input type="color" id="np-bgfrom-picker" value="#080808" style="width:36px;height:36px;border:none;background:none;cursor:pointer;flex-shrink:0" oninput="document.getElementById('np-bgfrom').value=this.value">
-            <input class="admin-input" style="flex:1" id="np-bgfrom" value="#080808" placeholder="#080808" oninput="document.getElementById('np-bgfrom-picker').value=this.value">
-          </div>
-        </div>
-        <div>
-          <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:4px">خلفية نهاية (bgTo)</div>
-          <div style="display:flex;align-items:center;gap:6px">
-            <input type="color" id="np-bgto-picker" value="#020202" style="width:36px;height:36px;border:none;background:none;cursor:pointer;flex-shrink:0" oninput="document.getElementById('np-bgto').value=this.value">
-            <input class="admin-input" style="flex:1" id="np-bgto" value="#020202" placeholder="#020202" oninput="document.getElementById('np-bgto-picker').value=this.value">
-          </div>
-        </div>
-      </div>
-
-      <!-- RELATED PRODUCTS -->
-      <div style="margin-bottom:18px">
-        <div style="font-size:9px;color:#555;letter-spacing:3px;margin-bottom:8px">المنتجات ذات الصلة (اختار 3 على الأكثر)</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px">
-          ${PRODUCTS.map(p => `
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;background:#050505;border:1px solid #1a1a1a;padding:5px 10px">
-            <input type="checkbox" class="np-related-check" value="${p.id}" style="accent-color:var(--A)">
-            <span style="font-size:9px;color:#888;font-family:'DM Mono',monospace;letter-spacing:1px">${p.name}</span>
-          </label>`).join('')}
-        </div>
-      </div>
-
-      <!-- SUBMIT -->
-      <div style="display:flex;align-items:center;gap:10px;padding-top:4px;border-top:1px solid #1a1a1a;margin-top:4px">
-        <button class="admin-btn" onclick="addNewProduct()" style="background:rgba(76,175,80,.12);border-color:rgba(76,175,80,.4);color:#4caf50;font-size:11px;padding:10px 24px">
-          ➕ إضافة المنتج
-        </button>
-        <span style="font-size:9px;color:#555;letter-spacing:2px;font-family:'DM Mono',monospace">* حقول مطلوبة — بعد الإضافة تقدر تضيف الألوان والصور من تاب المنتجات</span>
-      </div>
-    </div>`;
-    }
-
-    function toggleNpSizeInput(sz) {
-      const cb = document.querySelector(`.np-size-check[value="${sz}"]`);
-      const input = document.getElementById(`np-stock-${sz}`);
-      if (!input) return;
-      input.style.display = cb && cb.checked ? 'block' : 'none';
-    }
-
-    async function addNewProduct() {
-      const name = (document.getElementById('np-name') || {}).value?.trim();
-      const nameAr = (document.getElementById('np-namear') || {}).value?.trim();
-      const priceVal = (document.getElementById('np-price') || {}).value;
-      const oldPriceVal = (document.getElementById('np-oldprice') || {}).value;
-      const category = (document.getElementById('np-category') || {}).value;
-      const badge = (document.getElementById('np-badge') || {}).value || null;
-      const desc = (document.getElementById('np-desc') || {}).value?.trim();
-      const descAr = (document.getElementById('np-descar') || {}).value?.trim();
-      const detailsRaw = (document.getElementById('np-details') || {}).value?.trim();
-      const detailsArRaw = (document.getElementById('np-detailsar') || {}).value?.trim();
-      const bgFrom = (document.getElementById('np-bgfrom') || {}).value?.trim() || '#080808';
-      const bgTo = (document.getElementById('np-bgto') || {}).value?.trim() || '#020202';
-
-      if (!name) { addToast('اكتب اسم المنتج الأول', 'error'); return; }
-      const price = parseInt(priceVal);
-      if (!price || price <= 0) { addToast('ادخل سعر صح', 'error'); return; }
-
-      // Sizes + stock
-      const sizes = [];
-      const stock = {};
-      document.querySelectorAll('.np-size-check:checked').forEach(cb => {
-        const sz = cb.value;
-        sizes.push(sz);
-        const qty = parseInt(document.getElementById(`np-stock-${sz}`)?.value) || 0;
-        stock[sz] = qty;
-      });
-      if (sizes.length === 0) { addToast('اختار مقاس واحد على الأقل', 'error'); return; }
-
-      // Related products
-      const related = [];
-      document.querySelectorAll('.np-related-check:checked').forEach(cb => related.push(parseInt(cb.value)));
-
-      // Details
-      const details = detailsRaw ? detailsRaw.split('\n').map(l => l.trim()).filter(Boolean) : [];
-      const detailsAr = detailsArRaw ? detailsArRaw.split('\n').map(l => l.trim()).filter(Boolean) : [];
-
-      const newId = Math.max(...PRODUCTS.map(p => p.id), 0) + 1;
-      const oldPrice = oldPriceVal ? parseInt(oldPriceVal) : null;
-
-      const newProduct = {
-        id: newId,
-        name,
-        nameAr: nameAr || name,
-        category,
-        price,
-        oldPrice,
-        badge,
-        rating: 0,
-        reviewCount: 0,
-        sizes,
-        stock,
-        desc: desc || '',
-        descAr: descAr || '',
-        details,
-        detailsAr,
-        bgFrom,
-        bgTo,
-        wm: bgFrom,
-        related: related.slice(0, 3)
-      };
-
-      // Save to Supabase products table
-      const supRes = await fetch(`${SUPABASE_URL}/rest/v1/products`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Authorization': `Bearer ${SUPABASE_KEY}`,
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({
-          id: newId,
-          name,
-          name_ar: nameAr || name,
-          category,
-          price,
-          old_price: oldPrice,
-          badge,
-          description: desc || '',
-          description_ar: descAr || '',
-          sizes: JSON.stringify(sizes),
-          stock: JSON.stringify(stock),
-          details: JSON.stringify(details),
-          details_ar: JSON.stringify(detailsAr),
-          bg_from: bgFrom,
-          bg_to: bgTo,
-          related: JSON.stringify(related.slice(0, 3))
-        })
-      }).then(r => r.ok).catch(() => false);
-
-      // Also insert stock entry
-      await supabaseInsert('product_stock', { product_id: newId, sold_out: false, stock });
-
-      // Add to local PRODUCTS array (so it shows in current session)
-      PRODUCTS.push(newProduct);
-
-      if (supRes) {
-        addToast(`✓ تم إضافة "${name}" بـ ID ${newId} — روح تاب المنتجات لتضيف الألوان والصور`, 'success');
-      } else {
-        addToast(`⚠ المنتج اتضاف محلياً فقط — تحقق من Supabase (ممكن الـ ID موجود أو في مشكلة في الـ RLS)`, 'info');
-      }
-      // Reset form
-      switchAdminTab('products');
     }
 
     function renderOrdersTab() {
