@@ -381,7 +381,7 @@
 
     .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 2px;
     }
 
@@ -2767,6 +2767,38 @@
         font-size: 28px !important;
       }
 
+      /* Product card image — تناسب الـ 2x2 grid على الموبايل */
+      .pcard-img {
+        height: 46vw;
+        overflow: hidden;
+      }
+      .pcard-img > div {
+        height: 100% !important;
+      }
+      .pcard-info {
+        padding: 8px 10px 12px;
+      }
+      .pcard-name {
+        font-size: 13px;
+        letter-spacing: 1px;
+      }
+      .pcard-new {
+        font-size: 14px;
+      }
+      .pcard-old {
+        font-size: 9px;
+      }
+      .pcard-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+      }
+      .pcard-footer .btn {
+        font-size: 9px;
+        padding: 8px 4px;
+        letter-spacing: 1.5px;
+      }
+
       .admin-filter-row {
         flex-direction: column;
         align-items: stretch;
@@ -3027,6 +3059,27 @@
       /* counter-rotate so cards stay upright while ring spins */
       animation: orbitCounterSpin 28s linear infinite;
     }
+    .orbit-card > div:first-child > div,
+    .orbit-card > div:first-child > div > div {
+      aspect-ratio: 1 !important;
+      height: unset !important;
+    }
+
+    /* Orbit image wrapper — square crop */
+    .orbit-img-wrap {
+      width: 100%;
+      aspect-ratio: 1;
+      overflow: hidden;
+    }
+    .orbit-img-wrap > div {
+      height: 100% !important;
+      width: 100% !important;
+    }
+    .orbit-img-wrap img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+    }
 
     @keyframes orbitCounterSpin {
       from {
@@ -3259,10 +3312,8 @@
 
   <div id="ann-bar">
     <div class="ann-track">
-      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTOM ERA &nbsp;·&nbsp; USE CODE AXS5 FOR 5%
-        OFF &nbsp;·&nbsp; CASH ON DELIVERY AVAILABLE &nbsp;·&nbsp; </span>
-      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTOM ERA &nbsp;·&nbsp; USE CODE AXS5 FOR 5%
-        OFF &nbsp;·&nbsp; CASH ON DELIVERY AVAILABLE &nbsp;·&nbsp; </span>
+      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTOM ERA &nbsp;·&nbsp; استخدم كود الخصم AXS5 خلال 24 ساعة &nbsp;·&nbsp; CASH ON DELIVERY AVAILABLE &nbsp;·&nbsp; </span>
+      <span>FREE SHIPPING OVER 1500 EGP &nbsp;·&nbsp; DROP 001 — PHANTOM ERA &nbsp;·&nbsp; استخدم كود الخصم AXS5 خلال 24 ساعة &nbsp;·&nbsp; CASH ON DELIVERY AVAILABLE &nbsp;·&nbsp; </span>
     </div>
   </div>
 
@@ -3804,6 +3855,24 @@
                     ${c.img2 ? `<img loading="lazy" src="${c.img2}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>`}
                   </div>
                 </div>
+                <div style="display:flex;align-items:center;gap:4px">
+                  <input class="admin-input" style="flex:1;min-width:0" id="img3-${c.id}" value="${c.img3 || ''}" placeholder="img3.png" onchange="updateColorField('${c.id}','img3',this.value,${p.id});updateImgPreview('${c.id}',3,this.value)" oninput="updateImgPreview('${c.id}',3,this.value)">
+                  <div id="prev3-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('${c.img3 || ''}',this)" title="معاينة">
+                    ${c.img3 ? `<img loading="lazy" src="${c.img3}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>`}
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px">
+                  <input class="admin-input" style="flex:1;min-width:0" id="img4-${c.id}" value="${c.img4 || ''}" placeholder="img4.png" onchange="updateColorField('${c.id}','img4',this.value,${p.id});updateImgPreview('${c.id}',4,this.value)" oninput="updateImgPreview('${c.id}',4,this.value)">
+                  <div id="prev4-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('${c.img4 || ''}',this)" title="معاينة">
+                    ${c.img4 ? `<img loading="lazy" src="${c.img4}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>`}
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px">
+                  <input class="admin-input" style="flex:1;min-width:0" id="img5-${c.id}" value="${c.img5 || ''}" placeholder="img5.png" onchange="updateColorField('${c.id}','img5',this.value,${p.id});updateImgPreview('${c.id}',5,this.value)" oninput="updateImgPreview('${c.id}',5,this.value)">
+                  <div id="prev5-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('${c.img5 || ''}',this)" title="معاينة">
+                    ${c.img5 ? `<img loading="lazy" src="${c.img5}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>`}
+                  </div>
+                </div>
               </div>
               <button class="admin-btn-sm" onclick="saveColorRow('${c.id}',${p.id})" style="white-space:nowrap">حفظ</button>
               <button class="admin-btn-danger" onclick="deleteColor('${c.id}',${p.id})" style="white-space:nowrap">حذف</button>
@@ -4224,6 +4293,9 @@
         hex: '#333333',
         img1: '',
         img2: '',
+        img3: '',
+        img4: '',
+        img5: '',
         sort_order: currentCount + 1
       };
 
@@ -4262,6 +4334,24 @@
           <div style="display:flex;align-items:center;gap:4px">
             <input class="admin-input" style="flex:1;min-width:0" id="img2-${c.id}" value="" placeholder="img2.png" onchange="updateColorField('${c.id}','img2',this.value,${productId});updateImgPreview('${c.id}',2,this.value)" oninput="updateImgPreview('${c.id}',2,this.value)">
             <div id="prev2-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('',this)" title="معاينة">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px">
+            <input class="admin-input" style="flex:1;min-width:0" id="img3-${c.id}" value="" placeholder="img3.png" onchange="updateColorField('${c.id}','img3',this.value,${productId});updateImgPreview('${c.id}',3,this.value)" oninput="updateImgPreview('${c.id}',3,this.value)">
+            <div id="prev3-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('',this)" title="معاينة">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px">
+            <input class="admin-input" style="flex:1;min-width:0" id="img4-${c.id}" value="" placeholder="img4.png" onchange="updateColorField('${c.id}','img4',this.value,${productId});updateImgPreview('${c.id}',4,this.value)" oninput="updateImgPreview('${c.id}',4,this.value)">
+            <div id="prev4-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('',this)" title="معاينة">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px">
+            <input class="admin-input" style="flex:1;min-width:0" id="img5-${c.id}" value="" placeholder="img5.png" onchange="updateColorField('${c.id}','img5',this.value,${productId});updateImgPreview('${c.id}',5,this.value)" oninput="updateImgPreview('${c.id}',5,this.value)">
+            <div id="prev5-${c.id}" style="width:36px;height:36px;border:1px solid #1a1a1a;overflow:hidden;flex-shrink:0;background:#050505;cursor:pointer" onclick="openImgPreviewFull('',this)" title="معاينة">
               <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333">🖼</div>
             </div>
           </div>
@@ -4750,11 +4840,12 @@
       const colors = getProductColors(pid);
       if (!colors.length) return null;
       const sel = colors.find(c => c.id === S.color) || colors[0];
-      return sel ? [sel.img1, sel.img2].filter(Boolean) : null;
+      return sel ? [sel.img1, sel.img2, sel.img3, sel.img4, sel.img5].filter(Boolean) : null;
     }
 
     function calcGrandTotal() {
       const raw = S.cart.reduce((s, i) => s + i.price * i.qty, 0);
+      S.shipping = calcShipping();
       return Math.round(raw * (1 - S.discount)) + S.shipping + S.codFee;
     }
 
@@ -4785,9 +4876,12 @@
     // PRODUCT VISUALS
     // ═══════════════════════════════════════════════════════════════════════════════
     const IMGS = {
-      1: ['3.png', '4.png', '2.png'], 2: ['p2-1.jpeg', 'p2-2.jpeg', 'p2-3.jpeg'],
-      3: ['p3-1.jpeg', 'p3-2.jpeg', 'p3-3.jpeg'], 4: ['p4-1.jpeg', 'p4-2.jpeg', 'p4-3.jpeg'],
-      5: ['p5-1.jpeg', 'p5-2.jpeg', 'p5-3.jpeg'], 6: ['p6-1.jpeg', 'p6-2.jpeg', 'p6-3.jpeg'],
+      1: ['3.png', '4.png', '2.png', 'p1-4.jpeg', 'p1-5.jpeg'],
+      2: ['p2-1.jpeg', 'p2-2.jpeg', 'p2-3.jpeg', 'p2-4.jpeg', 'p2-5.jpeg'],
+      3: ['p3-1.jpeg', 'p3-2.jpeg', 'p3-3.jpeg', 'p3-4.jpeg', 'p3-5.jpeg'],
+      4: ['p4-1.jpeg', 'p4-2.jpeg', 'p4-3.jpeg', 'p4-4.jpeg', 'p4-5.jpeg'],
+      5: ['p5-1.jpeg', 'p5-2.jpeg', 'p5-3.jpeg', 'p5-4.jpeg', 'p5-5.jpeg'],
+      6: ['p6-1.jpeg', 'p6-2.jpeg', 'p6-3.jpeg', 'p6-4.jpeg', 'p6-5.jpeg'],
     };
 
     function pvSvg(cat) {
@@ -4807,17 +4901,17 @@
       const colorImgs = getColorImgs(p.id);
       if (colorImgs && colorImgs.length > 0) {
         const src = colorImgs[idx] || colorImgs[0];
-        return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
+        return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s;display:block;position:relative;z-index:1" onerror="this.style.display='none'" onload="this.style.opacity=1"><div style="position:absolute;inset:0;z-index:0">${pvFallback(p, h, idx)}</div></div>`;
       }
       const src = (IMGS[p.id] || [])[idx] || (IMGS[p.id] || [])[0];
       if (!src) return pvFallback(p, h, idx);
-      return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;transition:opacity .3s;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, idx)}</div></div>`;
+      return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s;display:block;position:relative;z-index:1" onerror="this.style.display='none'" onload="this.style.opacity=1"><div style="position:absolute;inset:0;z-index:0">${pvFallback(p, h, idx)}</div></div>`;
     }
 
     function pvThumb(p, h = 88, thumbIdx = 0) {
       const src = (IMGS[p.id] || [])[thumbIdx] || (IMGS[p.id] || [])[0];
       if (!src) return pvFallback(p, h, thumbIdx);
-      return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;width:100%;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, h, thumbIdx)}</div></div>`;
+      return `<div style="height:${h}px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;width:100%;"><img loading="lazy" src="${src}" style="width:100%;height:100%;object-fit:cover;opacity:0;display:block;transition:opacity .3s;position:relative;z-index:1" onerror="this.style.display='none'" onload="this.style.opacity=1"><div style="position:absolute;inset:0;z-index:0">${pvFallback(p, h, thumbIdx)}</div></div>`;
     }
 
     function productCard(p, showWish = true) {
@@ -4830,7 +4924,7 @@
       const colorDots = colors.length > 0 ? `<div style="display:flex;gap:5px;margin-top:6px">${colors.slice(0, 4).map(c => `<div style="width:14px;height:14px;border-radius:50%;background:${c.hex};border:1px solid rgba(255,255,255,.2)" title="${S.lang === 'ar' ? c.name_ar : c.name}"></div>`).join('')}${colors.length > 4 ? `<span style="font-size:8px;color:var(--text3);font-family:var(--fm);line-height:14px">+${colors.length - 4}</span>` : ''}</div>` : '';
       return `<div class="pcard" onclick="openProduct(${p.id})">
     <div class="pcard-img" style="position:relative">
-      ${pv(p, 300, 0)}
+      ${pv(p, 220, 0)}
       ${soldOut ? `<div class="sold-out-overlay"><div class="sold-out-badge-big">${tx('soldOut')}</div></div>` : ''}
       ${showWish ? `<div class="pcard-wish" onclick="event.stopPropagation();toggleWish(${p.id})" style="color:${wished ? A : 'var(--text3)'}">${wished ? '♥' : '♡'}</div>` : ''}
       ${p.badge ? `<div class="pcard-badge" style="${bs}">${p.badge}</div>` : ''}
@@ -4879,7 +4973,7 @@
         const angle = (360 / orbitProds.length) * i;
         return `<div class="orbit-item" style="--angle:${angle}deg;--i:${i};" onclick="openProduct(${p.id})">
             <div class="orbit-card">
-              ${pv(p, 120, 0)}
+              <div class="orbit-img-wrap">${pv(p, 120, 0)}</div>
               <div class="orbit-label">${pName(p).toUpperCase()}</div>
             </div>
           </div>`;
@@ -5053,7 +5147,7 @@
 
       // الصور — من اللون المختار أو الافتراضية
       const selColor = colors.find(c => c.id === S.color) || colors[0] || null;
-      const colorImgs = selColor ? [selColor.img1, selColor.img2].filter(Boolean) : (IMGS[p.id] || []);
+      const colorImgs = selColor ? [selColor.img1, selColor.img2, selColor.img3, selColor.img4, selColor.img5].filter(Boolean) : (IMGS[p.id] || []);
       const thumbCount = colorImgs.length || 1;
 
       // Stock من Supabase
@@ -5082,7 +5176,7 @@
       // Main image
       const mainImgSrc = colorImgs[S.imgIdx] || colorImgs[0];
       const mainImg = mainImgSrc
-        ? `<div style="height:480px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${mainImgSrc}" style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.opacity=1"><div style="display:none;position:absolute;inset:0">${pvFallback(p, 480, S.imgIdx)}</div></div>`
+        ? `<div style="height:480px;overflow:hidden;background:linear-gradient(145deg,${p.bgFrom},${p.bgTo});position:relative;"><img loading="lazy" src="${mainImgSrc}" style="width:100%;height:100%;object-fit:cover;opacity:0;display:block;transition:opacity .3s;position:relative;z-index:1" onerror="this.style.display='none'" onload="this.style.opacity=1"><div style="position:absolute;inset:0;z-index:0">${pvFallback(p, 480, S.imgIdx)}</div></div>`
         : pv(p, 480);
 
       // Color picker HTML
@@ -5156,6 +5250,10 @@
     function renderCart() {
       if (!S.cart.length) return `<div class="empty" style="padding:80px 24px"><div class="empty-icon">◻</div><div class="empty-text">${tx('cartEmpty')}</div><button class="btn" onclick="navigate('shop')">${tx('shopNow')}</button></div>`;
       const total = S.cart.reduce((s, i) => s + i.price * i.qty, 0);
+      const freeShipLeft = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
+      const freeShipMsg = freeShipLeft > 0
+        ? `<div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:2px;margin-bottom:20px">${S.lang === 'ar' ? `أضف ${freeShipLeft} EGP للحصول على شحن مجاني 🚚` : `Add ${freeShipLeft} EGP for FREE SHIPPING 🚚`}</div>`
+        : `<div style="font-size:9px;color:#4caf50;font-family:var(--fm);letter-spacing:2px;margin-bottom:20px">✓ ${S.lang === 'ar' ? 'مبروك! شحن مجاني 🚚' : 'YOU GOT FREE SHIPPING 🚚'}</div>`;
       return `<div style="max-width:800px;margin:0 auto;padding:40px 24px">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;flex-wrap:wrap;gap:12px">
       <div><div class="section-tag">YOUR</div><div class="section-title" style="font-size:52px">${tx('cart').toUpperCase()}</div></div>
@@ -5192,7 +5290,7 @@
     </div>
     <div style="padding:24px 0;border-top:1px solid var(--border);margin-top:8px">
       <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:10px;letter-spacing:4px;color:var(--text3);font-family:var(--fm)">${tx('subtotal')}</span><span style="font-family:var(--fd);font-size:28px">${total} <span style="font-size:10px;color:var(--text3);font-family:var(--fm)">EGP</span></span></div>
-      <div style="font-size:9px;color:var(--text3);font-family:var(--fm);letter-spacing:2px;margin-bottom:20px">${S.lang === 'ar' ? 'الشحن يُحسب عند الطلب' : 'SHIPPING CALCULATED AT CHECKOUT'}</div>
+      ${freeShipMsg}
       <button class="btn btn-full" onclick="navigate('checkout')">${tx('checkout')}</button>
     </div>
   </div>`;
@@ -5201,7 +5299,8 @@
     function renderCheckout() {
       const rawTotal = S.cart.reduce((s, i) => s + i.price * i.qty, 0);
       const discounted = Math.round(rawTotal * (1 - S.discount));
-      const grandTotal = discounted + S.shipping + S.codFee;
+      const grandTotal = calcGrandTotal();
+      const freeShip = S.gov && rawTotal >= FREE_SHIPPING_THRESHOLD;
       const pays = [
         { id: 'instapay', label: 'Instapay', sub: tx('instantBank'), icon: 'IP', num: '01066025845 — AXS Store' },
         { id: 'vodafone', label: 'Vodafone Cash', sub: tx('mobileWallet'), icon: 'VF', num: '01066025845 — AXS Store' },
@@ -5240,7 +5339,7 @@
         return `<div class="summary-row"><span>${item.name.toUpperCase()} ×${item.qty} (${item.size}${item.colorName ? ` — ${item.colorName}` : ''})</span><span>${item.price * item.qty} EGP</span></div>`;
       }).join('')}
         ${S.discount > 0 ? `<div class="summary-row" style="color:#4caf50"><span>${tx('discount')} (${S.discount * 100}%)</span><span>−${rawTotal - discounted} EGP</span></div>` : ''}
-        ${S.gov ? `<div class="summary-row"><span>شحن — ${S.gov.name}</span><span style="color:${A}">${S.shipping} EGP</span></div>` : ''}
+        ${S.gov ? `<div class="summary-row"><span>شحن — ${S.gov.name}</span><span style="color:${freeShip ? '#4caf50' : A}">${freeShip ? (S.lang === 'ar' ? '✓ مجاني' : '✓ FREE') : S.shipping + ' EGP'}</span></div>` : ''}
         ${S.codFee > 0 ? `<div class="summary-row"><span>رسوم الكاش عند الاستلام</span><span style="color:${A}">${S.codFee} EGP</span></div>` : ''}
         <div class="summary-divider"><span style="font-size:9px;letter-spacing:4px;color:var(--text3);font-family:var(--fm)">${tx('total')}</span><span style="font-family:var(--fd);font-size:26px">${grandTotal} <span style="font-size:10px;color:var(--text3);font-family:var(--fm)">EGP</span></span></div>
       </div>
@@ -5729,9 +5828,15 @@
     function selectImg(i) { S.imgIdx = i; render(); }
     function toggleAccordion(i) { S.accordion = S.accordion === i ? null : i; render(); }
     function setField(k, v) { S.form[k] = v; }
+    const FREE_SHIPPING_THRESHOLD = 1500;
+    function calcShipping() {
+      if (!S.gov) return 0;
+      const raw = S.cart.reduce((s, i) => s + i.price * i.qty, 0);
+      return raw >= FREE_SHIPPING_THRESHOLD ? 0 : S.gov.fee;
+    }
     function selectGov(name) {
       const g = GOVERNORATES.find(x => x.name === name);
-      S.gov = g || null; S.govCity = ''; S.shipping = g ? g.fee : 0;
+      S.gov = g || null; S.govCity = ''; S.shipping = g ? calcShipping() : 0;
       const cs = document.getElementById('city-select');
       if (cs && g) { cs.innerHTML = `<option value="">اختار المدينة</option>${g.cities.map(c => `<option value="${c}">${c}</option>`).join('')}`; cs.disabled = false; }
     }
