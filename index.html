@@ -5146,7 +5146,7 @@
 
       // الصور — من اللون المختار أو الافتراضية
       const selColor = colors.find(c => c.id === S.color) || colors[0] || null;
-      const colorImgs = selColor ? [selColor.img1, selColor.img2].filter(Boolean) : (IMGS[p.id] || []);
+      const colorImgs = selColor ? [selColor.img1, selColor.img2, selColor.img3, selColor.img4, selColor.img5].filter(Boolean) : (IMGS[p.id] || []);
       const thumbCount = colorImgs.length || 1;
 
       // Stock من Supabase
