@@ -30,6 +30,16 @@
   <!-- Preload hero image for faster LCP -->
   <link rel="preload" as="image" href="hero.png">
 
+  <!-- TikTok Pixel -->
+  <script>
+    !function (w, d, t) {
+      w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+      ttq.load('D8U65HBC77U7S9IHFJIG');
+      ttq.page();
+    }(window, document, 'ttq');
+  </script>
+  <!-- End TikTok Pixel -->
+
   <!-- Performance: preconnect to Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -5791,7 +5801,16 @@
       if (bundleId) S.bundleId = bundleId;
       if (page !== 'product') { S.size = null; S.qty = 1; S.imgIdx = 0; S.accordion = null; }
       if (page !== 'bundle') { S.bundleId = null; }
-      if (page === 'checkout') { S.step = 1; S.pay = null; S.discount = 0; S.promo = ''; S.promoOpen = false; S.transfer = ''; if (S.filePreviewUrl) { try { URL.revokeObjectURL(S.filePreviewUrl); } catch(e){} } S.file = null; S.fileName = null; S.filePreviewUrl = null; }
+      if (page === 'checkout') { S.step = 1; S.pay = null; S.discount = 0; S.promo = ''; S.promoOpen = false; S.transfer = ''; if (S.filePreviewUrl) { try { URL.revokeObjectURL(S.filePreviewUrl); } catch(e){} } S.file = null; S.fileName = null; S.filePreviewUrl = null;
+        // TikTok Pixel — InitiateCheckout
+        try {
+          if (typeof ttq !== 'undefined' && S.cart.length > 0) {
+            const _total = S.cart.reduce((s, i) => s + i.price * i.qty, 0);
+            const _contents = S.cart.map(i => ({ content_id: String(i.id || i.bundleId), content_type: 'product', content_name: i.name }));
+            ttq.track('InitiateCheckout', { contents: _contents, value: _total, currency: 'EGP' });
+          }
+        } catch(e) {}
+      }
       window.scrollTo({ top: 0, behavior: 'instant' });
       if (pushState) {
         _pushHistory({ page, prodId: prodId || null, bundleId: bundleId || null });
@@ -5817,6 +5836,16 @@
       await loadProductData(id);
       const colors = getProductColors(id);
       if (colors.length > 0) S.color = colors[0].id;
+      // TikTok Pixel — ViewContent
+      try {
+        const _p = getProduct(id);
+        if (_p && typeof ttq !== 'undefined') {
+          ttq.track('ViewContent', {
+            contents: [{ content_id: String(_p.id), content_type: 'product', content_name: _p.name, brand: 'AXS' }],
+            value: _p.price, currency: 'EGP'
+          });
+        }
+      } catch(e) {}
       render();
     }
     function openBundle(id) { S.bundleId = id; S.page = 'bundle'; window.scrollTo({ top: 0, behavior: 'instant' }); _pushHistory({ page: 'bundle', bundleId: id }); render(); }
@@ -5869,6 +5898,15 @@
       });
       saveCart(); updateNav();
       addToast(`${pName(p)}${colorName ? ` — ${colorName}` : ''} ${tx('addedToCart')}`, 'success', { label: tx('viewCart'), fn: "navigate('cart')" });
+      // TikTok Pixel — AddToCart
+      try {
+        if (typeof ttq !== 'undefined') {
+          ttq.track('AddToCart', {
+            contents: [{ content_id: String(p.id), content_type: 'product', content_name: p.name }],
+            value: p.price * S.qty, currency: 'EGP'
+          });
+        }
+      } catch(e) {}
       render();
     }
 
@@ -6032,6 +6070,14 @@
       S.orderNum = orderNum;
       S.orderData = orderData;
       S.cart = []; saveCart();
+      // TikTok Pixel — PlaceAnOrder + Purchase
+      try {
+        if (typeof ttq !== 'undefined') {
+          const _contents = orderData.items.map(i => ({ content_id: String(i.id || i.bundleId), content_type: 'product', content_name: i.name }));
+          ttq.track('PlaceAnOrder', { contents: _contents, value: grandTotal, currency: 'EGP' });
+          ttq.track('Purchase', { contents: _contents, value: grandTotal, currency: 'EGP' });
+        }
+      } catch(e) {}
       sendTelegramNotification(orderData);
       S.page = 'confirmation';
       render();
