@@ -5632,7 +5632,8 @@
 
     function closeSizeModal() { document.getElementById('size-modal').classList.remove('open'); }
 
-    function showZoom(id) { const p = getProduct(id); document.getElementById('zoom-inner').innerHTML = pv(p, 600); document.getElementById('zoom-modal').classList.add('open'); }
+    let _zoomIgnoreNextPopstate = false;
+    function showZoom(id) { const p = getProduct(id); document.getElementById('zoom-inner').innerHTML = pv(p, 600); document.getElementById('zoom-modal').classList.add('open'); window.history.pushState({ zoomOpen: true }, '', location.hash || '#'); }
     function showZoomImg(src, pid) {
       const p = getProduct(pid);
       const inner = document.getElementById('zoom-inner');
@@ -5642,8 +5643,17 @@
         inner.innerHTML = pv(p, 600);
       }
       document.getElementById('zoom-modal').classList.add('open');
+      window.history.pushState({ zoomOpen: true }, '', location.hash || '#');
     }
-    function closeZoom() { document.getElementById('zoom-modal').classList.remove('open'); }
+    function closeZoom(fromPopstate) {
+      const zoomModal = document.getElementById('zoom-modal');
+      const wasOpen = zoomModal.classList.contains('open');
+      zoomModal.classList.remove('open');
+      if (!fromPopstate && wasOpen && window.history.state && window.history.state.zoomOpen) {
+        _zoomIgnoreNextPopstate = true;
+        window.history.back();
+      }
+    }
 
     function startCountdown() {
       if (countdownInterval) clearInterval(countdownInterval);
@@ -5772,6 +5782,12 @@
 
     // popstate still needed for browsers that fire it instead of hashchange
     window.addEventListener('popstate', function(e) {
+      if (_zoomIgnoreNextPopstate) { _zoomIgnoreNextPopstate = false; return; }
+      const zoomModal = document.getElementById('zoom-modal');
+      if (zoomModal && zoomModal.classList.contains('open')) {
+        closeZoom(true);
+        return;
+      }
       const { page, prodId, bundleId } = _parseHash();
       _goToPage(page, prodId, bundleId, false);
     });
